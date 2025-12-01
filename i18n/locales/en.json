@@ -3,10 +3,45 @@
     "login": "Login",
     "register": "Get Started",
     "marketplace": "Marketplace",
+    "download": "Download",
     "privacy": "Privacy",
     "terms": "Terms",
     "allRightsReserved": "All rights reserved.",
     "viewAll": "View all"
+  },
+  "download": {
+    "badge": "Cross-Platform",
+    "title": "Download haex-vault",
+    "subtitle": "Secure, encrypted storage for all your data. Available for desktop and mobile.",
+    "currentVersion": "Current version",
+    "allReleases": "All releases",
+    "desktop": "Desktop",
+    "mobile": "Mobile",
+    "comingSoon": "Coming Soon",
+    "whyVault": "Why haex-vault?",
+    "features": {
+      "encryption": {
+        "title": "End-to-End Encryption",
+        "description": "Your data is encrypted locally before syncing. Only you have the keys."
+      },
+      "sync": {
+        "title": "Seamless Sync",
+        "description": "Access your data from any device. Changes sync instantly across all platforms."
+      },
+      "offline": {
+        "title": "Offline First",
+        "description": "Works without internet. Your data is always available, even offline."
+      }
+    },
+    "requirements": {
+      "title": "System Requirements",
+      "desktop": "Desktop OS",
+      "mobile": "Mobile OS",
+      "ram": "RAM",
+      "disk": "Disk Space",
+      "arch": "Architecture",
+      "recommended": "recommended"
+    }
   },
   "home": {
     "badge": "End-to-End Encrypted",

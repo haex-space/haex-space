@@ -10,32 +10,12 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <!-- Navigation -->
-    <header class="border-b border-border sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
-      <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
-        <NuxtLink to="/" class="text-xl font-bold">
-          haex.space
-        </NuxtLink>
-        <div class="flex items-center gap-4">
-          <NuxtLink to="/marketplace" class="text-muted-foreground hover:text-foreground transition-colors">
-            {{ t('common.marketplace') }}
-          </NuxtLink>
-          <NuxtLink to="/auth/login">
-            <ShadcnButton variant="outline">{{ t('common.login') }}</ShadcnButton>
-          </NuxtLink>
-          <NuxtLink to="/auth/register">
-            <ShadcnButton>{{ t('common.register') }}</ShadcnButton>
-          </NuxtLink>
-        </div>
-      </nav>
-    </header>
-
+  <div>
     <!-- Hero Section -->
     <section class="container mx-auto px-4 py-24 text-center">
-      <ShadcnBadge variant="secondary" class="mb-4">
+      <Badge variant="secondary" class="mb-4">
         {{ t('home.badge') }}
-      </ShadcnBadge>
+      </Badge>
       <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
         {{ t('home.title') }}
       </h1>
@@ -44,16 +24,16 @@ useSeoMeta({
       </p>
       <div class="flex gap-4 justify-center">
         <NuxtLink to="/auth/register">
-          <ShadcnButton size="lg" class="gap-2">
+          <Button size="lg" class="gap-2">
             <Rocket class="w-5 h-5" />
             {{ t('home.cta.createAccount') }}
-          </ShadcnButton>
+          </Button>
         </NuxtLink>
         <NuxtLink to="/marketplace">
-          <ShadcnButton size="lg" variant="outline" class="gap-2">
+          <Button size="lg" variant="outline" class="gap-2">
             <Store class="w-5 h-5" />
             {{ t('home.cta.browseExtensions') }}
-          </ShadcnButton>
+          </Button>
         </NuxtLink>
       </div>
     </section>
@@ -61,41 +41,41 @@ useSeoMeta({
     <!-- Features Section -->
     <section class="container mx-auto px-4 py-16">
       <div class="grid md:grid-cols-3 gap-8">
-        <ShadcnCard>
-          <ShadcnCardHeader>
+        <Card>
+          <CardHeader>
             <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
               <Shield class="w-6 h-6 text-primary" />
             </div>
-            <ShadcnCardTitle>{{ t('home.features.encryption.title') }}</ShadcnCardTitle>
-            <ShadcnCardDescription>
+            <CardTitle>{{ t('home.features.encryption.title') }}</CardTitle>
+            <CardDescription>
               {{ t('home.features.encryption.description') }}
-            </ShadcnCardDescription>
-          </ShadcnCardHeader>
-        </ShadcnCard>
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
-        <ShadcnCard>
-          <ShadcnCardHeader>
+        <Card>
+          <CardHeader>
             <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
               <RefreshCw class="w-6 h-6 text-primary" />
             </div>
-            <ShadcnCardTitle>{{ t('home.features.sync.title') }}</ShadcnCardTitle>
-            <ShadcnCardDescription>
+            <CardTitle>{{ t('home.features.sync.title') }}</CardTitle>
+            <CardDescription>
               {{ t('home.features.sync.description') }}
-            </ShadcnCardDescription>
-          </ShadcnCardHeader>
-        </ShadcnCard>
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
-        <ShadcnCard>
-          <ShadcnCardHeader>
+        <Card>
+          <CardHeader>
             <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
               <Puzzle class="w-6 h-6 text-primary" />
             </div>
-            <ShadcnCardTitle>{{ t('home.features.extensions.title') }}</ShadcnCardTitle>
-            <ShadcnCardDescription>
+            <CardTitle>{{ t('home.features.extensions.title') }}</CardTitle>
+            <CardDescription>
               {{ t('home.features.extensions.description') }}
-            </ShadcnCardDescription>
-          </ShadcnCardHeader>
-        </ShadcnCard>
+            </CardDescription>
+          </CardHeader>
+        </Card>
       </div>
     </section>
 
@@ -109,34 +89,12 @@ useSeoMeta({
           {{ t('home.marketplaceCta.description') }}
         </p>
         <NuxtLink to="/marketplace">
-          <ShadcnButton size="lg" variant="secondary" class="gap-2">
+          <Button size="lg" variant="secondary" class="gap-2">
             <ArrowRight class="w-5 h-5" />
             {{ t('home.marketplaceCta.button') }}
-          </ShadcnButton>
+          </Button>
         </NuxtLink>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-border mt-auto">
-      <div class="container mx-auto px-4 py-8">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p class="text-sm text-muted-foreground">
-            &copy; {{ new Date().getFullYear() }} haex.space. {{ t('common.allRightsReserved') }}
-          </p>
-          <div class="flex gap-6 text-sm text-muted-foreground">
-            <NuxtLink to="/privacy" class="hover:text-foreground transition-colors">
-              {{ t('common.privacy') }}
-            </NuxtLink>
-            <NuxtLink to="/terms" class="hover:text-foreground transition-colors">
-              {{ t('common.terms') }}
-            </NuxtLink>
-            <a href="https://github.com/haex-space" target="_blank" class="hover:text-foreground transition-colors">
-              GitHub
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
   </div>
 </template>

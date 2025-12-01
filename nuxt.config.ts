@@ -16,7 +16,12 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxtjs/i18n'],
+  modules: ['@nuxtjs/i18n', 'shadcn-nuxt', '@nuxt/icon'],
+
+  shadcn: {
+    prefix: '',
+    componentDir: './app/components/ui',
+  },
 
   i18n: {
     locales: [

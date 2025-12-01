@@ -45,31 +45,8 @@ const categories = ref([
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
-    <!-- Navigation -->
-    <header class="border-b border-border sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
-      <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-8">
-          <NuxtLink to="/" class="text-xl font-bold">
-            haex.space
-          </NuxtLink>
-          <NuxtLink to="/marketplace" class="text-foreground font-medium">
-            {{ t('common.marketplace') }}
-          </NuxtLink>
-        </div>
-        <div class="flex items-center gap-4">
-          <NuxtLink to="/auth/login">
-            <ShadcnButton variant="outline">{{ t('common.login') }}</ShadcnButton>
-          </NuxtLink>
-          <NuxtLink to="/auth/register">
-            <ShadcnButton>{{ t('common.register') }}</ShadcnButton>
-          </NuxtLink>
-        </div>
-      </nav>
-    </header>
-
-    <main class="flex-1">
-      <!-- Hero -->
+  <div>
+    <!-- Hero -->
       <section class="container mx-auto px-4 py-12">
         <h1 class="text-3xl md:text-4xl font-bold mb-4">
           {{ t('marketplace.title') }}
@@ -89,19 +66,19 @@ const categories = ref([
             :to="`/marketplace/category/${category.slug}`"
             class="group"
           >
-            <ShadcnCard class="transition-colors hover:border-primary/50">
-              <ShadcnCardHeader class="pb-3">
+            <Card class="transition-colors hover:border-primary/50">
+              <CardHeader class="pb-3">
                 <div class="flex items-center justify-between">
-                  <ShadcnCardTitle class="text-base">{{ category.name }}</ShadcnCardTitle>
-                  <ShadcnBadge variant="secondary">{{ category.count }}</ShadcnBadge>
+                  <CardTitle class="text-base">{{ category.name }}</CardTitle>
+                  <Badge variant="secondary">{{ category.count }}</Badge>
                 </div>
-              </ShadcnCardHeader>
-            </ShadcnCard>
+              </CardHeader>
+            </Card>
           </NuxtLink>
         </div>
       </section>
 
-      <ShadcnSeparator class="container mx-auto" />
+      <Separator class="container mx-auto" />
 
       <!-- Featured Extensions -->
       <section class="container mx-auto px-4 py-12">
@@ -118,19 +95,19 @@ const categories = ref([
             :to="`/marketplace/extension/${ext.slug}`"
             class="group"
           >
-            <ShadcnCard class="h-full transition-all hover:border-primary/50 hover:shadow-lg">
-              <ShadcnCardHeader>
+            <Card class="h-full transition-all hover:border-primary/50 hover:shadow-lg">
+              <CardHeader>
                 <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3">
                   <Puzzle class="w-6 h-6 text-primary" />
                 </div>
-                <ShadcnCardTitle class="group-hover:text-primary transition-colors">
+                <CardTitle class="group-hover:text-primary transition-colors">
                   {{ ext.name }}
-                </ShadcnCardTitle>
-                <ShadcnCardDescription>
+                </CardTitle>
+                <CardDescription>
                   {{ ext.shortDescription }}
-                </ShadcnCardDescription>
-              </ShadcnCardHeader>
-              <ShadcnCardContent>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
                 <div class="flex items-center justify-between text-sm text-muted-foreground">
                   <span>{{ t('marketplace.by') }} {{ ext.publisher }}</span>
                   <div class="flex items-center gap-3">
@@ -144,8 +121,8 @@ const categories = ref([
                     </span>
                   </div>
                 </div>
-              </ShadcnCardContent>
-            </ShadcnCard>
+              </CardContent>
+            </Card>
           </NuxtLink>
         </div>
       </section>
@@ -159,34 +136,11 @@ const categories = ref([
           <p class="text-muted-foreground max-w-xl mx-auto mb-8">
             {{ t('marketplace.publishCta.description') }}
           </p>
-          <ShadcnButton size="lg" variant="secondary" class="gap-2">
+          <Button size="lg" variant="secondary" class="gap-2">
             <Code class="w-5 h-5" />
             {{ t('marketplace.publishCta.button') }}
-          </ShadcnButton>
+          </Button>
         </div>
       </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-border">
-      <div class="container mx-auto px-4 py-8">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p class="text-sm text-muted-foreground">
-            &copy; {{ new Date().getFullYear() }} haex.space. {{ t('common.allRightsReserved') }}
-          </p>
-          <div class="flex gap-6 text-sm text-muted-foreground">
-            <NuxtLink to="/privacy" class="hover:text-foreground transition-colors">
-              {{ t('common.privacy') }}
-            </NuxtLink>
-            <NuxtLink to="/terms" class="hover:text-foreground transition-colors">
-              {{ t('common.terms') }}
-            </NuxtLink>
-            <a href="https://github.com/haex-space" target="_blank" class="hover:text-foreground transition-colors">
-              GitHub
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
   </div>
 </template>

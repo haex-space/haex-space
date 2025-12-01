@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { Loader2 } from 'lucide-vue-next'
 
+definePageMeta({
+  layout: 'auth',
+})
+
 const { t } = useI18n()
 
 useSeoMeta({
@@ -36,30 +40,18 @@ async function handleRegister() {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
-    <!-- Simple Header -->
-    <header class="border-b border-border">
-      <nav class="container mx-auto px-4 h-16 flex items-center">
-        <NuxtLink to="/" class="text-xl font-bold">
-          haex.space
-        </NuxtLink>
-      </nav>
-    </header>
-
-    <!-- Registration Form -->
-    <main class="flex-1 flex items-center justify-center p-4">
-      <ShadcnCard class="w-full max-w-md">
-        <ShadcnCardHeader class="text-center">
-          <ShadcnCardTitle class="text-2xl">{{ t('auth.register.title') }}</ShadcnCardTitle>
-          <ShadcnCardDescription>
+  <Card class="w-full max-w-md">
+        <CardHeader class="text-center">
+          <CardTitle class="text-2xl">{{ t('auth.register.title') }}</CardTitle>
+          <CardDescription>
             {{ t('auth.register.subtitle') }}
-          </ShadcnCardDescription>
-        </ShadcnCardHeader>
-        <ShadcnCardContent>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <form @submit.prevent="handleRegister" class="space-y-4">
             <div class="space-y-2">
-              <ShadcnLabel for="email">{{ t('auth.register.email') }}</ShadcnLabel>
-              <ShadcnInput
+              <Label for="email">{{ t('auth.register.email') }}</Label>
+              <Input
                 id="email"
                 v-model="email"
                 type="email"
@@ -69,20 +61,22 @@ async function handleRegister() {
               />
             </div>
             <div class="space-y-2">
-              <ShadcnLabel for="password">{{ t('auth.register.password') }}</ShadcnLabel>
-              <UiInputPassword
+              <Label for="password">{{ t('auth.register.password') }}</Label>
+              <Input
                 id="password"
                 v-model="password"
+                type="password"
                 :placeholder="t('auth.register.passwordPlaceholder')"
                 required
                 :disabled="isLoading"
               />
             </div>
             <div class="space-y-2">
-              <ShadcnLabel for="confirmPassword">{{ t('auth.register.confirmPassword') }}</ShadcnLabel>
-              <UiInputPassword
+              <Label for="confirmPassword">{{ t('auth.register.confirmPassword') }}</Label>
+              <Input
                 id="confirmPassword"
                 v-model="confirmPassword"
+                type="password"
                 :placeholder="t('auth.register.confirmPasswordPlaceholder')"
                 required
                 :disabled="isLoading"
@@ -93,10 +87,10 @@ async function handleRegister() {
               {{ error }}
             </p>
 
-            <ShadcnButton type="submit" class="w-full" :disabled="isLoading">
+            <Button type="submit" class="w-full" :disabled="isLoading">
               <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" />
               {{ t('auth.register.submit') }}
-            </ShadcnButton>
+            </Button>
           </form>
 
           <div class="mt-6 text-center text-sm text-muted-foreground">
@@ -105,8 +99,6 @@ async function handleRegister() {
               {{ t('auth.register.signIn') }}
             </NuxtLink>
           </div>
-        </ShadcnCardContent>
-      </ShadcnCard>
-    </main>
-  </div>
+        </CardContent>
+  </Card>
 </template>
