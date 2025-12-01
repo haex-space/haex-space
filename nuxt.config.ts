@@ -6,8 +6,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/tailwind.css'],
 
-  extends: ['../../packages/haex-ui'],
-
   vite: {
     plugins: [tailwindcss()],
     resolve: {
