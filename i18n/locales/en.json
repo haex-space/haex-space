@@ -1,0 +1,84 @@
+{
+  "common": {
+    "login": "Login",
+    "register": "Get Started",
+    "marketplace": "Marketplace",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "allRightsReserved": "All rights reserved.",
+    "viewAll": "View all"
+  },
+  "home": {
+    "badge": "End-to-End Encrypted",
+    "title": "Your Data, Your Way",
+    "subtitle": "Secure synchronization across all your devices with zero-knowledge encryption. Extend your workflow with powerful extensions from the marketplace.",
+    "cta": {
+      "createAccount": "Create Account",
+      "browseExtensions": "Browse Extensions"
+    },
+    "features": {
+      "encryption": {
+        "title": "Zero-Knowledge Encryption",
+        "description": "Your data is encrypted on your device before it ever leaves. We can't read it, and neither can anyone else."
+      },
+      "sync": {
+        "title": "Seamless Sync",
+        "description": "Real-time synchronization across all your devices. Changes sync instantly, no matter where you are."
+      },
+      "extensions": {
+        "title": "Extension Marketplace",
+        "description": "Discover and install extensions to customize your experience. Or build and publish your own."
+      }
+    },
+    "marketplaceCta": {
+      "title": "Explore the Marketplace",
+      "description": "Browse our growing collection of extensions built by the community. Find tools that enhance your productivity and workflow.",
+      "button": "View All Extensions"
+    }
+  },
+  "marketplace": {
+    "title": "Extension Marketplace",
+    "subtitle": "Discover extensions built by the community to enhance your haex.space experience.",
+    "categories": "Categories",
+    "featured": "Featured Extensions",
+    "by": "by",
+    "publishCta": {
+      "title": "Build Your Own Extension",
+      "description": "Have an idea? Create and publish your own extensions to share with the community.",
+      "button": "Developer Documentation"
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Enter your email below to create your account",
+      "email": "Email",
+      "emailPlaceholder": "mail{'@'}example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "errors": {
+        "passwordMismatch": "Passwords do not match",
+        "failed": "Registration failed"
+      }
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Enter your email to sign in to your account",
+      "email": "Email",
+      "emailPlaceholder": "mail{'@'}example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "errors": {
+        "failed": "Login failed"
+      }
+    }
+  }
+}

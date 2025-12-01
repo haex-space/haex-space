@@ -1,0 +1,84 @@
+{
+  "common": {
+    "login": "Anmelden",
+    "register": "Jetzt starten",
+    "marketplace": "Marketplace",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "viewAll": "Alle anzeigen"
+  },
+  "home": {
+    "badge": "Ende-zu-Ende verschlüsselt",
+    "title": "Deine Daten, Dein Weg",
+    "subtitle": "Sichere Synchronisation über all deine Geräte mit Zero-Knowledge-Verschlüsselung. Erweitere deinen Workflow mit leistungsstarken Extensions aus dem Marketplace.",
+    "cta": {
+      "createAccount": "Konto erstellen",
+      "browseExtensions": "Extensions entdecken"
+    },
+    "features": {
+      "encryption": {
+        "title": "Zero-Knowledge-Verschlüsselung",
+        "description": "Deine Daten werden auf deinem Gerät verschlüsselt, bevor sie es verlassen. Wir können sie nicht lesen, und niemand sonst auch."
+      },
+      "sync": {
+        "title": "Nahtlose Synchronisation",
+        "description": "Echtzeit-Synchronisation über all deine Geräte. Änderungen werden sofort synchronisiert, egal wo du bist."
+      },
+      "extensions": {
+        "title": "Extension Marketplace",
+        "description": "Entdecke und installiere Extensions, um dein Erlebnis anzupassen. Oder erstelle und veröffentliche deine eigenen."
+      }
+    },
+    "marketplaceCta": {
+      "title": "Entdecke den Marketplace",
+      "description": "Durchstöbere unsere wachsende Sammlung von Extensions, die von der Community erstellt wurden. Finde Tools, die deine Produktivität steigern.",
+      "button": "Alle Extensions anzeigen"
+    }
+  },
+  "marketplace": {
+    "title": "Extension Marketplace",
+    "subtitle": "Entdecke Extensions, die von der Community erstellt wurden, um dein haex.space-Erlebnis zu verbessern.",
+    "categories": "Kategorien",
+    "featured": "Empfohlene Extensions",
+    "by": "von",
+    "publishCta": {
+      "title": "Erstelle deine eigene Extension",
+      "description": "Hast du eine Idee? Erstelle und veröffentliche deine eigenen Extensions und teile sie mit der Community.",
+      "button": "Entwickler-Dokumentation"
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Konto erstellen",
+      "subtitle": "Gib deine E-Mail-Adresse ein, um dein Konto zu erstellen",
+      "email": "E-Mail",
+      "emailPlaceholder": "mail{'@'}example.com",
+      "password": "Passwort",
+      "passwordPlaceholder": "Passwort erstellen",
+      "confirmPassword": "Passwort bestätigen",
+      "confirmPasswordPlaceholder": "Passwort bestätigen",
+      "submit": "Konto erstellen",
+      "hasAccount": "Du hast bereits ein Konto?",
+      "signIn": "Anmelden",
+      "errors": {
+        "passwordMismatch": "Passwörter stimmen nicht überein",
+        "failed": "Registrierung fehlgeschlagen"
+      }
+    },
+    "login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Gib deine E-Mail-Adresse ein, um dich anzumelden",
+      "email": "E-Mail",
+      "emailPlaceholder": "mail{'@'}example.com",
+      "password": "Passwort",
+      "passwordPlaceholder": "Passwort eingeben",
+      "submit": "Anmelden",
+      "noAccount": "Noch kein Konto?",
+      "signUp": "Registrieren",
+      "errors": {
+        "failed": "Anmeldung fehlgeschlagen"
+      }
+    }
+  }
+}
