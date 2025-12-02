@@ -104,7 +104,35 @@
       "signIn": "Anmelden",
       "errors": {
         "passwordMismatch": "Passwörter stimmen nicht überein",
+        "passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
         "failed": "Registrierung fehlgeschlagen"
+      }
+    },
+    "checkEmail": {
+      "title": "E-Mail überprüfen",
+      "subtitle": "Wir haben dir einen Bestätigungslink gesendet",
+      "description": "Klicke auf den Link in der E-Mail, um dein Konto zu verifizieren. Falls du sie nicht siehst, prüfe deinen Spam-Ordner.",
+      "backToLogin": "Zurück zur Anmeldung"
+    },
+    "confirm": {
+      "loading": {
+        "title": "Verifizierung...",
+        "subtitle": "Bitte warte, während wir deine E-Mail verifizieren"
+      },
+      "success": {
+        "title": "E-Mail verifiziert!",
+        "subtitle": "Dein Konto wurde erfolgreich verifiziert",
+        "redirecting": "Du wirst zum Dashboard weitergeleitet..."
+      },
+      "error": {
+        "title": "Verifizierung fehlgeschlagen",
+        "description": "Der Bestätigungslink ist möglicherweise abgelaufen oder ungültig.",
+        "tryAgain": "Erneut versuchen",
+        "login": "Anmelden"
+      },
+      "errors": {
+        "noSession": "Keine aktive Sitzung gefunden",
+        "failed": "Verifizierung fehlgeschlagen"
       }
     },
     "login": {

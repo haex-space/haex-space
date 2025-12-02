@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Loader2 } from 'lucide-vue-next'
+import { Loader2, Eye, EyeOff } from 'lucide-vue-next'
 
 definePageMeta({
   layout: 'auth',
@@ -17,6 +17,10 @@ const password = ref('')
 const confirmPassword = ref('')
 const isLoading = ref(false)
 const error = ref('')
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
+
+const supabase = useSupabaseClient()
 
 async function handleRegister() {
   if (password.value !== confirmPassword.value) {
@@ -24,13 +28,28 @@ async function handleRegister() {
     return
   }
 
+  if (password.value.length < 8) {
+    error.value = t('auth.register.errors.passwordTooShort')
+    return
+  }
+
   isLoading.value = true
   error.value = ''
 
   try {
-    // TODO: Implement Supabase Auth
-    console.log('Register:', email.value, password.value)
-    await navigateTo('/')
+    const { error: signUpError } = await supabase.auth.signUp({
+      email: email.value,
+      password: password.value,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/confirm`,
+      },
+    })
+
+    if (signUpError) {
+      throw signUpError
+    }
+
+    await navigateTo('/auth/check-email')
   } catch (e: any) {
     error.value = e.message || t('auth.register.errors.failed')
   } finally {
@@ -62,25 +81,47 @@ async function handleRegister() {
             </div>
             <div class="space-y-2">
               <Label for="password">{{ t('auth.register.password') }}</Label>
-              <Input
-                id="password"
-                v-model="password"
-                type="password"
-                :placeholder="t('auth.register.passwordPlaceholder')"
-                required
-                :disabled="isLoading"
-              />
+              <div class="relative">
+                <Input
+                  id="password"
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  :placeholder="t('auth.register.passwordPlaceholder')"
+                  required
+                  :disabled="isLoading"
+                  class="pr-10"
+                />
+                <button
+                  type="button"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  @click="showPassword = !showPassword"
+                >
+                  <Eye v-if="!showPassword" class="w-4 h-4" />
+                  <EyeOff v-else class="w-4 h-4" />
+                </button>
+              </div>
             </div>
             <div class="space-y-2">
               <Label for="confirmPassword">{{ t('auth.register.confirmPassword') }}</Label>
-              <Input
-                id="confirmPassword"
-                v-model="confirmPassword"
-                type="password"
-                :placeholder="t('auth.register.confirmPasswordPlaceholder')"
-                required
-                :disabled="isLoading"
-              />
+              <div class="relative">
+                <Input
+                  id="confirmPassword"
+                  v-model="confirmPassword"
+                  :type="showConfirmPassword ? 'text' : 'password'"
+                  :placeholder="t('auth.register.confirmPasswordPlaceholder')"
+                  required
+                  :disabled="isLoading"
+                  class="pr-10"
+                />
+                <button
+                  type="button"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  @click="showConfirmPassword = !showConfirmPassword"
+                >
+                  <Eye v-if="!showConfirmPassword" class="w-4 h-4" />
+                  <EyeOff v-else class="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             <p v-if="error" class="text-sm text-destructive">

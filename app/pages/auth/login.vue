@@ -17,14 +17,23 @@ const password = ref('')
 const isLoading = ref(false)
 const error = ref('')
 
+const supabase = useSupabaseClient()
+
 async function handleLogin() {
   isLoading.value = true
   error.value = ''
 
   try {
-    // TODO: Implement Supabase Auth
-    console.log('Login:', email.value, password.value)
-    await navigateTo('/')
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    })
+
+    if (signInError) {
+      throw signInError
+    }
+
+    await navigateTo('/dashboard')
   } catch (e: any) {
     error.value = e.message || t('auth.login.errors.failed')
   } finally {

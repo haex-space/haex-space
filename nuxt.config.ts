@@ -16,7 +16,15 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxtjs/i18n', 'shadcn-nuxt', '@nuxt/icon', '@nuxtjs/mdc', '@nuxtjs/color-mode'],
+  modules: ['@nuxtjs/i18n', 'shadcn-nuxt', '@nuxt/icon', '@nuxtjs/mdc', '@nuxtjs/color-mode', '@nuxtjs/supabase'],
+
+  supabase: {
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/auth/confirm',
+      exclude: ['/', '/download', '/docs', '/docs/**', '/marketplace', '/auth/register', '/auth/check-email'],
+    },
+  },
 
   colorMode: {
     classSuffix: '',

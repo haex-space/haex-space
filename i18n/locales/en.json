@@ -104,7 +104,35 @@
       "signIn": "Sign in",
       "errors": {
         "passwordMismatch": "Passwords do not match",
+        "passwordTooShort": "Password must be at least 8 characters",
         "failed": "Registration failed"
+      }
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "subtitle": "We've sent you a verification link",
+      "description": "Click the link in the email we sent to verify your account. If you don't see it, check your spam folder.",
+      "backToLogin": "Back to login"
+    },
+    "confirm": {
+      "loading": {
+        "title": "Verifying...",
+        "subtitle": "Please wait while we verify your email"
+      },
+      "success": {
+        "title": "Email verified!",
+        "subtitle": "Your account has been verified successfully",
+        "redirecting": "Redirecting you to the dashboard..."
+      },
+      "error": {
+        "title": "Verification failed",
+        "description": "The verification link may have expired or is invalid.",
+        "tryAgain": "Try again",
+        "login": "Sign in"
+      },
+      "errors": {
+        "noSession": "No active session found",
+        "failed": "Verification failed"
       }
     },
     "login": {
