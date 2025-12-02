@@ -14,10 +14,18 @@ const activeSection = ref('')
 // Flag to prevent double-scrolling when we set the hash ourselves
 const isScrolling = ref(false)
 
-// Close sidebars when route changes
+// Reference to main content for scroll reset
+const mainContent = ref<HTMLElement | null>(null)
+
+// Close sidebars and reset scroll when route changes
 watch(() => route.path, () => {
   leftSidebarOpen.value = false
   rightSidebarOpen.value = false
+  activeSection.value = ''
+  // Reset scroll position to top
+  if (mainContent.value) {
+    mainContent.value.scrollTop = 0
+  }
 })
 
 // Scroll to hash on initial load and hash changes
@@ -246,7 +254,7 @@ function scrollToSection(id: string) {
       </aside>
 
       <!-- Main Content (scrollable) -->
-      <main class="flex-1 min-w-0 overflow-y-auto">
+      <main ref="mainContent" class="flex-1 min-w-0 overflow-y-auto">
         <slot />
       </main>
 
