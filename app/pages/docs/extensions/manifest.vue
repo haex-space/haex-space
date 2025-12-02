@@ -41,10 +41,7 @@ const code = {
   "signature": "",
 
   "permissions": {
-    "database": [
-      { "target": "passwords", "operation": "read_write" },
-      { "target": "categories", "operation": "read_write" }
-    ],
+    "database": [],
     "filesystem": [
       { "target": "**/*.json", "operation": "read_write" }
     ],
@@ -57,9 +54,8 @@ const code = {
 
   permissionsDatabase: `"permissions": {
   "database": [
-    { "target": "users", "operation": "read" },
-    { "target": "settings", "operation": "read_write" },
-    { "target": "*", "operation": "read" }
+    { "target": "MCowBQYDK2Vw...__other-extension__users", "operation": "read" },
+    { "target": "MCowBQYDK2Vw...__other-extension__settings", "operation": "read_write" }
   ]
 }`,
 

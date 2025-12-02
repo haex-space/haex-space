@@ -645,8 +645,9 @@
         },
         "database": {
           "title": "Database Permissions",
-          "intro": "Database permissions control which tables your extension can read from or write to:",
-          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions."
+          "intro": "Database permissions control access to tables from other extensions. The target must be the full table name in the format {publicKey}__{extensionName}__{tableName}:",
+          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions.",
+          "accessTitle": "Accessing Dependency Tables"
         },
         "filesystem": {
           "title": "Filesystem Permissions",

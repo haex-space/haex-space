@@ -3,12 +3,12 @@
   "permissions": {
     "database": [
       {
-        "target": "passwords",
-        "operation": "read_write"
+        "target": "MCowBQYDK2Vw...__password-manager__credentials",
+        "operation": "read"
       },
       {
-        "target": "categories",
-        "operation": "read"
+        "target": "MCowBQYDK2Vw...__password-manager__categories",
+        "operation": "read_write"
       }
     ],
     "filesystem": [

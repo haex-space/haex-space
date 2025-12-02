@@ -24,8 +24,8 @@ const code = {
   manifestPermissions: `{
   "permissions": {
     "database": [
-      { "target": "users", "operation": "read_write" },
-      { "target": "logs", "operation": "read" }
+      { "target": "MCowBQYDK2Vw...__password-manager__credentials", "operation": "read" },
+      { "target": "MCowBQYDK2Vw...__password-manager__categories", "operation": "read_write" }
     ],
     "filesystem": [
       { "target": "exports/**", "operation": "read_write" }
@@ -37,14 +37,29 @@ const code = {
   }
 }`,
 
-  databasePermissions: `// Read-only access to a specific table
-{ "target": "users", "operation": "read" }
+  databasePermissions: `// Access another extension's table
+// Format: {publicKey}__{extensionName}__{tableName}
+{ "target": "MCowBQYDK2Vw...__password-manager__credentials", "operation": "read" }
 
-// Full access to a specific table
-{ "target": "settings", "operation": "read_write" }
+// Full access to another extension's table
+{ "target": "MCowBQYDK2Vw...__password-manager__categories", "operation": "read_write" }
 
-// Read access to all tables (use sparingly)
-{ "target": "*", "operation": "read" }`,
+// Access all tables of a specific extension (use sparingly)
+{ "target": "MCowBQYDK2Vw...__password-manager__*", "operation": "read" }`,
+
+  databaseAccess: `import { useHaexVault } from '@haex-space/vault-sdk/vue'
+
+const { client } = useHaexVault({ manifest })
+
+// Access another extension's table using getDependencyTableName
+const depTable = client.getDependencyTableName(
+  'MCowBQYDK2VwAyEA7x8Z9Kq3mN2pL5tR8vW4yB6cE1fH3gJ9kM7nP0qS2uV',
+  'password-manager',
+  'credentials'
+)
+
+// Query the dependency table (requires permission in manifest)
+const credentials = await client.query(\`SELECT * FROM \${depTable}\`)`,
 
   filesystemPermissions: `// Read text files anywhere
 { "target": "**/*.txt", "operation": "read" }
@@ -246,7 +261,10 @@ const bestPractices = computed(() => [
           {{ t('docs.permissions.sections.database.ownTablesNote') }}
         </DocsAlert>
 
-        <DocsCodeBlock :code="code.databasePermissions" language="javascript" />
+        <DocsCodeBlock :code="code.databasePermissions" language="javascript" class="mb-6" />
+
+        <h4 class="font-medium mb-3">{{ t('docs.permissions.sections.database.accessTitle') }}</h4>
+        <DocsCodeBlock :code="code.databaseAccess" language="typescript" />
       </div>
 
       <!-- Filesystem Permissions -->
