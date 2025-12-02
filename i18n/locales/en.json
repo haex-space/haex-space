@@ -645,7 +645,8 @@
         },
         "database": {
           "title": "Database Permissions",
-          "intro": "Database permissions control which tables your extension can read from or write to:"
+          "intro": "Database permissions control which tables your extension can read from or write to:",
+          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions."
         },
         "filesystem": {
           "title": "Filesystem Permissions",
@@ -725,7 +726,8 @@
       "sections": {
         "overview": {
           "title": "Overview",
-          "intro": "Extensions have access to a SQLite database with automatic table namespacing. Your tables are prefixed with your public key to prevent conflicts with other extensions."
+          "intro": "Extensions have access to a SQLite database with automatic table namespacing. Your tables are prefixed with your public key to prevent conflicts with other extensions.",
+          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions."
         },
         "tableNaming": {
           "title": "Table Naming",

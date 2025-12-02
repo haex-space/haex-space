@@ -245,6 +245,10 @@ await db
     <DocsSection id="overview" :title="t('docs.database.sections.overview.title')" :icon="Database">
       <p class="text-muted-foreground mb-6">{{ t('docs.database.sections.overview.intro') }}</p>
 
+      <DocsAlert type="info" class="mb-6">
+        {{ t('docs.database.sections.overview.ownTablesNote') }}
+      </DocsAlert>
+
       <DocsFeatureGrid :features="[
         {
           icon: Table,

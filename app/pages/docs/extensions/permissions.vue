@@ -241,6 +241,11 @@ const bestPractices = computed(() => [
           {{ t('docs.permissions.sections.database.title') }}
         </h3>
         <p class="text-muted-foreground mb-4">{{ t('docs.permissions.sections.database.intro') }}</p>
+
+        <DocsAlert type="info" class="mb-4">
+          {{ t('docs.permissions.sections.database.ownTablesNote') }}
+        </DocsAlert>
+
         <DocsCodeBlock :code="code.databasePermissions" language="javascript" />
       </div>
 
