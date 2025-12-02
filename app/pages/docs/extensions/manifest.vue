@@ -42,37 +42,38 @@ const code = {
 
   "permissions": {
     "database": [
-      { "table": "passwords", "operations": ["read", "write"] },
-      { "table": "categories", "operations": ["read", "write"] }
+      { "target": "passwords", "operation": "read_write" },
+      { "target": "categories", "operation": "read_write" }
     ],
     "filesystem": [
-      { "path": "**/*.json", "operations": ["read", "write"] }
+      { "target": "**/*.json", "operation": "read_write" }
     ],
     "http": [
-      "https://api.haveibeenpwned.com/**"
-    ]
+      { "target": "https://api.haveibeenpwned.com/**" }
+    ],
+    "shell": null
   }
 }`,
 
   permissionsDatabase: `"permissions": {
   "database": [
-    { "table": "users", "operations": ["read"] },
-    { "table": "settings", "operations": ["read", "write"] },
-    { "table": "*", "operations": ["read"] }
+    { "target": "users", "operation": "read" },
+    { "target": "settings", "operation": "read_write" },
+    { "target": "*", "operation": "read" }
   ]
 }`,
 
   permissionsFilesystem: `"permissions": {
   "filesystem": [
-    { "path": "**/*.txt", "operations": ["read"] },
-    { "path": "exports/**", "operations": ["read", "write"] }
+    { "target": "**/*.txt", "operation": "read" },
+    { "target": "exports/**", "operation": "read_write" }
   ]
 }`,
 
   permissionsHttp: `"permissions": {
   "http": [
-    "https://api.example.com/**",
-    "https://*.github.com/api/*"
+    { "target": "https://api.example.com/**" },
+    { "target": "https://*.github.com/api/*" }
   ]
 }`
 }
