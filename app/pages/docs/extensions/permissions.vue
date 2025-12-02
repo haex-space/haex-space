@@ -24,44 +24,45 @@ const code = {
   manifestPermissions: `{
   "permissions": {
     "database": [
-      { "table": "users", "operations": ["read", "write"] },
-      { "table": "logs", "operations": ["read"] }
+      { "target": "users", "operation": "read_write" },
+      { "target": "logs", "operation": "read" }
     ],
     "filesystem": [
-      { "path": "exports/**", "operations": ["read", "write"] }
+      { "target": "exports/**", "operation": "read_write" }
     ],
     "http": [
-      "https://api.example.com/**"
-    ]
+      { "target": "https://api.example.com/**" }
+    ],
+    "shell": null
   }
 }`,
 
   databasePermissions: `// Read-only access to a specific table
-{ "table": "users", "operations": ["read"] }
+{ "target": "users", "operation": "read" }
 
 // Full access to a specific table
-{ "table": "settings", "operations": ["read", "write"] }
+{ "target": "settings", "operation": "read_write" }
 
 // Read access to all tables (use sparingly)
-{ "table": "*", "operations": ["read"] }`,
+{ "target": "*", "operation": "read" }`,
 
   filesystemPermissions: `// Read text files anywhere
-{ "path": "**/*.txt", "operations": ["read"] }
+{ "target": "**/*.txt", "operation": "read" }
 
 // Read and write in a specific directory
-{ "path": "exports/**", "operations": ["read", "write"] }
+{ "target": "exports/**", "operation": "read_write" }
 
 // Full access to JSON files in documents
-{ "path": "documents/*.json", "operations": ["read", "write"] }`,
+{ "target": "documents/*.json", "operation": "read_write" }`,
 
   httpPermissions: `// All endpoints on a specific API
-"https://api.example.com/**"
+{ "target": "https://api.example.com/**" }
 
 // Specific path pattern
-"https://api.github.com/users/*/repos"
+{ "target": "https://api.github.com/users/*/repos" }
 
 // Multiple subdomains
-"https://*.example.com/api/*"`,
+{ "target": "https://*.example.com/api/*" }`,
 
   checkPermission: `import { useHaexClient } from '@haex-space/vault-sdk/vue'
 
@@ -124,19 +125,19 @@ const permissionTypes = computed(() => [
     icon: Database,
     name: t('docs.permissions.types.database.name'),
     description: t('docs.permissions.types.database.description'),
-    operations: ['read', 'write']
+    operations: ['read', 'read_write']
   },
   {
     icon: FolderOpen,
     name: t('docs.permissions.types.filesystem.name'),
     description: t('docs.permissions.types.filesystem.description'),
-    operations: ['read', 'write']
+    operations: ['read', 'read_write']
   },
   {
     icon: Globe,
     name: t('docs.permissions.types.http.name'),
     description: t('docs.permissions.types.http.description'),
-    operations: ['fetch', 'open']
+    operations: ['(target only)']
   },
   {
     icon: Terminal,

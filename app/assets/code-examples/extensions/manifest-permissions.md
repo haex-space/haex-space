@@ -4,7 +4,7 @@
     "database": [
       {
         "target": "passwords",
-        "operation": "readWrite"
+        "operation": "read_write"
       },
       {
         "target": "categories",
@@ -14,7 +14,7 @@
     "filesystem": [
       {
         "target": "/exports",
-        "operation": "readWrite"
+        "operation": "read_write"
       }
     ],
     "http": [
@@ -24,7 +24,8 @@
       {
         "target": "https://cdn.example.com/*"
       }
-    ]
+    ],
+    "shell": null
   }
 }
 ```
