@@ -727,7 +727,8 @@
         "overview": {
           "title": "Overview",
           "intro": "Extensions have access to a SQLite database with automatic table namespacing. Your tables are prefixed with your public key to prevent conflicts with other extensions.",
-          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions."
+          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions.",
+          "systemTablesNote": "System tables (prefixed with haex_) are protected and cannot be accessed by extensions, even with wildcard patterns."
         },
         "tableNaming": {
           "title": "Table Naming",

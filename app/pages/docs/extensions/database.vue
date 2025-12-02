@@ -249,6 +249,10 @@ await db
         {{ t('docs.database.sections.overview.ownTablesNote') }}
       </DocsAlert>
 
+      <DocsAlert type="warning" class="mb-6">
+        {{ t('docs.database.sections.overview.systemTablesNote') }}
+      </DocsAlert>
+
       <DocsFeatureGrid :features="[
         {
           icon: Table,
