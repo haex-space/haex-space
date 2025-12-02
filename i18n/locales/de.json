@@ -7,7 +7,13 @@
     "privacy": "Datenschutz",
     "terms": "AGB",
     "allRightsReserved": "Alle Rechte vorbehalten.",
-    "viewAll": "Alle anzeigen"
+    "viewAll": "Alle anzeigen",
+    "docs": "Dokumentation",
+    "language": "Sprache",
+    "theme": "Erscheinungsbild",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "themeSystem": "System"
   },
   "download": {
     "badge": "Plattformübergreifend",

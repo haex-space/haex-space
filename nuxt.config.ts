@@ -16,7 +16,21 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxtjs/i18n', 'shadcn-nuxt', '@nuxt/icon'],
+  modules: ['@nuxtjs/i18n', 'shadcn-nuxt', '@nuxt/icon', '@nuxtjs/mdc', '@nuxtjs/color-mode'],
+
+  colorMode: {
+    classSuffix: '',
+  },
+
+  mdc: {
+    highlight: {
+      theme: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+      langs: ['typescript', 'javascript', 'vue', 'vue-html', 'tsx', 'jsx', 'bash', 'json', 'svelte', 'html', 'css'],
+    },
+  },
 
   shadcn: {
     prefix: '',
@@ -29,7 +43,7 @@ export default defineNuxtConfig({
       { code: 'de', name: 'Deutsch', file: 'de.json' },
     ],
     defaultLocale: 'en',
-    langDir: 'locales',
+    langDir: '../i18n/locales',
     strategy: 'prefix_except_default',
   },
 })
