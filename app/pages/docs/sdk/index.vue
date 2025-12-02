@@ -101,10 +101,22 @@ const apiModules = computed(() => [
 
       <Tabs default-value="vue" class="w-full">
         <TabsList class="grid w-full grid-cols-4">
-          <TabsTrigger value="vue">Vue</TabsTrigger>
-          <TabsTrigger value="react">React</TabsTrigger>
-          <TabsTrigger value="svelte">Svelte</TabsTrigger>
-          <TabsTrigger value="vanilla">Vanilla</TabsTrigger>
+          <TabsTrigger value="vue" class="flex items-center gap-2">
+            <Icon name="simple-icons:vuedotjs" class="w-4 h-4" />
+            Vue
+          </TabsTrigger>
+          <TabsTrigger value="react" class="flex items-center gap-2">
+            <Icon name="simple-icons:react" class="w-4 h-4" />
+            React
+          </TabsTrigger>
+          <TabsTrigger value="svelte" class="flex items-center gap-2">
+            <Icon name="simple-icons:svelte" class="w-4 h-4" />
+            Svelte
+          </TabsTrigger>
+          <TabsTrigger value="vanilla" class="flex items-center gap-2">
+            <Icon name="simple-icons:javascript" class="w-4 h-4" />
+            Vanilla
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="vue" class="space-y-4">

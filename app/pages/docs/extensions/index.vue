@@ -162,7 +162,7 @@ const paths = {
         <div class="space-y-6">
           <DocsStep :number="1" :title="t('docs.sections.quickstart.step1.title')">
             <Tabs default-value="npm" class="mb-3">
-              <TabsList>
+              <TabsList class="grid w-full grid-cols-4">
                 <TabsTrigger value="npm" class="flex items-center gap-2">
                   <Icon name="simple-icons:npm" class="w-4 h-4" />
                   npm
@@ -293,10 +293,19 @@ const paths = {
         </p>
 
         <Tabs default-value="vue" class="mb-6">
-          <TabsList>
-            <TabsTrigger value="vue">Vue 3</TabsTrigger>
-            <TabsTrigger value="react">React</TabsTrigger>
-            <TabsTrigger value="vanilla">Vanilla JS</TabsTrigger>
+          <TabsList class="grid w-full grid-cols-3">
+            <TabsTrigger value="vue" class="flex items-center gap-2">
+              <Icon name="simple-icons:vuedotjs" class="w-4 h-4" />
+              Vue 3
+            </TabsTrigger>
+            <TabsTrigger value="react" class="flex items-center gap-2">
+              <Icon name="simple-icons:react" class="w-4 h-4" />
+              React
+            </TabsTrigger>
+            <TabsTrigger value="vanilla" class="flex items-center gap-2">
+              <Icon name="simple-icons:javascript" class="w-4 h-4" />
+              Vanilla JS
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="vue" class="mt-4">
             <DocsCodeBlock :path="paths.vueSetup" />
