@@ -13,6 +13,12 @@ RUN pnpm install --frozen-lockfile || pnpm install
 FROM base AS builder
 WORKDIR /app
 
+# Supabase env vars needed at build time for Nuxt
+ARG SUPABASE_URL
+ARG SUPABASE_KEY
+ENV SUPABASE_URL=${SUPABASE_URL}
+ENV SUPABASE_KEY=${SUPABASE_KEY}
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
