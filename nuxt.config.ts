@@ -32,6 +32,10 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
 
+  icon: {
+    serverBundle: 'auto',
+  },
+
   mdc: {
     highlight: {
       theme: {
