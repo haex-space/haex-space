@@ -65,7 +65,9 @@ const paths = {
   manifestBasic: '/extensions/manifest-basic',
   manifestPermissions: '/extensions/manifest-permissions',
   vueSetup: '/extensions/vue-setup',
+  nuxtSetup: '/extensions/nuxt-setup',
   reactSetup: '/extensions/react-setup',
+  svelteSetup: '/extensions/svelte-setup',
   vanillaSetup: '/extensions/vanilla-setup',
   migrations: '/extensions/migrations',
   databaseQueries: '/extensions/database-queries',
@@ -292,25 +294,39 @@ const paths = {
         </p>
 
         <Tabs default-value="vue" class="mb-6">
-          <TabsList class="grid w-full grid-cols-3">
-            <TabsTrigger value="vue" class="flex items-center gap-2">
+          <TabsList class="flex w-full">
+            <TabsTrigger value="vue" class="flex-1 flex items-center justify-center gap-2">
               <Icon name="simple-icons:vuedotjs" class="w-4 h-4" />
-              Vue 3
+              Vue
             </TabsTrigger>
-            <TabsTrigger value="react" class="flex items-center gap-2">
+            <TabsTrigger value="nuxt" class="flex-1 flex items-center justify-center gap-2">
+              <Icon name="simple-icons:nuxtdotjs" class="w-4 h-4" />
+              Nuxt
+            </TabsTrigger>
+            <TabsTrigger value="react" class="flex-1 flex items-center justify-center gap-2">
               <Icon name="simple-icons:react" class="w-4 h-4" />
               React
             </TabsTrigger>
-            <TabsTrigger value="vanilla" class="flex items-center gap-2">
+            <TabsTrigger value="svelte" class="flex-1 flex items-center justify-center gap-2">
+              <Icon name="simple-icons:svelte" class="w-4 h-4" />
+              Svelte
+            </TabsTrigger>
+            <TabsTrigger value="vanilla" class="flex-1 flex items-center justify-center gap-2">
               <Icon name="simple-icons:javascript" class="w-4 h-4" />
-              Vanilla JS
+              Vanilla
             </TabsTrigger>
           </TabsList>
           <TabsContent value="vue" class="mt-4">
             <DocsCodeBlock :path="paths.vueSetup" />
           </TabsContent>
+          <TabsContent value="nuxt" class="mt-4">
+            <DocsCodeBlock :path="paths.nuxtSetup" />
+          </TabsContent>
           <TabsContent value="react" class="mt-4">
             <DocsCodeBlock :path="paths.reactSetup" />
+          </TabsContent>
+          <TabsContent value="svelte" class="mt-4">
+            <DocsCodeBlock :path="paths.svelteSetup" />
           </TabsContent>
           <TabsContent value="vanilla" class="mt-4">
             <DocsCodeBlock :path="paths.vanillaSetup" />
