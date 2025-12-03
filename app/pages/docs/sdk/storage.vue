@@ -170,13 +170,13 @@ if (!userData) {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-6 py-12">
+  <div>
     <!-- Header -->
     <div class="mb-12">
       <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-        <NuxtLink to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLink>
+        <NuxtLinkLocale to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLinkLocale>
         <span>/</span>
-        <NuxtLink to="/docs/sdk" class="hover:text-foreground">{{ t('docs.nav.sdkReference') }}</NuxtLink>
+        <NuxtLinkLocale to="/docs/sdk" class="hover:text-foreground">{{ t('docs.nav.sdkReference') }}</NuxtLinkLocale>
         <span>/</span>
         <span>{{ t('docs.nav.sdkStorage') }}</span>
       </div>
@@ -255,14 +255,14 @@ if (!userData) {
 
     <!-- Navigation -->
     <div class="flex justify-between pt-8 border-t mt-12">
-      <NuxtLink to="/docs/sdk/database" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      <NuxtLinkLocale to="/docs/sdk/database" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>&larr;</span>
         <span>{{ t('docs.nav.sdkDatabase') }}</span>
-      </NuxtLink>
-      <NuxtLink to="/docs/sdk/filesystem" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      </NuxtLinkLocale>
+      <NuxtLinkLocale to="/docs/sdk/filesystem" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>{{ t('docs.nav.sdkFilesystem') }}</span>
         <span>&rarr;</span>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
   </div>
 </template>

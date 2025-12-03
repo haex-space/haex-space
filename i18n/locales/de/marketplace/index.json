@@ -1,0 +1,14 @@
+{
+  "marketplace": {
+    "title": "Extension Marketplace",
+    "subtitle": "Entdecke Extensions, die von der Community erstellt wurden, um dein haex.space-Erlebnis zu verbessern.",
+    "categories": "Kategorien",
+    "featured": "Empfohlene Extensions",
+    "by": "von",
+    "publishCta": {
+      "title": "Erstelle deine eigene Extension",
+      "description": "Hast du eine Idee? Erstelle und veröffentliche deine eigenen Extensions und teile sie mit der Community.",
+      "button": "Entwickler-Dokumentation"
+    }
+  }
+}

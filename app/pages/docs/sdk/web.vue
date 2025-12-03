@@ -20,13 +20,13 @@ tableOfContents.value = [
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-6 py-12">
+  <div>
     <!-- Header -->
     <div class="mb-12">
       <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-        <NuxtLink to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLink>
+        <NuxtLinkLocale to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLinkLocale>
         <span>/</span>
-        <NuxtLink to="/docs/sdk" class="hover:text-foreground">{{ t('docs.nav.sdkReference') }}</NuxtLink>
+        <NuxtLinkLocale to="/docs/sdk" class="hover:text-foreground">{{ t('docs.nav.sdkReference') }}</NuxtLinkLocale>
         <span>/</span>
         <span>{{ t('docs.nav.sdkWeb') }}</span>
       </div>
@@ -91,9 +91,9 @@ tableOfContents.value = [
 
       <DocsAlert type="info" class="mt-6">
         {{ t('docs.sdkWeb.sections.permissions.note') }}
-        <NuxtLink to="/docs/extensions/permissions" class="underline hover:no-underline ml-1">
+        <NuxtLinkLocale to="/docs/extensions/permissions" class="underline hover:no-underline ml-1">
           {{ t('docs.sdkWeb.sections.permissions.learnMore') }}
-        </NuxtLink>
+        </NuxtLinkLocale>
       </DocsAlert>
     </DocsSection>
 
@@ -105,14 +105,14 @@ tableOfContents.value = [
 
     <!-- Navigation -->
     <div class="flex justify-between pt-8 border-t mt-12">
-      <NuxtLink to="/docs/sdk/filesystem" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      <NuxtLinkLocale to="/docs/sdk/filesystem" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>&larr;</span>
         <span>{{ t('docs.nav.sdkFilesystem') }}</span>
-      </NuxtLink>
-      <NuxtLink to="/docs" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      </NuxtLinkLocale>
+      <NuxtLinkLocale to="/docs" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>{{ t('docs.nav.introduction') }}</span>
         <span>&rarr;</span>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
   </div>
 </template>

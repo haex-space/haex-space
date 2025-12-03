@@ -1,0 +1,41 @@
+{
+  "docs": {
+    "sdkStorage": {
+      "title": "Storage API",
+      "subtitle": "Einfacher Key-Value-Storage für Einstellungen und Präferenzen.",
+      "toc": {
+        "overview": "Übersicht",
+        "basicUsage": "Grundlegende Verwendung",
+        "methods": "Methoden",
+        "jsonData": "JSON-Daten",
+        "examples": "Beispiele"
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Die Storage API bietet einen einfachen Key-Value-Store, der auf deine Extension begrenzt ist. Sie ist perfekt für Einstellungen, Präferenzen und einfache Daten, die nicht die Komplexität einer Datenbank benötigen.",
+          "note": "Storage-Daten sind auf deine Extension begrenzt und bleiben über Sitzungen hinweg erhalten."
+        },
+        "basicUsage": {
+          "title": "Grundlegende Verwendung",
+          "intro": "Hole, setze und entferne Werte mit einfachen async-Methoden:"
+        },
+        "methods": {
+          "title": "Verfügbare Methoden"
+        },
+        "jsonData": {
+          "title": "JSON-Daten speichern",
+          "intro": "Storage-Werte sind Strings. Serialisiere komplexe Daten mit JSON:",
+          "warning": "Denke daran, JSON.parse-Fehler für beschädigte oder ungültige Daten zu behandeln."
+        },
+        "examples": {
+          "title": "Beispiele",
+          "settings": "Einstellungs-Manager",
+          "settingsDesc": "Ein wiederverwendbares Composable zur Verwaltung von Anwendungseinstellungen:",
+          "cache": "Einfacher Cache",
+          "cacheDesc": "Daten mit Ablaufzeit cachen:"
+        }
+      }
+    }
+  }
+}

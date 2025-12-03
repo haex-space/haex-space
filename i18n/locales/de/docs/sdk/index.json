@@ -1,0 +1,65 @@
+{
+  "docs": {
+    "sdk": {
+      "title": "SDK-Übersicht",
+      "subtitle": "Vollständige Referenz für die haex-vault SDK APIs und Framework-Integrationen.",
+      "toc": {
+        "overview": "Übersicht",
+        "installation": "Installation",
+        "frameworkSetup": "Framework-Einrichtung",
+        "clientApi": "Client API",
+        "context": "Kontext",
+        "events": "Events"
+      },
+      "modules": {
+        "database": {
+          "title": "Database API",
+          "description": "SQLite-Daten mit Migrationen und Drizzle ORM abfragen und mutieren"
+        },
+        "storage": {
+          "title": "Storage API",
+          "description": "Einfacher Key-Value-Storage für Einstellungen und Präferenzen"
+        },
+        "filesystem": {
+          "title": "Filesystem API",
+          "description": "Dateien über native Dialoge speichern und öffnen"
+        },
+        "web": {
+          "title": "Web API",
+          "description": "HTTP-Anfragen an externe APIs stellen"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Das haex-vault SDK bietet eine vollständige API zum Erstellen von Extensions. Es umfasst Datenbankzugriff, Storage, Dateisystemoperationen, Web-Anfragen und mehr."
+        },
+        "installation": {
+          "title": "Installation",
+          "intro": "Installiere das SDK mit deinem bevorzugten Paketmanager:"
+        },
+        "frameworkSetup": {
+          "title": "Framework-Einrichtung",
+          "intro": "Das SDK bietet Adapter für beliebte Frameworks. Wähle unten dein Framework:",
+          "setup": "Einrichtung",
+          "usage": "Verwendung"
+        },
+        "clientApi": {
+          "title": "Client API Übersicht",
+          "intro": "Der Client bietet Zugriff auf alle SDK-Funktionen:"
+        },
+        "context": {
+          "title": "Anwendungskontext",
+          "intro": "Greife auf das aktuelle Theme, Locale und Plattform zu. Der Kontext wird automatisch aktualisiert, wenn der Benutzer Einstellungen ändert.",
+          "themeDesc": "Aktuelles Theme: light, dark oder system",
+          "localeDesc": "Aktueller Locale-Code (en, de, etc.)",
+          "platformDesc": "Betriebssystem: windows, macos, linux, ios, android"
+        },
+        "events": {
+          "title": "Events",
+          "intro": "Lausche auf Events von haex-vault:"
+        }
+      }
+    }
+  }
+}

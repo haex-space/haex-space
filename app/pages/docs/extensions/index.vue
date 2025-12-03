@@ -81,12 +81,11 @@ const paths = {
 </script>
 
 <template>
-  <div class="py-8 px-6 lg:px-8">
-    <div class="max-w-4xl">
-      <!-- Page Header -->
+  <div>
+    <!-- Page Header -->
       <div class="mb-12">
         <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-          <NuxtLink to="/docs" class="hover:text-foreground">{{ t('docs.nav.gettingStarted') }}</NuxtLink>
+          <NuxtLinkLocale to="/docs" class="hover:text-foreground">{{ t('docs.nav.gettingStarted') }}</NuxtLinkLocale>
           <ChevronRight class="w-4 h-4" />
           <span>{{ t('docs.nav.buildExtension') }}</span>
         </div>
@@ -134,9 +133,9 @@ const paths = {
                 <div>
                   <span class="font-medium">haex-vault</span>
                   <span class="text-muted-foreground"> - {{ t('docs.sections.prerequisites.vault') }}</span>
-                  <NuxtLink to="/download" class="text-primary hover:underline ml-1">
+                  <NuxtLinkLocale to="/download" class="text-primary hover:underline ml-1">
                     {{ t('docs.sections.prerequisites.download') }}
-                  </NuxtLink>
+                  </NuxtLinkLocale>
                 </div>
               </li>
               <li class="flex items-start gap-3">
@@ -503,7 +502,7 @@ const paths = {
             </div>
             <ExternalLink class="w-4 h-4 text-muted-foreground ml-auto" />
           </a>
-          <NuxtLink
+          <NuxtLinkLocale
             to="/marketplace"
             class="flex items-center gap-3 p-4 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
           >
@@ -515,9 +514,8 @@ const paths = {
               <p class="text-sm text-muted-foreground">{{ t('docs.nextSteps.marketplace.description') }}</p>
             </div>
             <ChevronRight class="w-4 h-4 text-muted-foreground ml-auto" />
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </section>
-    </div>
   </div>
 </template>

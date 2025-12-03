@@ -1,0 +1,18 @@
+{
+  "common": {
+    "login": "Login",
+    "register": "Get Started",
+    "marketplace": "Marketplace",
+    "download": "Download",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "allRightsReserved": "All rights reserved.",
+    "viewAll": "View all",
+    "docs": "Documentation",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  }
+}

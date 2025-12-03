@@ -10,9 +10,9 @@ useSeoMeta({
   <div class="min-h-screen flex flex-col">
     <header class="border-b border-border">
       <nav class="container mx-auto px-4 h-16 flex items-center">
-        <NuxtLink to="/" class="text-xl font-bold">
+        <NuxtLinkLocale to="/" class="text-xl font-bold">
           haex.space
-        </NuxtLink>
+        </NuxtLinkLocale>
       </nav>
     </header>
 

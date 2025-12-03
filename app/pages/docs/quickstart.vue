@@ -31,11 +31,11 @@ const paths = {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-6 py-12">
+  <div>
     <!-- Header -->
     <div class="mb-12">
       <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-        <NuxtLink to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLink>
+        <NuxtLinkLocale to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLinkLocale>
         <span>/</span>
         <span>{{ t('docs.nav.quickstart') }}</span>
       </div>
@@ -89,9 +89,9 @@ const paths = {
                 <h4 class="font-medium">haex-vault</h4>
                 <p class="text-sm text-muted-foreground">
                   {{ t('docs.quickstart.sections.prerequisites.vault') }}
-                  <NuxtLink to="/download" class="text-primary hover:underline ml-1">
+                  <NuxtLinkLocale to="/download" class="text-primary hover:underline ml-1">
                     {{ t('docs.quickstart.sections.prerequisites.download') }}
-                  </NuxtLink>
+                  </NuxtLinkLocale>
                 </p>
               </div>
             </div>
@@ -107,7 +107,7 @@ const paths = {
       <DocsStep :number="1" :title="t('docs.quickstart.sections.createProject.step1.title')">
         <p class="text-sm text-muted-foreground mb-3">{{ t('docs.quickstart.sections.createProject.step1.description') }}</p>
         <Tabs default-value="npm">
-          <TabsList>
+          <TabsList class="grid w-full grid-cols-4">
             <TabsTrigger value="npm" class="flex items-center gap-2">
               <Icon name="simple-icons:npm" class="w-4 h-4" />
               npm
@@ -177,7 +177,7 @@ const paths = {
       <p class="text-muted-foreground mb-6">{{ t('docs.quickstart.sections.nextSteps.intro') }}</p>
 
       <div class="grid md:grid-cols-2 gap-4">
-        <NuxtLink to="/docs/extensions" class="group">
+        <NuxtLinkLocale to="/docs/extensions" class="group">
           <Card class="h-full transition-colors hover:border-primary/50">
             <CardContent class="pt-6">
               <h4 class="font-medium mb-2 group-hover:text-primary transition-colors">
@@ -188,9 +188,9 @@ const paths = {
               </p>
             </CardContent>
           </Card>
-        </NuxtLink>
+        </NuxtLinkLocale>
 
-        <NuxtLink to="/docs/sdk" class="group">
+        <NuxtLinkLocale to="/docs/sdk" class="group">
           <Card class="h-full transition-colors hover:border-primary/50">
             <CardContent class="pt-6">
               <h4 class="font-medium mb-2 group-hover:text-primary transition-colors">
@@ -201,9 +201,9 @@ const paths = {
               </p>
             </CardContent>
           </Card>
-        </NuxtLink>
+        </NuxtLinkLocale>
 
-        <NuxtLink to="/docs/extensions/database" class="group">
+        <NuxtLinkLocale to="/docs/extensions/database" class="group">
           <Card class="h-full transition-colors hover:border-primary/50">
             <CardContent class="pt-6">
               <h4 class="font-medium mb-2 group-hover:text-primary transition-colors">
@@ -214,9 +214,9 @@ const paths = {
               </p>
             </CardContent>
           </Card>
-        </NuxtLink>
+        </NuxtLinkLocale>
 
-        <NuxtLink to="/docs/extensions/publishing" class="group">
+        <NuxtLinkLocale to="/docs/extensions/publishing" class="group">
           <Card class="h-full transition-colors hover:border-primary/50">
             <CardContent class="pt-6">
               <h4 class="font-medium mb-2 group-hover:text-primary transition-colors">
@@ -227,20 +227,20 @@ const paths = {
               </p>
             </CardContent>
           </Card>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
     </DocsSection>
 
     <!-- Navigation -->
     <div class="flex justify-between pt-8 border-t mt-12">
-      <NuxtLink to="/docs" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      <NuxtLinkLocale to="/docs" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>&larr;</span>
         <span>{{ t('docs.nav.introduction') }}</span>
-      </NuxtLink>
-      <NuxtLink to="/docs/extensions" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      </NuxtLinkLocale>
+      <NuxtLinkLocale to="/docs/extensions" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>{{ t('docs.nav.buildExtension') }}</span>
         <span>&rarr;</span>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
   </div>
 </template>

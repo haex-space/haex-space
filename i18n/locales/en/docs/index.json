@@ -1,0 +1,125 @@
+{
+  "docs": {
+    "title": "Developer Documentation",
+    "breadcrumb": "Documentation",
+    "badge": "Developer Guide",
+    "navigation": "Navigation",
+    "onThisPage": "On this page",
+    "tableOfContents": "Contents",
+    "nav": {
+      "gettingStarted": "Getting Started",
+      "introduction": "Introduction",
+      "quickstart": "Quick Start",
+      "extensions": "Extensions",
+      "buildExtension": "Build an Extension",
+      "manifest": "Manifest Reference",
+      "permissions": "Permissions",
+      "database": "Database",
+      "publishing": "Publishing",
+      "sdkReference": "SDK Reference",
+      "sdkOverview": "Overview",
+      "sdkDatabase": "Database API",
+      "sdkStorage": "Storage API",
+      "sdkFilesystem": "Filesystem API",
+      "sdkWeb": "Web API",
+      "resources": "Resources"
+    },
+    "toc": {
+      "overview": "Overview",
+      "prerequisites": "Prerequisites",
+      "quickstart": "Quick Start",
+      "projectStructure": "Project Structure",
+      "manifest": "Manifest",
+      "sdkSetup": "SDK Setup",
+      "database": "Database",
+      "storage": "Storage",
+      "filesystem": "Filesystem",
+      "webRequests": "Web Requests",
+      "permissions": "Permissions",
+      "context": "Context",
+      "buildSign": "Build & Sign",
+      "publish": "Publishing"
+    },
+    "intro": {
+      "title": "haex-vault Developer Documentation",
+      "subtitle": "Everything you need to build powerful extensions for haex-vault.",
+      "toc": {
+        "welcome": "Welcome",
+        "whatIsHaex": "What is haex-vault?",
+        "extensions": "Extensions",
+        "gettingStarted": "Getting Started"
+      },
+      "sections": {
+        "welcome": {
+          "title": "Welcome",
+          "intro": "Welcome to the haex-vault developer documentation. Here you'll find comprehensive guides and documentation to help you start building extensions for haex-vault.",
+          "content": "Whether you're building your first extension or looking to explore advanced features, this documentation will guide you through the process."
+        },
+        "whatIsHaex": {
+          "title": "What is haex-vault?",
+          "intro": "haex-vault is a secure, encrypted storage platform that syncs your data across all your devices. Extensions allow you to add custom functionality and integrate with external services while maintaining the security and privacy you expect."
+        },
+        "extensions": {
+          "title": "Extensions",
+          "intro": "Extensions are sandboxed applications that run inside haex-vault. They can access your data through a secure API, providing powerful functionality while keeping your data safe.",
+          "content": "Each extension runs in its own isolated environment with only the permissions you explicitly grant. Extensions are cryptographically signed to ensure authenticity and integrity.",
+          "capabilities": {
+            "title": "What extensions can do:",
+            "database": "Store and query data using SQLite with CRDT sync support",
+            "storage": "Persist settings and preferences using key-value storage",
+            "filesystem": "Save and open files through native dialogs",
+            "web": "Make HTTP requests to external APIs",
+            "security": "All operations are sandboxed with granular permissions"
+          }
+        },
+        "gettingStarted": {
+          "title": "Getting Started",
+          "intro": "Ready to build your first extension? Start with these guides:"
+        }
+      },
+      "features": {
+        "security": {
+          "title": "Sandboxed Security",
+          "description": "Extensions run in isolated environments with explicit permissions"
+        },
+        "database": {
+          "title": "SQLite Database",
+          "description": "Full database access with migrations and CRDT sync support"
+        },
+        "storage": {
+          "title": "Key-Value Storage",
+          "description": "Simple API for storing settings and preferences"
+        },
+        "web": {
+          "title": "HTTP Requests",
+          "description": "Fetch data from external APIs with declared permissions"
+        }
+      },
+      "guides": {
+        "quickstart": {
+          "title": "Quick Start",
+          "description": "Get your first extension running in 5 minutes"
+        },
+        "extensions": {
+          "title": "Build an Extension",
+          "description": "Complete guide to building and publishing extensions"
+        },
+        "sdk": {
+          "title": "SDK Reference",
+          "description": "Detailed API documentation for all SDK features"
+        }
+      }
+    },
+    "nextSteps": {
+      "title": "Next Steps",
+      "sdk": {
+        "title": "SDK Repository",
+        "description": "Explore the full SDK source code and examples"
+      },
+      "marketplace": {
+        "title": "Browse Extensions",
+        "description": "See what others have built for inspiration"
+      }
+    }
+  }
+}

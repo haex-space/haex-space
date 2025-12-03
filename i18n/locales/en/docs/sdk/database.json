@@ -1,0 +1,49 @@
+{
+  "docs": {
+    "sdkDatabase": {
+      "title": "Database API",
+      "subtitle": "Complete reference for SQLite database operations in your extension.",
+      "toc": {
+        "overview": "Overview",
+        "queryMethods": "Query Methods",
+        "helperMethods": "Helper Methods",
+        "transactions": "Transactions",
+        "migrations": "Migrations",
+        "drizzle": "Drizzle ORM",
+        "types": "Types"
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "The Database API provides full SQLite access with automatic table namespacing, migrations, and optional Drizzle ORM integration.",
+          "tableName": "Table Name Helper"
+        },
+        "queryMethods": {
+          "title": "Query Methods",
+          "note": "Always use parameterized queries (?) to prevent SQL injection."
+        },
+        "helperMethods": {
+          "title": "Helper Methods",
+          "intro": "These convenience methods simplify common operations:"
+        },
+        "transactions": {
+          "title": "Transactions",
+          "intro": "Execute multiple statements atomically:",
+          "warning": "If any statement fails, all changes are rolled back."
+        },
+        "migrations": {
+          "title": "Migrations",
+          "intro": "Register and run database migrations. Migrations are tracked and only run once:"
+        },
+        "drizzle": {
+          "title": "Drizzle ORM",
+          "intro": "For type-safe database access, use the built-in Drizzle ORM integration:"
+        },
+        "types": {
+          "title": "Type Definitions",
+          "intro": "TypeScript interfaces for database operations:"
+        }
+      }
+    }
+  }
+}

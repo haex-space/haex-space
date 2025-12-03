@@ -1,0 +1,45 @@
+{
+  "docs": {
+    "sdkFilesystem": {
+      "title": "Filesystem API",
+      "subtitle": "Save and open files through native system dialogs.",
+      "toc": {
+        "overview": "Overview",
+        "saveFile": "Save File",
+        "openFile": "Open File",
+        "showImage": "Show Image",
+        "types": "Types"
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "The Filesystem API allows your extension to save and open files through native system dialogs. All operations require user interaction, ensuring security and transparency.",
+          "note": "All filesystem operations show native dialogs to the user. There is no silent file access."
+        },
+        "saveFile": {
+          "title": "Save File",
+          "intro": "Save data to a file using the native save dialog:",
+          "text": "Save Text File",
+          "json": "Save JSON File",
+          "binary": "Save Binary Data"
+        },
+        "openFile": {
+          "title": "Open File",
+          "intro": "Open files using the native file picker:",
+          "single": "Open Single File",
+          "multiple": "Open Multiple Files",
+          "json": "Open and Parse JSON"
+        },
+        "showImage": {
+          "title": "Image Picker",
+          "intro": "Open an image picker with optional resizing:",
+          "note": "No permissions are required for showImageAsync since it uses a system dialog."
+        },
+        "types": {
+          "title": "Type Definitions",
+          "intro": "TypeScript interfaces for filesystem operations:"
+        }
+      }
+    }
+  }
+}

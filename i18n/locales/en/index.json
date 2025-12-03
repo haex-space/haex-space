@@ -1,0 +1,42 @@
+{
+  "home": {
+    "badge": "End-to-End Encrypted",
+    "title": "Your Data, Your Way",
+    "subtitle": "Secure synchronization across all your devices with end-to-end encryption. Extend your workflow with powerful extensions from the marketplace.",
+    "cta": {
+      "download": "Download",
+      "browseExtensions": "Browse Extensions"
+    },
+    "features": {
+      "encryption": {
+        "title": "End-to-End Encrypted",
+        "description": "All content is encrypted on your device. Only metadata (table, column, timestamp) remains visible for efficient sync."
+      },
+      "privacy": {
+        "title": "Privacy First",
+        "description": "Your data belongs to you. No tracking, no ads, no data sales. Full control over your information."
+      },
+      "offline": {
+        "title": "100% Offline-capable",
+        "description": "The app works completely without internet. Sync is optional – use our servers or host your own."
+      },
+      "sync": {
+        "title": "Seamless Sync",
+        "description": "Real-time synchronization across all your devices. Changes sync instantly, no matter where you are."
+      },
+      "extensions": {
+        "title": "Extension Marketplace",
+        "description": "Discover and install extensions to customize your experience. Or build and publish your own."
+      },
+      "crossPlatform": {
+        "title": "One App, All Platforms",
+        "description": "Developers build one web extension and instantly reach all platforms. No platform-specific adaptations required."
+      }
+    },
+    "marketplaceCta": {
+      "title": "Explore the Marketplace",
+      "description": "Browse our growing collection of extensions built by the community. Find tools that enhance your productivity and workflow.",
+      "button": "View All Extensions"
+    }
+  }
+}

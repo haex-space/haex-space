@@ -6,6 +6,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 useSeoMeta({
   title: 'Login - haex.space',
@@ -33,7 +34,7 @@ async function handleLogin() {
       throw signInError
     }
 
-    await navigateTo('/dashboard')
+    await navigateTo(localePath('/dashboard'))
   } catch (e: any) {
     error.value = e.message || t('auth.login.errors.failed')
   } finally {
@@ -87,9 +88,9 @@ async function handleLogin() {
 
           <div class="mt-6 text-center text-sm text-muted-foreground">
             {{ t('auth.login.noAccount') }}
-            <NuxtLink to="/auth/register" class="text-primary hover:underline">
+            <NuxtLinkLocale to="/auth/register" class="text-primary hover:underline">
               {{ t('auth.login.signUp') }}
-            </NuxtLink>
+            </NuxtLinkLocale>
           </div>
         </CardContent>
   </Card>

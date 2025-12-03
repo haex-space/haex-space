@@ -1,0 +1,41 @@
+{
+  "docs": {
+    "sdkStorage": {
+      "title": "Storage API",
+      "subtitle": "Simple key-value storage for settings and preferences.",
+      "toc": {
+        "overview": "Overview",
+        "basicUsage": "Basic Usage",
+        "methods": "Methods",
+        "jsonData": "JSON Data",
+        "examples": "Examples"
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "The Storage API provides a simple key-value store scoped to your extension. It's perfect for settings, preferences, and simple data that doesn't need the complexity of a database.",
+          "note": "Storage data is scoped to your extension and persists across sessions."
+        },
+        "basicUsage": {
+          "title": "Basic Usage",
+          "intro": "Get, set, and remove values with simple async methods:"
+        },
+        "methods": {
+          "title": "Available Methods"
+        },
+        "jsonData": {
+          "title": "Storing JSON Data",
+          "intro": "Storage values are strings. Serialize complex data with JSON:",
+          "warning": "Remember to handle JSON.parse errors for corrupted or invalid data."
+        },
+        "examples": {
+          "title": "Examples",
+          "settings": "Settings Manager",
+          "settingsDesc": "A reusable composable for managing application settings:",
+          "cache": "Simple Cache",
+          "cacheDesc": "Cache data with expiration:"
+        }
+      }
+    }
+  }
+}

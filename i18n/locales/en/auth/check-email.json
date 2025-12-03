@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "checkEmail": {
+      "title": "Check your email",
+      "subtitle": "We've sent you a verification link",
+      "description": "Click the link in the email we sent to verify your account. If you don't see it, check your spam folder.",
+      "backToLogin": "Back to login"
+    }
+  }
+}

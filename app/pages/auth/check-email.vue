@@ -29,11 +29,11 @@ useSeoMeta({
         {{ t('auth.checkEmail.description') }}
       </p>
       <div class="pt-4">
-        <NuxtLink to="/auth/login">
+        <NuxtLinkLocale to="/auth/login">
           <Button variant="outline" class="w-full">
             {{ t('auth.checkEmail.backToLogin') }}
           </Button>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
     </CardContent>
   </Card>

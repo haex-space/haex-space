@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Rocket, Store, Shield, RefreshCw, Puzzle, ArrowRight } from 'lucide-vue-next'
+import { Download, Store, Shield, RefreshCw, Puzzle, Layers, WifiOff, Lock, ArrowRight } from 'lucide-vue-next'
 
 const { t } = useI18n()
 
@@ -23,24 +23,24 @@ useSeoMeta({
         {{ t('home.subtitle') }}
       </p>
       <div class="flex gap-4 justify-center">
-        <NuxtLink to="/auth/register">
+        <NuxtLinkLocale to="/download">
           <Button size="lg" class="gap-2">
-            <Rocket class="w-5 h-5" />
-            {{ t('home.cta.createAccount') }}
+            <Download class="w-5 h-5" />
+            {{ t('home.cta.download') }}
           </Button>
-        </NuxtLink>
-        <NuxtLink to="/marketplace">
+        </NuxtLinkLocale>
+        <NuxtLinkLocale to="/marketplace">
           <Button size="lg" variant="outline" class="gap-2">
             <Store class="w-5 h-5" />
             {{ t('home.cta.browseExtensions') }}
           </Button>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
     </section>
 
     <!-- Features Section -->
     <section class="container mx-auto px-4 py-16">
-      <div class="grid md:grid-cols-3 gap-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <Card>
           <CardHeader>
             <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
@@ -49,6 +49,30 @@ useSeoMeta({
             <CardTitle>{{ t('home.features.encryption.title') }}</CardTitle>
             <CardDescription>
               {{ t('home.features.encryption.description') }}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <Lock class="w-6 h-6 text-primary" />
+            </div>
+            <CardTitle>{{ t('home.features.privacy.title') }}</CardTitle>
+            <CardDescription>
+              {{ t('home.features.privacy.description') }}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <WifiOff class="w-6 h-6 text-primary" />
+            </div>
+            <CardTitle>{{ t('home.features.offline.title') }}</CardTitle>
+            <CardDescription>
+              {{ t('home.features.offline.description') }}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -76,6 +100,18 @@ useSeoMeta({
             </CardDescription>
           </CardHeader>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <Layers class="w-6 h-6 text-primary" />
+            </div>
+            <CardTitle>{{ t('home.features.crossPlatform.title') }}</CardTitle>
+            <CardDescription>
+              {{ t('home.features.crossPlatform.description') }}
+            </CardDescription>
+          </CardHeader>
+        </Card>
       </div>
     </section>
 
@@ -88,12 +124,12 @@ useSeoMeta({
         <p class="text-muted-foreground max-w-xl mx-auto mb-8">
           {{ t('home.marketplaceCta.description') }}
         </p>
-        <NuxtLink to="/marketplace">
+        <NuxtLinkLocale to="/marketplace">
           <Button size="lg" variant="secondary" class="gap-2">
             <ArrowRight class="w-5 h-5" />
             {{ t('home.marketplaceCta.button') }}
           </Button>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
     </section>
   </div>

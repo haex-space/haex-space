@@ -1,0 +1,102 @@
+{
+  "docs": {
+    "permissions": {
+      "title": "Berechtigungen",
+      "subtitle": "Verstehe, wie das Berechtigungssystem funktioniert und wie du Berechtigungen in deiner Extension deklarierst.",
+      "toc": {
+        "overview": "Übersicht",
+        "permissionTypes": "Berechtigungstypen",
+        "database": "Datenbank",
+        "filesystem": "Dateisystem",
+        "http": "HTTP",
+        "checking": "Berechtigungen prüfen",
+        "requesting": "Berechtigungen anfordern",
+        "bestPractices": "Best Practices"
+      },
+      "status": {
+        "granted": "Erteilt",
+        "grantedDesc": "Berechtigung ist genehmigt",
+        "denied": "Abgelehnt",
+        "deniedDesc": "Berechtigung wurde abgelehnt",
+        "ask": "Nachfragen",
+        "askDesc": "Wird den Benutzer fragen"
+      },
+      "types": {
+        "database": {
+          "name": "Datenbank",
+          "description": "Daten in SQLite-Tabellen lesen und schreiben"
+        },
+        "filesystem": {
+          "name": "Dateisystem",
+          "description": "Dateien über native Dialoge speichern und öffnen"
+        },
+        "http": {
+          "name": "HTTP",
+          "description": "Web-Anfragen an externe APIs stellen"
+        },
+        "shell": {
+          "name": "Shell",
+          "description": "Systembefehle ausführen (eingeschränkt)"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Extensions müssen alle erforderlichen Berechtigungen in ihrer manifest.json deklarieren. Benutzer überprüfen und genehmigen diese Berechtigungen während der Installation. Dies gewährleistet Transparenz und gibt Benutzern Kontrolle darüber, worauf Extensions zugreifen können."
+        },
+        "types": {
+          "title": "Berechtigungstypen"
+        },
+        "database": {
+          "title": "Datenbank-Berechtigungen",
+          "intro": "Datenbank-Berechtigungen kontrollieren den Zugriff auf Tabellen anderer Extensions. Das Ziel muss der vollständige Tabellenname im Format {publicKey}__{extensionName}__{tableName} sein:",
+          "ownTablesNote": "Extensions können ihre eigenen Tabellen innerhalb ihres Namespaces ohne Berechtigungen erstellen, lesen und ändern. Berechtigungen sind nur erforderlich, wenn auf Tabellen anderer Extensions zugegriffen wird.",
+          "accessTitle": "Zugriff auf Dependency-Tabellen"
+        },
+        "filesystem": {
+          "title": "Dateisystem-Berechtigungen",
+          "intro": "Dateisystem-Berechtigungen verwenden Glob-Patterns, um anzugeben, auf welche Dateien deine Extension zugreifen kann:",
+          "note": "Alle Dateisystemoperationen zeigen dem Benutzer native Dialoge und bieten eine zusätzliche Sicherheitsebene."
+        },
+        "http": {
+          "title": "HTTP-Berechtigungen",
+          "intro": "HTTP-Berechtigungen geben an, an welche URLs deine Extension Anfragen stellen kann:",
+          "patterns": "Pattern-Syntax",
+          "patternMultiple": "Matched beliebige Pfadsegmente",
+          "patternSingle": "Matched ein einzelnes Pfadsegment"
+        },
+        "checking": {
+          "title": "Berechtigungen prüfen",
+          "intro": "Vor dem Ausführen einer Operation kannst du prüfen, ob die Berechtigung erteilt wurde:"
+        },
+        "requesting": {
+          "title": "Berechtigungen anfordern",
+          "intro": "Du kannst Berechtigungen zur Laufzeit anfordern, was den Benutzer auffordert:",
+          "statusTitle": "Berechtigungsstatus-Werte"
+        },
+        "bestPractices": {
+          "title": "Best Practices",
+          "warning": "Extensions, die übermäßige Berechtigungen anfordern, können während der Marketplace-Überprüfung markiert werden."
+        }
+      },
+      "bestPractices": {
+        "minimal": {
+          "title": "Minimale Berechtigungen anfordern",
+          "description": "Fordere nur Berechtigungen an, die deine Extension tatsächlich benötigt. Benutzer installieren eher Extensions mit weniger Berechtigungsanfragen."
+        },
+        "specific": {
+          "title": "Sei spezifisch",
+          "description": "Verwende spezifische Tabellennamen und URL-Patterns anstelle von Wildcards. Das macht das Verhalten deiner Extension vorhersehbarer und vertrauenswürdiger."
+        },
+        "explain": {
+          "title": "Erkläre warum",
+          "description": "Wenn du Berechtigungen zur Laufzeit anforderst, gib einen klaren Grund an, warum die Berechtigung benötigt wird."
+        },
+        "graceful": {
+          "title": "Ablehnungen elegant behandeln",
+          "description": "Wenn eine Berechtigung abgelehnt wird, biete eine gute Benutzererfahrung. Zeige eine hilfreiche Nachricht und biete wenn möglich Alternativen an."
+        }
+      }
+    }
+  }
+}

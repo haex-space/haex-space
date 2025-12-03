@@ -1,0 +1,22 @@
+{
+  "auth": {
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Enter your email below to create your account",
+      "email": "Email",
+      "emailPlaceholder": "mail{'@'}example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "errors": {
+        "passwordMismatch": "Passwords do not match",
+        "passwordTooShort": "Password must be at least 8 characters",
+        "failed": "Registration failed"
+      }
+    }
+  }
+}

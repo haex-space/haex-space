@@ -1,0 +1,18 @@
+{
+  "common": {
+    "login": "Anmelden",
+    "register": "Jetzt starten",
+    "marketplace": "Marketplace",
+    "download": "Download",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "viewAll": "Alle anzeigen",
+    "docs": "Dokumentation",
+    "language": "Sprache",
+    "theme": "Erscheinungsbild",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "themeSystem": "System"
+  }
+}

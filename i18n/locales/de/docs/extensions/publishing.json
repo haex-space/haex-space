@@ -1,0 +1,103 @@
+{
+  "docs": {
+    "publishing": {
+      "title": "Veröffentlichung",
+      "subtitle": "Signiere, paketiere und veröffentliche deine Extension im haex.space Marketplace.",
+      "toc": {
+        "overview": "Übersicht",
+        "signing": "Signierung",
+        "building": "Bauen",
+        "packaging": "Paketierung",
+        "submitting": "Einreichen",
+        "updates": "Updates"
+      },
+      "steps": {
+        "test": {
+          "title": "Gründlich testen",
+          "description": "Auf allen Zielplattformen testen und Berechtigungen verifizieren"
+        },
+        "prepare": {
+          "title": "Assets vorbereiten",
+          "description": "Screenshots, Icon und Beschreibung erstellen"
+        },
+        "submit": {
+          "title": "Einreichen",
+          "description": "Deine .xt Datei im Marketplace hochladen"
+        },
+        "review": {
+          "title": "Review",
+          "description": "Auf Sicherheits- und Qualitätsprüfung warten (2-3 Tage)"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Die Veröffentlichung deiner Extension im Marketplace umfasst das Signieren mit deinem Private Key, das Paketieren in eine .xt Datei und das Einreichen zur Überprüfung."
+        },
+        "signing": {
+          "title": "Kryptographische Signierung",
+          "intro": "Jede Extension muss mit einem Ed25519-Schlüsselpaar signiert werden. Dies stellt sicher, dass Benutzer verifizieren können, dass die Extension von dir stammt und nicht manipuliert wurde.",
+          "keygen": "Schlüsselpaar generieren",
+          "keygenDesc": "Falls noch nicht geschehen, generiere ein Schlüsselpaar:",
+          "protect": "Deinen Private Key schützen",
+          "warning": {
+            "title": "Kritisch",
+            "description": "Committe niemals private.key zur Versionskontrolle. Wenn du diesen Schlüssel verlierst, kannst du deine Extension nicht aktualisieren und musst als neue Extension mit einer anderen Identität veröffentlichen."
+          },
+          "about": {
+            "title": "Über Ed25519",
+            "algorithm": "Algorithmus: Ed25519 (elliptische Kurve)",
+            "publicKey": "Public Key: 64 Hex-Zeichen (im Manifest enthalten)",
+            "privateKey": "Private Key: 256 Hex-Zeichen (geheim halten!)",
+            "signature": "Signatur: 128 Hex-Zeichen (wird beim Signieren hinzugefügt)"
+          }
+        },
+        "building": {
+          "title": "Bauen",
+          "intro": "Baue deine Extension für die Produktion und signiere sie:",
+          "npm": "NPM-Skripte",
+          "npmDesc": "Füge praktische Skripte zu deiner package.json hinzu:"
+        },
+        "packaging": {
+          "title": "Paketinhalt",
+          "intro": "Der Signierungsprozess erstellt eine .xt Datei (ZIP-Archiv) mit:",
+          "contents": "Paketinhalt",
+          "note": "Der private.key ist niemals im Paket enthalten."
+        },
+        "submitting": {
+          "title": "Im Marketplace einreichen",
+          "intro": "Folge diesen Schritten, um deine Extension einzureichen:",
+          "step1": {
+            "title": "Entwicklerkonto erstellen",
+            "description": "Registriere dich oder melde dich an unter haex.space/developers"
+          },
+          "step2": {
+            "title": "Dein Listing vorbereiten",
+            "description": "Schreibe eine überzeugende Beschreibung, erstelle Screenshots und bereite dein Icon vor (256x256 PNG empfohlen)"
+          },
+          "step3": {
+            "title": "Extension hochladen",
+            "description": "Lade deine .xt Datei hoch und fülle die Listing-Details aus"
+          },
+          "step4": {
+            "title": "Zur Überprüfung einreichen",
+            "description": "Reiche ein und warte auf unsere Sicherheitsüberprüfung (typischerweise 2-3 Werktage)"
+          },
+          "checklist": {
+            "title": "Checkliste vor dem Einreichen",
+            "item1": "Extension auf allen Zielplattformen getestet",
+            "item2": "Alle Berechtigungen sind notwendig und dokumentiert",
+            "item3": "Icon und Screenshots sind hochwertig",
+            "item4": "Beschreibung ist klar und genau",
+            "item5": "Private Key ist sicher gesichert"
+          }
+        },
+        "updates": {
+          "title": "Updates veröffentlichen",
+          "intro": "Um deine Extension zu aktualisieren, erhöhe die Version in manifest.json und signiere erneut:",
+          "warning": "Du musst denselben Private Key verwenden, der die ursprüngliche Extension signiert hat. Benutzer erhalten nur Updates vom selben Publisher."
+        }
+      }
+    }
+  }
+}

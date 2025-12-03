@@ -51,11 +51,11 @@ const apiModules = computed(() => [
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-6 py-12">
+  <div>
     <!-- Header -->
     <div class="mb-12">
       <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-        <NuxtLink to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLink>
+        <NuxtLinkLocale to="/docs" class="hover:text-foreground">{{ t('docs.title') }}</NuxtLinkLocale>
         <span>/</span>
         <span>{{ t('docs.nav.sdkReference') }}</span>
       </div>
@@ -68,7 +68,7 @@ const apiModules = computed(() => [
       <p class="text-muted-foreground mb-6">{{ t('docs.sdk.sections.overview.intro') }}</p>
 
       <div class="grid md:grid-cols-2 gap-4">
-        <NuxtLink
+        <NuxtLinkLocale
           v-for="module in apiModules"
           :key="module.href"
           :to="module.href"
@@ -85,7 +85,7 @@ const apiModules = computed(() => [
               <p class="text-sm text-muted-foreground">{{ module.description }}</p>
             </CardContent>
           </Card>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
     </DocsSection>
 
@@ -197,14 +197,14 @@ const apiModules = computed(() => [
 
     <!-- Navigation -->
     <div class="flex justify-between pt-8 border-t mt-12">
-      <NuxtLink to="/docs/extensions/publishing" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      <NuxtLinkLocale to="/docs/extensions/publishing" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>&larr;</span>
         <span>{{ t('docs.nav.publishing') }}</span>
-      </NuxtLink>
-      <NuxtLink to="/docs/sdk/database" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      </NuxtLinkLocale>
+      <NuxtLinkLocale to="/docs/sdk/database" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>{{ t('docs.nav.sdkDatabase') }}</span>
         <span>&rarr;</span>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
   </div>
 </template>

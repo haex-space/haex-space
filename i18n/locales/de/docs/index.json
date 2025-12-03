@@ -1,0 +1,125 @@
+{
+  "docs": {
+    "title": "Entwickler-Dokumentation",
+    "breadcrumb": "Dokumentation",
+    "badge": "Entwickler-Leitfaden",
+    "navigation": "Navigation",
+    "onThisPage": "Auf dieser Seite",
+    "tableOfContents": "Inhalt",
+    "nav": {
+      "gettingStarted": "Erste Schritte",
+      "introduction": "Einführung",
+      "quickstart": "Schnellstart",
+      "extensions": "Extensions",
+      "buildExtension": "Extension erstellen",
+      "manifest": "Manifest-Referenz",
+      "permissions": "Berechtigungen",
+      "database": "Datenbank",
+      "publishing": "Veröffentlichung",
+      "sdkReference": "SDK-Referenz",
+      "sdkOverview": "Übersicht",
+      "sdkDatabase": "Database API",
+      "sdkStorage": "Storage API",
+      "sdkFilesystem": "Filesystem API",
+      "sdkWeb": "Web API",
+      "resources": "Ressourcen"
+    },
+    "toc": {
+      "overview": "Übersicht",
+      "prerequisites": "Voraussetzungen",
+      "quickstart": "Schnellstart",
+      "projectStructure": "Projektstruktur",
+      "manifest": "Manifest",
+      "sdkSetup": "SDK-Einrichtung",
+      "database": "Datenbank",
+      "storage": "Storage",
+      "filesystem": "Dateisystem",
+      "webRequests": "Web-Anfragen",
+      "permissions": "Berechtigungen",
+      "context": "Kontext",
+      "buildSign": "Build & Signieren",
+      "publish": "Veröffentlichung"
+    },
+    "intro": {
+      "title": "haex-vault Entwickler-Dokumentation",
+      "subtitle": "Alles, was du brauchst, um leistungsstarke Extensions für haex-vault zu entwickeln.",
+      "toc": {
+        "welcome": "Willkommen",
+        "whatIsHaex": "Was ist haex-vault?",
+        "extensions": "Extensions",
+        "gettingStarted": "Erste Schritte"
+      },
+      "sections": {
+        "welcome": {
+          "title": "Willkommen",
+          "intro": "Willkommen zur haex-vault Entwickler-Dokumentation. Hier findest du umfassende Anleitungen und Dokumentation, um mit der Entwicklung von Extensions für haex-vault zu beginnen.",
+          "content": "Egal ob du deine erste Extension erstellst oder fortgeschrittene Funktionen erkunden möchtest – diese Dokumentation führt dich durch den gesamten Prozess."
+        },
+        "whatIsHaex": {
+          "title": "Was ist haex-vault?",
+          "intro": "haex-vault ist eine sichere, verschlüsselte Speicherplattform, die deine Daten über alle Geräte synchronisiert. Extensions ermöglichen es dir, benutzerdefinierte Funktionen hinzuzufügen und externe Dienste zu integrieren, während die erwartete Sicherheit und Privatsphäre gewahrt bleibt."
+        },
+        "extensions": {
+          "title": "Extensions",
+          "intro": "Extensions sind Sandbox-Anwendungen, die innerhalb von haex-vault laufen. Sie können über eine sichere API auf deine Daten zugreifen und bieten leistungsstarke Funktionalität, während deine Daten sicher bleiben.",
+          "content": "Jede Extension läuft in ihrer eigenen isolierten Umgebung mit nur den Berechtigungen, die du explizit erteilst. Extensions sind kryptographisch signiert, um Authentizität und Integrität zu gewährleisten.",
+          "capabilities": {
+            "title": "Was Extensions können:",
+            "database": "Daten mit SQLite und CRDT-Sync speichern und abfragen",
+            "storage": "Einstellungen und Präferenzen mit Key-Value-Storage speichern",
+            "filesystem": "Dateien über native Dialoge speichern und öffnen",
+            "web": "HTTP-Anfragen an externe APIs stellen",
+            "security": "Alle Operationen sind mit granularen Berechtigungen sandboxed"
+          }
+        },
+        "gettingStarted": {
+          "title": "Erste Schritte",
+          "intro": "Bereit, deine erste Extension zu erstellen? Starte mit diesen Anleitungen:"
+        }
+      },
+      "features": {
+        "security": {
+          "title": "Sandboxed-Sicherheit",
+          "description": "Extensions laufen in isolierten Umgebungen mit expliziten Berechtigungen"
+        },
+        "database": {
+          "title": "SQLite-Datenbank",
+          "description": "Vollständiger Datenbankzugriff mit Migrationen und CRDT-Sync-Unterstützung"
+        },
+        "storage": {
+          "title": "Key-Value-Storage",
+          "description": "Einfache API zum Speichern von Einstellungen und Präferenzen"
+        },
+        "web": {
+          "title": "HTTP-Anfragen",
+          "description": "Daten von externen APIs mit deklarierten Berechtigungen abrufen"
+        }
+      },
+      "guides": {
+        "quickstart": {
+          "title": "Schnellstart",
+          "description": "Bringe deine erste Extension in 5 Minuten zum Laufen"
+        },
+        "extensions": {
+          "title": "Extension erstellen",
+          "description": "Komplette Anleitung zum Erstellen und Veröffentlichen von Extensions"
+        },
+        "sdk": {
+          "title": "SDK-Referenz",
+          "description": "Detaillierte API-Dokumentation für alle SDK-Funktionen"
+        }
+      }
+    },
+    "nextSteps": {
+      "title": "Nächste Schritte",
+      "sdk": {
+        "title": "SDK Repository",
+        "description": "Erkunde den vollständigen SDK-Quellcode und Beispiele"
+      },
+      "marketplace": {
+        "title": "Extensions durchsuchen",
+        "description": "Sieh, was andere zur Inspiration gebaut haben"
+      }
+    }
+  }
+}

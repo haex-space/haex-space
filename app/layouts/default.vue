@@ -28,31 +28,31 @@ const themeIcon = computed(() => {
     <header class="border-b border-border sticky top-0 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 z-50">
       <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
         <div class="flex items-center gap-8">
-          <NuxtLink to="/" class="flex items-center gap-2">
+          <NuxtLinkLocale to="/" class="flex items-center gap-2">
             <img src="/logo.png" alt="haex.space" class="h-8 w-auto" />
-          </NuxtLink>
+          </NuxtLinkLocale>
           <div class="hidden md:flex items-center gap-6">
-            <NuxtLink
+            <NuxtLinkLocale
               to="/download"
               class="text-muted-foreground hover:text-foreground transition-colors"
               active-class="!text-foreground font-medium"
             >
               {{ t('common.download') }}
-            </NuxtLink>
-            <NuxtLink
+            </NuxtLinkLocale>
+            <NuxtLinkLocale
               to="/marketplace"
               class="text-muted-foreground hover:text-foreground transition-colors"
               active-class="!text-foreground font-medium"
             >
               {{ t('common.marketplace') }}
-            </NuxtLink>
-            <NuxtLink
+            </NuxtLinkLocale>
+            <NuxtLinkLocale
               to="/docs/extensions"
               class="text-muted-foreground hover:text-foreground transition-colors"
               active-class="!text-foreground font-medium"
             >
               {{ t('common.docs') }}
-            </NuxtLink>
+            </NuxtLinkLocale>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -114,12 +114,12 @@ const themeIcon = computed(() => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <NuxtLink to="/auth/login">
+          <NuxtLinkLocale to="/auth/login">
             <Button variant="outline">{{ t('common.login') }}</Button>
-          </NuxtLink>
-          <NuxtLink to="/auth/register">
+          </NuxtLinkLocale>
+          <NuxtLinkLocale to="/auth/register">
             <Button>{{ t('common.register') }}</Button>
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </nav>
     </header>
@@ -137,12 +137,12 @@ const themeIcon = computed(() => {
             &copy; {{ new Date().getFullYear() }} haex.space. {{ t('common.allRightsReserved') }}
           </p>
           <div class="flex gap-6 text-sm text-muted-foreground">
-            <NuxtLink to="/privacy" class="hover:text-foreground transition-colors">
+            <NuxtLinkLocale to="/privacy" class="hover:text-foreground transition-colors">
               {{ t('common.privacy') }}
-            </NuxtLink>
-            <NuxtLink to="/terms" class="hover:text-foreground transition-colors">
+            </NuxtLinkLocale>
+            <NuxtLinkLocale to="/terms" class="hover:text-foreground transition-colors">
               {{ t('common.terms') }}
-            </NuxtLink>
+            </NuxtLinkLocale>
             <a href="https://github.com/haex-space" target="_blank" class="hover:text-foreground transition-colors">
               GitHub
             </a>

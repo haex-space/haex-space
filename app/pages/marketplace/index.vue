@@ -84,9 +84,9 @@ const categories = ref([
       <section class="container mx-auto px-4 py-12">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-semibold">{{ t('marketplace.featured') }}</h2>
-          <NuxtLink to="/marketplace/all" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <NuxtLinkLocale to="/marketplace/all" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
             {{ t('common.viewAll') }}
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
           <NuxtLink

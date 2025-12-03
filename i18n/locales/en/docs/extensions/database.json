@@ -1,0 +1,80 @@
+{
+  "docs": {
+    "database": {
+      "title": "Database",
+      "subtitle": "Learn how to use SQLite databases in your extension with migrations, CRDT sync, and Drizzle ORM.",
+      "toc": {
+        "overview": "Overview",
+        "tableNaming": "Table Naming",
+        "creatingTables": "Creating Tables",
+        "migrations": "Migrations",
+        "queries": "Queries",
+        "crdtSync": "CRDT Sync",
+        "drizzleOrm": "Drizzle ORM"
+      },
+      "features": {
+        "sqlite": {
+          "title": "Full SQLite",
+          "description": "Complete SQLite support with all standard SQL features"
+        },
+        "namespaced": {
+          "title": "Namespaced Tables",
+          "description": "Tables are automatically prefixed to prevent conflicts"
+        },
+        "migrations": {
+          "title": "Migrations",
+          "description": "Version-controlled schema changes with automatic tracking"
+        },
+        "crdt": {
+          "title": "CRDT Sync",
+          "description": "Conflict-free sync across devices using CRDTs"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "Extensions have access to a SQLite database with automatic table namespacing. Your tables are prefixed with your public key to prevent conflicts with other extensions.",
+          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions.",
+          "systemTablesNote": "System tables (prefixed with haex_) are protected and cannot be accessed by extensions, even with wildcard patterns."
+        },
+        "tableNaming": {
+          "title": "Table Naming",
+          "intro": "Tables are automatically namespaced with the pattern:",
+          "helper": "Use the getTableName() helper to get the full prefixed name:"
+        },
+        "creatingTables": {
+          "title": "Creating Tables",
+          "intro": "Create tables using the onSetup hook to ensure they exist before your extension runs:",
+          "note": "The onSetup callback runs once when your extension initializes. Always call setupComplete() after registering your setup hooks."
+        },
+        "migrations": {
+          "title": "Migrations",
+          "intro": "Use migrations to evolve your database schema over time. Migrations are tracked and only run once:",
+          "warning": "Migration names must be unique. Once a migration has run, its SQL cannot be changed. Add a new migration for schema changes."
+        },
+        "queries": {
+          "title": "Queries & Mutations",
+          "intro": "The SDK provides methods for all common database operations:",
+          "transactions": "Transactions"
+        },
+        "crdtSync": {
+          "title": "CRDT Sync",
+          "intro": "haex-vault automatically adds these columns to all tables for sync support. You don't need to define them:",
+          "column": "Column",
+          "type": "Type",
+          "purpose": "Purpose",
+          "timestampDesc": "Logical timestamp for ordering operations",
+          "hlcsDesc": "Hybrid logical clock state for each column",
+          "deletedDesc": "Soft delete flag (0 = active, 1 = deleted)",
+          "warning": "Do not create columns starting with 'haex_' in your schema. These are reserved and managed automatically by haex-vault."
+        },
+        "drizzleOrm": {
+          "title": "Drizzle ORM",
+          "intro": "For type-safe database access, use the built-in Drizzle ORM integration:",
+          "setup": "Schema Definition",
+          "queries": "Type-Safe Queries"
+        }
+      }
+    }
+  }
+}

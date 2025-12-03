@@ -1,0 +1,45 @@
+{
+  "docs": {
+    "sdkFilesystem": {
+      "title": "Filesystem API",
+      "subtitle": "Dateien über native Systemdialoge speichern und öffnen.",
+      "toc": {
+        "overview": "Übersicht",
+        "saveFile": "Datei speichern",
+        "openFile": "Datei öffnen",
+        "showImage": "Bild anzeigen",
+        "types": "Typen"
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Die Filesystem API ermöglicht deiner Extension, Dateien über native Systemdialoge zu speichern und zu öffnen. Alle Operationen erfordern Benutzerinteraktion und gewährleisten Sicherheit und Transparenz.",
+          "note": "Alle Dateisystemoperationen zeigen dem Benutzer native Dialoge. Es gibt keinen stillen Dateizugriff."
+        },
+        "saveFile": {
+          "title": "Datei speichern",
+          "intro": "Speichere Daten in einer Datei mit dem nativen Speicherdialog:",
+          "text": "Textdatei speichern",
+          "json": "JSON-Datei speichern",
+          "binary": "Binärdaten speichern"
+        },
+        "openFile": {
+          "title": "Datei öffnen",
+          "intro": "Öffne Dateien mit dem nativen Dateiauswahldialog:",
+          "single": "Einzelne Datei öffnen",
+          "multiple": "Mehrere Dateien öffnen",
+          "json": "JSON öffnen und parsen"
+        },
+        "showImage": {
+          "title": "Bildauswahl",
+          "intro": "Öffne eine Bildauswahl mit optionaler Größenanpassung:",
+          "note": "Für showImageAsync sind keine Berechtigungen erforderlich, da es einen Systemdialog verwendet."
+        },
+        "types": {
+          "title": "Typdefinitionen",
+          "intro": "TypeScript-Interfaces für Dateisystemoperationen:"
+        }
+      }
+    }
+  }
+}

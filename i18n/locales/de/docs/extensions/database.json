@@ -1,0 +1,80 @@
+{
+  "docs": {
+    "database": {
+      "title": "Datenbank",
+      "subtitle": "Lerne, wie du SQLite-Datenbanken in deiner Extension mit Migrationen, CRDT-Sync und Drizzle ORM verwendest.",
+      "toc": {
+        "overview": "Übersicht",
+        "tableNaming": "Tabellenbenennung",
+        "creatingTables": "Tabellen erstellen",
+        "migrations": "Migrationen",
+        "queries": "Abfragen",
+        "crdtSync": "CRDT-Sync",
+        "drizzleOrm": "Drizzle ORM"
+      },
+      "features": {
+        "sqlite": {
+          "title": "Vollständiges SQLite",
+          "description": "Komplette SQLite-Unterstützung mit allen Standard-SQL-Funktionen"
+        },
+        "namespaced": {
+          "title": "Namespaced Tabellen",
+          "description": "Tabellen werden automatisch prefixed, um Konflikte zu vermeiden"
+        },
+        "migrations": {
+          "title": "Migrationen",
+          "description": "Versionskontrollierte Schema-Änderungen mit automatischem Tracking"
+        },
+        "crdt": {
+          "title": "CRDT-Sync",
+          "description": "Konfliktfreie Synchronisation über Geräte mit CRDTs"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Extensions haben Zugriff auf eine SQLite-Datenbank mit automatischem Tabellen-Namespacing. Deine Tabellen werden mit deinem Public Key prefixed, um Konflikte mit anderen Extensions zu vermeiden.",
+          "ownTablesNote": "Extensions können ihre eigenen Tabellen innerhalb ihres Namespaces ohne Berechtigungen erstellen, lesen und ändern. Berechtigungen sind nur erforderlich, wenn auf Tabellen anderer Extensions zugegriffen wird.",
+          "systemTablesNote": "Systemtabellen (mit haex_ prefixed) sind geschützt und können von Extensions nicht zugegriffen werden, auch nicht mit Wildcard-Patterns."
+        },
+        "tableNaming": {
+          "title": "Tabellenbenennung",
+          "intro": "Tabellen werden automatisch mit folgendem Pattern namespaced:",
+          "helper": "Verwende den getTableName() Helper, um den vollständig prefixed Namen zu erhalten:"
+        },
+        "creatingTables": {
+          "title": "Tabellen erstellen",
+          "intro": "Erstelle Tabellen mit dem onSetup Hook, um sicherzustellen, dass sie existieren, bevor deine Extension läuft:",
+          "note": "Der onSetup Callback läuft einmal, wenn deine Extension initialisiert wird. Rufe immer setupComplete() auf, nachdem du deine Setup-Hooks registriert hast."
+        },
+        "migrations": {
+          "title": "Migrationen",
+          "intro": "Verwende Migrationen, um dein Datenbankschema im Laufe der Zeit zu entwickeln. Migrationen werden getrackt und nur einmal ausgeführt:",
+          "warning": "Migrationsnamen müssen eindeutig sein. Sobald eine Migration ausgeführt wurde, kann ihr SQL nicht mehr geändert werden. Füge eine neue Migration für Schema-Änderungen hinzu."
+        },
+        "queries": {
+          "title": "Abfragen & Mutationen",
+          "intro": "Das SDK bietet Methoden für alle gängigen Datenbankoperationen:",
+          "transactions": "Transaktionen"
+        },
+        "crdtSync": {
+          "title": "CRDT-Sync",
+          "intro": "haex-vault fügt automatisch diese Spalten zu allen Tabellen für Sync-Unterstützung hinzu. Du musst sie nicht definieren:",
+          "column": "Spalte",
+          "type": "Typ",
+          "purpose": "Zweck",
+          "timestampDesc": "Logischer Zeitstempel für die Operationsreihenfolge",
+          "hlcsDesc": "Hybrid Logical Clock Status für jede Spalte",
+          "deletedDesc": "Soft-Delete-Flag (0 = aktiv, 1 = gelöscht)",
+          "warning": "Erstelle keine Spalten, die mit 'haex_' in deinem Schema beginnen. Diese sind reserviert und werden automatisch von haex-vault verwaltet."
+        },
+        "drizzleOrm": {
+          "title": "Drizzle ORM",
+          "intro": "Für typsicheren Datenbankzugriff verwende die integrierte Drizzle ORM-Integration:",
+          "setup": "Schema-Definition",
+          "queries": "Typsichere Abfragen"
+        }
+      }
+    }
+  }
+}

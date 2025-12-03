@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "checkEmail": {
+      "title": "E-Mail überprüfen",
+      "subtitle": "Wir haben dir einen Bestätigungslink gesendet",
+      "description": "Klicke auf den Link in der E-Mail, um dein Konto zu verifizieren. Falls du sie nicht siehst, prüfe deinen Spam-Ordner.",
+      "backToLogin": "Zurück zur Anmeldung"
+    }
+  }
+}

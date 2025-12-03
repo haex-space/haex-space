@@ -1,0 +1,75 @@
+{
+  "docs": {
+    "manifest": {
+      "title": "Manifest-Referenz",
+      "subtitle": "Vollständige Referenz für die Extension manifest.json Dateistruktur und alle verfügbaren Felder.",
+      "required": "erforderlich",
+      "toc": {
+        "overview": "Übersicht",
+        "requiredFields": "Erforderliche Felder",
+        "optionalFields": "Optionale Felder",
+        "displayModes": "Anzeigemodi",
+        "permissions": "Berechtigungen",
+        "completeExample": "Vollständiges Beispiel"
+      },
+      "table": {
+        "field": "Feld",
+        "type": "Typ",
+        "default": "Standard",
+        "description": "Beschreibung"
+      },
+      "fields": {
+        "name": "Eindeutiger Bezeichner für deine Extension (Kleinbuchstaben, alphanumerisch, Bindestriche)",
+        "version": "Semantische Versionszeichenkette (z.B. 1.0.0)",
+        "publicKey": "Ed25519 Public Key (64 Hex-Zeichen, generiert durch haex init)",
+        "author": "Autorenname, der im Marketplace angezeigt wird",
+        "description": "Menschenlesbare Beschreibung deiner Extension",
+        "homepage": "URL zur Homepage oder Repository deiner Extension",
+        "entry": "HTML-Einstiegspunkt relativ zum Build-Output",
+        "icon": "Pfad zum Extension-Icon (relativ zum haextension-Ordner)",
+        "displayMode": "Wie die Extension in haex-vault angezeigt wird",
+        "singleInstance": "Wenn true, kann nur eine Instanz gleichzeitig laufen",
+        "signature": "Ed25519-Signatur (wird automatisch beim Signieren hinzugefügt)"
+      },
+      "displayModes": {
+        "auto": "Wählt automatisch den besten Anzeigemodus basierend auf dem Kontext",
+        "window": "Als separates Fenster mit nativen Fenstersteuerungen anzeigen",
+        "iframe": "Als eingebetteter iframe innerhalb von haex-vault anzeigen"
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Die manifest.json Datei ist das Herzstück deiner Extension. Sie definiert Metadaten, Berechtigungen und Konfiguration. Die minimal erforderlichen Felder sind:"
+        },
+        "requiredFields": {
+          "title": "Erforderliche Felder",
+          "intro": "Diese Felder müssen in jedem Manifest vorhanden sein:"
+        },
+        "optionalFields": {
+          "title": "Optionale Felder",
+          "intro": "Diese Felder erweitern deine Extension, sind aber nicht erforderlich:"
+        },
+        "displayModes": {
+          "title": "Anzeigemodi",
+          "intro": "Das display_mode Feld steuert, wie deine Extension in haex-vault erscheint:"
+        },
+        "permissions": {
+          "title": "Berechtigungen",
+          "intro": "Deklariere alle Berechtigungen, die deine Extension benötigt, im Manifest. Benutzer werden diese während der Installation überprüfen.",
+          "database": "Datenbank-Berechtigungen",
+          "databaseDesc": "Definiere, auf welche Tabellen deine Extension lesend oder schreibend zugreifen kann:",
+          "filesystem": "Dateisystem-Berechtigungen",
+          "filesystemDesc": "Gib Dateipfade und Operationen mit Glob-Patterns an:",
+          "http": "HTTP-Berechtigungen",
+          "httpDesc": "Deklariere URLs, von denen deine Extension Daten abrufen kann, mit Glob-Patterns:",
+          "note": "Für detaillierte Berechtigungsinformationen siehe den",
+          "learnMore": "Berechtigungs-Leitfaden"
+        },
+        "completeExample": {
+          "title": "Vollständiges Beispiel",
+          "intro": "Hier ist ein vollständiges Manifest mit allen häufig verwendeten Feldern:"
+        }
+      }
+    }
+  }
+}

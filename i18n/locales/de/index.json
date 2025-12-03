@@ -1,0 +1,42 @@
+{
+  "home": {
+    "badge": "Ende-zu-Ende verschlüsselt",
+    "title": "Deine Daten, Dein Weg",
+    "subtitle": "Sichere Synchronisation über all deine Geräte mit Ende-zu-Ende-Verschlüsselung. Erweitere deinen Workflow mit leistungsstarken Extensions aus dem Marketplace.",
+    "cta": {
+      "download": "Download",
+      "browseExtensions": "Extensions entdecken"
+    },
+    "features": {
+      "encryption": {
+        "title": "Ende-zu-Ende verschlüsselt",
+        "description": "Alle Inhalte werden auf deinem Gerät verschlüsselt. Nur Metadaten (Tabelle, Spalte, Zeitstempel) bleiben für effizientes Sync sichtbar."
+      },
+      "privacy": {
+        "title": "Privacy First",
+        "description": "Deine Daten gehören dir. Keine Tracking, keine Werbung, keine Datenverkäufe. Volle Kontrolle über deine Informationen."
+      },
+      "offline": {
+        "title": "100% Offline-fähig",
+        "description": "Die App funktioniert komplett ohne Internet. Sync ist optional – nutze unsere Server oder hoste deinen eigenen."
+      },
+      "sync": {
+        "title": "Nahtlose Synchronisation",
+        "description": "Echtzeit-Synchronisation über all deine Geräte. Änderungen werden sofort synchronisiert, egal wo du bist."
+      },
+      "extensions": {
+        "title": "Extension Marketplace",
+        "description": "Entdecke und installiere Extensions, um dein Erlebnis anzupassen. Oder erstelle und veröffentliche deine eigenen."
+      },
+      "crossPlatform": {
+        "title": "Eine App, alle Plattformen",
+        "description": "Entwickler bauen eine Web-Extension und erreichen damit sofort alle Plattformen. Keine plattformspezifischen Anpassungen nötig."
+      }
+    },
+    "marketplaceCta": {
+      "title": "Entdecke den Marketplace",
+      "description": "Durchstöbere unsere wachsende Sammlung von Extensions, die von der Community erstellt wurden. Finde Tools, die deine Produktivität steigern.",
+      "button": "Alle Extensions anzeigen"
+    }
+  }
+}

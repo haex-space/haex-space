@@ -1,0 +1,14 @@
+{
+  "marketplace": {
+    "title": "Extension Marketplace",
+    "subtitle": "Discover extensions built by the community to enhance your haex.space experience.",
+    "categories": "Categories",
+    "featured": "Featured Extensions",
+    "by": "by",
+    "publishCta": {
+      "title": "Build Your Own Extension",
+      "description": "Have an idea? Create and publish your own extensions to share with the community.",
+      "button": "Developer Documentation"
+    }
+  }
+}

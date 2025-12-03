@@ -1,0 +1,65 @@
+{
+  "docs": {
+    "sdk": {
+      "title": "SDK Overview",
+      "subtitle": "Complete reference for the haex-vault SDK APIs and framework integrations.",
+      "toc": {
+        "overview": "Overview",
+        "installation": "Installation",
+        "frameworkSetup": "Framework Setup",
+        "clientApi": "Client API",
+        "context": "Context",
+        "events": "Events"
+      },
+      "modules": {
+        "database": {
+          "title": "Database API",
+          "description": "Query and mutate SQLite data with migrations and Drizzle ORM"
+        },
+        "storage": {
+          "title": "Storage API",
+          "description": "Simple key-value storage for settings and preferences"
+        },
+        "filesystem": {
+          "title": "Filesystem API",
+          "description": "Save and open files through native dialogs"
+        },
+        "web": {
+          "title": "Web API",
+          "description": "Make HTTP requests to external APIs"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "The haex-vault SDK provides a complete API for building extensions. It includes database access, storage, filesystem operations, web requests, and more."
+        },
+        "installation": {
+          "title": "Installation",
+          "intro": "Install the SDK using your preferred package manager:"
+        },
+        "frameworkSetup": {
+          "title": "Framework Setup",
+          "intro": "The SDK provides adapters for popular frameworks. Choose your framework below:",
+          "setup": "Setup",
+          "usage": "Usage"
+        },
+        "clientApi": {
+          "title": "Client API Overview",
+          "intro": "The client provides access to all SDK features:"
+        },
+        "context": {
+          "title": "Application Context",
+          "intro": "Access the current theme, locale, and platform. The context updates automatically when the user changes settings.",
+          "themeDesc": "Current theme: light, dark, or system",
+          "localeDesc": "Current locale code (en, de, etc.)",
+          "platformDesc": "Operating system: windows, macos, linux, ios, android"
+        },
+        "events": {
+          "title": "Events",
+          "intro": "Listen for events from haex-vault:"
+        }
+      }
+    }
+  }
+}

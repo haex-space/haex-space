@@ -1,0 +1,36 @@
+{
+  "download": {
+    "badge": "Plattformübergreifend",
+    "title": "haex-vault herunterladen",
+    "subtitle": "Sicherer, verschlüsselter Speicher für all deine Daten. Verfügbar für Desktop und Mobile.",
+    "currentVersion": "Aktuelle Version",
+    "allReleases": "Alle Releases",
+    "desktop": "Desktop",
+    "mobile": "Mobil",
+    "comingSoon": "Demnächst verfügbar",
+    "whyVault": "Warum haex-vault?",
+    "features": {
+      "encryption": {
+        "title": "Ende-zu-Ende-Verschlüsselung",
+        "description": "Deine Daten werden lokal verschlüsselt, bevor sie synchronisiert werden. Nur du hast die Schlüssel."
+      },
+      "sync": {
+        "title": "Nahtlose Synchronisation",
+        "description": "Greife von jedem Gerät auf deine Daten zu. Änderungen werden sofort synchronisiert."
+      },
+      "offline": {
+        "title": "Offline First",
+        "description": "Funktioniert ohne Internet. Deine Daten sind immer verfügbar, auch offline."
+      }
+    },
+    "requirements": {
+      "title": "Systemanforderungen",
+      "desktop": "Desktop-Betriebssystem",
+      "mobile": "Mobiles Betriebssystem",
+      "ram": "Arbeitsspeicher",
+      "disk": "Speicherplatz",
+      "arch": "Architektur",
+      "recommended": "empfohlen"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "docs": {
+    "sdkWeb": {
+      "title": "Web API",
+      "subtitle": "Make HTTP requests to external APIs.",
+      "toc": {
+        "overview": "Overview",
+        "fetch": "Fetch",
+        "convenienceMethods": "Convenience Methods",
+        "openUrl": "Open URL",
+        "permissions": "Permissions",
+        "types": "Types"
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "The Web API allows your extension to make HTTP requests to external APIs and open URLs in the user's browser.",
+          "warning": "All URLs must be declared in your manifest permissions. Requests to undeclared URLs will fail."
+        },
+        "fetch": {
+          "title": "Making Requests",
+          "intro": "The fetchAsync method provides full control over HTTP requests:",
+          "basic": "Basic Request",
+          "headers": "Request with Headers"
+        },
+        "convenienceMethods": {
+          "title": "Convenience Methods",
+          "intro": "These methods simplify common fetch patterns:"
+        },
+        "openUrl": {
+          "title": "Open URL in Browser",
+          "intro": "Open a URL in the user's default browser:"
+        },
+        "permissions": {
+          "title": "HTTP Permissions",
+          "intro": "All URLs must be declared in your manifest. Check permissions before making requests:",
+          "note": "For detailed permission information, see the",
+          "learnMore": "Permissions Guide"
+        },
+        "types": {
+          "title": "Type Definitions",
+          "intro": "TypeScript interfaces for web requests:"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "docs": {
+    "permissions": {
+      "title": "Permissions",
+      "subtitle": "Understand how the permission system works and how to declare permissions in your extension.",
+      "toc": {
+        "overview": "Overview",
+        "permissionTypes": "Permission Types",
+        "database": "Database",
+        "filesystem": "Filesystem",
+        "http": "HTTP",
+        "checking": "Checking Permissions",
+        "requesting": "Requesting Permissions",
+        "bestPractices": "Best Practices"
+      },
+      "status": {
+        "granted": "Granted",
+        "grantedDesc": "Permission is approved",
+        "denied": "Denied",
+        "deniedDesc": "Permission was rejected",
+        "ask": "Ask",
+        "askDesc": "Will prompt the user"
+      },
+      "types": {
+        "database": {
+          "name": "Database",
+          "description": "Read and write data to SQLite tables"
+        },
+        "filesystem": {
+          "name": "Filesystem",
+          "description": "Save and open files through native dialogs"
+        },
+        "http": {
+          "name": "HTTP",
+          "description": "Make web requests to external APIs"
+        },
+        "shell": {
+          "name": "Shell",
+          "description": "Execute system commands (restricted)"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "Extensions must declare all required permissions in their manifest.json. Users review and approve these permissions during installation. This ensures transparency and gives users control over what extensions can access."
+        },
+        "types": {
+          "title": "Permission Types"
+        },
+        "database": {
+          "title": "Database Permissions",
+          "intro": "Database permissions control access to tables from other extensions. The target must be the full table name in the format {publicKey}__{extensionName}__{tableName}:",
+          "ownTablesNote": "Extensions can create, read, and modify their own tables within their namespace without any permissions. Permissions are only required when accessing tables from other extensions.",
+          "accessTitle": "Accessing Dependency Tables"
+        },
+        "filesystem": {
+          "title": "Filesystem Permissions",
+          "intro": "Filesystem permissions use glob patterns to specify which files your extension can access:",
+          "note": "All filesystem operations show native dialogs to the user, providing an additional layer of security."
+        },
+        "http": {
+          "title": "HTTP Permissions",
+          "intro": "HTTP permissions specify which URLs your extension can make requests to:",
+          "patterns": "Pattern Syntax",
+          "patternMultiple": "Matches any path segments",
+          "patternSingle": "Matches a single path segment"
+        },
+        "checking": {
+          "title": "Checking Permissions",
+          "intro": "Before performing an operation, you can check if the permission is granted:"
+        },
+        "requesting": {
+          "title": "Requesting Permissions",
+          "intro": "You can request permissions at runtime, which will prompt the user:",
+          "statusTitle": "Permission Status Values"
+        },
+        "bestPractices": {
+          "title": "Best Practices",
+          "warning": "Extensions that request excessive permissions may be flagged during marketplace review."
+        }
+      },
+      "bestPractices": {
+        "minimal": {
+          "title": "Request Minimal Permissions",
+          "description": "Only request permissions your extension actually needs. Users are more likely to install extensions with fewer permission requests."
+        },
+        "specific": {
+          "title": "Be Specific",
+          "description": "Use specific table names and URL patterns instead of wildcards. This makes your extension's behavior more predictable and trustworthy."
+        },
+        "explain": {
+          "title": "Explain Why",
+          "description": "When requesting permissions at runtime, provide a clear reason why the permission is needed."
+        },
+        "graceful": {
+          "title": "Handle Denials Gracefully",
+          "description": "If a permission is denied, provide a good user experience. Show a helpful message and offer alternatives if possible."
+        }
+      }
+    }
+  }
+}

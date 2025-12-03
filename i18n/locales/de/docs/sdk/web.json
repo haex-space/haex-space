@@ -1,0 +1,47 @@
+{
+  "docs": {
+    "sdkWeb": {
+      "title": "Web API",
+      "subtitle": "HTTP-Anfragen an externe APIs stellen.",
+      "toc": {
+        "overview": "Übersicht",
+        "fetch": "Fetch",
+        "convenienceMethods": "Convenience-Methoden",
+        "openUrl": "URL öffnen",
+        "permissions": "Berechtigungen",
+        "types": "Typen"
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "Die Web API ermöglicht deiner Extension, HTTP-Anfragen an externe APIs zu stellen und URLs im Browser des Benutzers zu öffnen.",
+          "warning": "Alle URLs müssen in deinen Manifest-Berechtigungen deklariert sein. Anfragen an nicht deklarierte URLs werden fehlschlagen."
+        },
+        "fetch": {
+          "title": "Anfragen stellen",
+          "intro": "Die fetchAsync-Methode bietet vollständige Kontrolle über HTTP-Anfragen:",
+          "basic": "Einfache Anfrage",
+          "headers": "Anfrage mit Headers"
+        },
+        "convenienceMethods": {
+          "title": "Convenience-Methoden",
+          "intro": "Diese Methoden vereinfachen gängige Fetch-Patterns:"
+        },
+        "openUrl": {
+          "title": "URL im Browser öffnen",
+          "intro": "Öffne eine URL im Standardbrowser des Benutzers:"
+        },
+        "permissions": {
+          "title": "HTTP-Berechtigungen",
+          "intro": "Alle URLs müssen in deinem Manifest deklariert sein. Prüfe Berechtigungen vor dem Stellen von Anfragen:",
+          "note": "Für detaillierte Berechtigungsinformationen siehe den",
+          "learnMore": "Berechtigungs-Leitfaden"
+        },
+        "types": {
+          "title": "Typdefinitionen",
+          "intro": "TypeScript-Interfaces für Web-Anfragen:"
+        }
+      }
+    }
+  }
+}

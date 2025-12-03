@@ -1,0 +1,103 @@
+{
+  "docs": {
+    "publishing": {
+      "title": "Publishing",
+      "subtitle": "Sign, package, and publish your extension to the haex.space marketplace.",
+      "toc": {
+        "overview": "Overview",
+        "signing": "Signing",
+        "building": "Building",
+        "packaging": "Packaging",
+        "submitting": "Submitting",
+        "updates": "Updates"
+      },
+      "steps": {
+        "test": {
+          "title": "Test Thoroughly",
+          "description": "Test on all target platforms and verify permissions"
+        },
+        "prepare": {
+          "title": "Prepare Assets",
+          "description": "Create screenshots, icon, and description"
+        },
+        "submit": {
+          "title": "Submit",
+          "description": "Upload your .xt file to the marketplace"
+        },
+        "review": {
+          "title": "Review",
+          "description": "Wait for security and quality review (2-3 days)"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "Publishing your extension to the marketplace involves signing it with your private key, packaging it into a .xt file, and submitting it for review."
+        },
+        "signing": {
+          "title": "Cryptographic Signing",
+          "intro": "Every extension must be signed with an Ed25519 keypair. This ensures users can verify the extension came from you and hasn't been tampered with.",
+          "keygen": "Generate a Keypair",
+          "keygenDesc": "If you haven't already, generate a keypair:",
+          "protect": "Protect Your Private Key",
+          "warning": {
+            "title": "Critical",
+            "description": "Never commit private.key to version control. If you lose this key, you cannot update your extension and must publish as a new extension with a different identity."
+          },
+          "about": {
+            "title": "About Ed25519",
+            "algorithm": "Algorithm: Ed25519 (elliptic curve)",
+            "publicKey": "Public key: 64 hex characters (included in manifest)",
+            "privateKey": "Private key: 256 hex characters (keep secret!)",
+            "signature": "Signature: 128 hex characters (added during signing)"
+          }
+        },
+        "building": {
+          "title": "Building",
+          "intro": "Build your extension for production and sign it:",
+          "npm": "NPM Scripts",
+          "npmDesc": "Add convenient scripts to your package.json:"
+        },
+        "packaging": {
+          "title": "Package Contents",
+          "intro": "The signing process creates a .xt file (ZIP archive) containing:",
+          "contents": "Package Contents",
+          "note": "The private.key is never included in the package."
+        },
+        "submitting": {
+          "title": "Submitting to Marketplace",
+          "intro": "Follow these steps to submit your extension:",
+          "step1": {
+            "title": "Create a Developer Account",
+            "description": "Sign up or log in at haex.space/developers"
+          },
+          "step2": {
+            "title": "Prepare Your Listing",
+            "description": "Write a compelling description, create screenshots, and prepare your icon (256x256 PNG recommended)"
+          },
+          "step3": {
+            "title": "Upload Extension",
+            "description": "Upload your .xt file and fill in the listing details"
+          },
+          "step4": {
+            "title": "Submit for Review",
+            "description": "Submit and wait for our security review (typically 2-3 business days)"
+          },
+          "checklist": {
+            "title": "Pre-submission Checklist",
+            "item1": "Extension tested on all target platforms",
+            "item2": "All permissions are necessary and documented",
+            "item3": "Icon and screenshots are high quality",
+            "item4": "Description is clear and accurate",
+            "item5": "Private key is backed up securely"
+          }
+        },
+        "updates": {
+          "title": "Publishing Updates",
+          "intro": "To update your extension, increment the version in manifest.json and sign again:",
+          "warning": "You must use the same private key that signed the original extension. Users will only receive updates from the same publisher."
+        }
+      }
+    }
+  }
+}

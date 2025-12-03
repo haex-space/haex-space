@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "confirm": {
+      "loading": {
+        "title": "Verifying...",
+        "subtitle": "Please wait while we verify your email"
+      },
+      "success": {
+        "title": "Email verified!",
+        "subtitle": "Your account has been verified successfully",
+        "redirecting": "Redirecting you to the dashboard..."
+      },
+      "error": {
+        "title": "Verification failed",
+        "description": "The verification link may have expired or is invalid.",
+        "tryAgain": "Try again",
+        "login": "Sign in"
+      },
+      "errors": {
+        "noSession": "No active session found",
+        "failed": "Verification failed"
+      }
+    }
+  }
+}

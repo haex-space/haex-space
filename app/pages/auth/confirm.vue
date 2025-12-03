@@ -6,6 +6,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 useSeoMeta({
   title: 'Email Verification - haex.space',
@@ -31,7 +32,7 @@ onMounted(async () => {
       status.value = 'success'
       // Redirect to dashboard after a short delay
       setTimeout(() => {
-        navigateTo('/dashboard')
+        navigateTo(localePath('/dashboard'))
       }, 2000)
     } else {
       status.value = 'error'
@@ -92,16 +93,16 @@ onMounted(async () => {
             {{ t('auth.confirm.error.description') }}
           </p>
           <div class="flex gap-2 justify-center">
-            <NuxtLink to="/auth/register">
+            <NuxtLinkLocale to="/auth/register">
               <Button variant="outline">
                 {{ t('auth.confirm.error.tryAgain') }}
               </Button>
-            </NuxtLink>
-            <NuxtLink to="/auth/login">
+            </NuxtLinkLocale>
+            <NuxtLinkLocale to="/auth/login">
               <Button>
                 {{ t('auth.confirm.error.login') }}
               </Button>
-            </NuxtLink>
+            </NuxtLinkLocale>
           </div>
         </div>
       </template>

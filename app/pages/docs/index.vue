@@ -62,7 +62,7 @@ const guides = computed(() => [
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto px-6 py-12">
+  <div>
     <!-- Header -->
     <div class="mb-12">
       <Badge class="mb-4">{{ t('docs.badge') }}</Badge>
@@ -132,7 +132,7 @@ const guides = computed(() => [
       <p class="text-muted-foreground mb-6">{{ t('docs.intro.sections.gettingStarted.intro') }}</p>
 
       <div class="grid gap-4">
-        <NuxtLink
+        <NuxtLinkLocale
           v-for="guide in guides"
           :key="guide.href"
           :to="guide.href"
@@ -154,16 +154,16 @@ const guides = computed(() => [
               </div>
             </CardContent>
           </Card>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
     </DocsSection>
 
     <!-- Navigation -->
     <div class="flex justify-end pt-8 border-t mt-12">
-      <NuxtLink to="/docs/quickstart" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+      <NuxtLinkLocale to="/docs/quickstart" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
         <span>{{ t('docs.nav.quickstart') }}</span>
         <span>&rarr;</span>
-      </NuxtLink>
+      </NuxtLinkLocale>
     </div>
   </div>
 </template>

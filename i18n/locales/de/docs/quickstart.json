@@ -1,0 +1,75 @@
+{
+  "docs": {
+    "quickstart": {
+      "title": "Schnellstart",
+      "subtitle": "Bringe deine erste haex-vault Extension in nur 5 Minuten zum Laufen.",
+      "toc": {
+        "overview": "Übersicht",
+        "prerequisites": "Voraussetzungen",
+        "createProject": "Projekt erstellen",
+        "runExtension": "Extension ausführen",
+        "nextSteps": "Nächste Schritte"
+      },
+      "sections": {
+        "overview": {
+          "title": "Übersicht",
+          "intro": "In dieser Anleitung erstellst du eine einfache Extension, die die wichtigsten SDK-Funktionen demonstriert. Am Ende hast du eine funktionsfähige Extension, die zur Entwicklung bereit ist.",
+          "minutes": "Minuten bis zur Fertigstellung",
+          "commands": "Nur wenige Befehle"
+        },
+        "prerequisites": {
+          "title": "Voraussetzungen",
+          "intro": "Stelle vor dem Start sicher, dass Folgendes installiert ist:",
+          "node": "JavaScript-Runtime zum Erstellen von Extensions",
+          "vault": "Zum Testen deiner Extension erforderlich",
+          "download": "Download"
+        },
+        "createProject": {
+          "title": "Projekt erstellen",
+          "intro": "Wir verwenden Vite mit Vue, aber du kannst jedes Framework nutzen (React, Svelte oder Vanilla JS).",
+          "step1": {
+            "title": "Projekt initialisieren",
+            "description": "Erstelle ein neues Vite-Projekt und installiere das SDK:"
+          },
+          "step2": {
+            "title": "Plugin konfigurieren",
+            "description": "Aktualisiere deine main.ts, um das haex-Plugin zu verwenden:"
+          },
+          "step3": {
+            "title": "SDK verwenden",
+            "description": "Ersetze deine App.vue mit diesem Beispiel:"
+          },
+          "note": "Der haex init Befehl erstellt deine manifest.json, Schlüsselpaar und Icon-Dateien im haextension-Ordner."
+        },
+        "runExtension": {
+          "title": "Extension ausführen",
+          "intro": "Starte den Entwicklungsserver und lade deine Extension in haex-vault:",
+          "dev": "Entwicklungsmodus",
+          "loadInVault": "Öffne haex-vault und lade deine Extension von der Entwicklungs-URL (normalerweise http://localhost:5173).",
+          "build": "Für Produktion bauen",
+          "warning": "Bewahre deinen private.key sicher auf! Committe ihn niemals zur Versionskontrolle."
+        },
+        "nextSteps": {
+          "title": "Nächste Schritte",
+          "intro": "Jetzt, da du eine funktionierende Extension hast, erkunde diese Anleitungen, um mehr Funktionalität hinzuzufügen:",
+          "extensions": {
+            "title": "Extension erstellen",
+            "description": "Lerne über Manifest, Berechtigungen und alle SDK-Funktionen"
+          },
+          "sdk": {
+            "title": "SDK-Referenz",
+            "description": "Detaillierte API-Dokumentation für alle Module"
+          },
+          "database": {
+            "title": "Datenbank-Anleitung",
+            "description": "Daten mit SQLite und CRDT-Sync speichern und abfragen"
+          },
+          "publishing": {
+            "title": "Veröffentlichungs-Anleitung",
+            "description": "Extension signieren und im Marketplace veröffentlichen"
+          }
+        }
+      }
+    }
+  }
+}

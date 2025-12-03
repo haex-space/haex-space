@@ -1,0 +1,186 @@
+{
+  "docs": {
+    "extensions": {
+      "title": "Extension für haex-vault erstellen",
+      "subtitle": "Lerne, wie du leistungsstarke Extensions mit dem offiziellen SDK erstellst. Diese Anleitung führt dich durch den gesamten Prozess von der Einrichtung bis zur Veröffentlichung."
+    },
+    "sections": {
+      "overview": {
+        "title": "Übersicht",
+        "intro": "Das haex-vault SDK bietet ein vollständiges Framework zum Erstellen sicherer, kryptographisch signierter Extensions. Extensions laufen in Sandbox-Umgebungen mit granularen Berechtigungen und stellen sicher, dass Benutzerdaten geschützt bleiben, während leistungsstarke Funktionalität ermöglicht wird.",
+        "features": {
+          "database": {
+            "title": "Datenbankzugriff",
+            "description": "Vollständige SQLite-Datenbank mit Migrationen, CRDT-Sync-Unterstützung und Drizzle ORM-Integration."
+          },
+          "security": {
+            "title": "Kryptographische Sicherheit",
+            "description": "Ed25519-Signierung, berechtigungsbasierte Zugriffskontrolle und Sandbox-Ausführung."
+          },
+          "frameworks": {
+            "title": "Framework-Unterstützung",
+            "description": "Native Adapter für Vue, React, Svelte und Vanilla JavaScript."
+          },
+          "distribution": {
+            "title": "Einfache Verteilung",
+            "description": "Signieren, Paketieren und Veröffentlichen im Marketplace mit einfachen CLI-Befehlen."
+          }
+        }
+      },
+      "prerequisites": {
+        "title": "Voraussetzungen",
+        "nodejs": "JavaScript-Runtime zum Erstellen deiner Extension",
+        "or": "oder",
+        "packageManager": "Paketmanager deiner Wahl",
+        "vault": "Zur Extension-Tests installiert",
+        "download": "Download",
+        "webKnowledge": "Grundlegende Webentwicklungskenntnisse"
+      },
+      "quickstart": {
+        "title": "Schnellstart",
+        "intro": "Bringe eine neue Extension in wenigen Minuten zum Laufen. Wir verwenden Vite mit Vue, aber du kannst jedes Framework nutzen.",
+        "step1": {
+          "title": "Projekt erstellen & SDK installieren",
+          "description": "Dies erstellt ein neues Vite-Projekt, installiert das SDK und initialisiert die Extension-Struktur einschließlich Manifest und kryptographischer Schlüssel."
+        },
+        "step2": {
+          "title": "Private Key schützen",
+          "description": "Der haex init Befehl erstellt eine private.key Datei im haextension-Ordner. Dieser Schlüssel wird zum Signieren deiner Extension verwendet.",
+          "warning": {
+            "title": "Sicherheitswarnung",
+            "description": "Committe niemals deinen private.key zur Versionskontrolle. Füge ihn sofort zur .gitignore hinzu. Wenn du diesen Schlüssel verlierst, musst du einen neuen generieren und die Identität deiner Extension ändert sich."
+          }
+        },
+        "step3": {
+          "title": "Entwicklung starten",
+          "description": "Starte den Vite-Entwicklungsserver und lade deine Extension in haex-vault für Live-Entwicklung."
+        }
+      },
+      "projectStructure": {
+        "title": "Projektstruktur",
+        "intro": "Nach der Initialisierung hat dein Projekt folgende Struktur:",
+        "files": {
+          "manifest": "Extension-Metadaten und Berechtigungen",
+          "publicKey": "Die öffentliche Identität deiner Extension",
+          "privateKey": "Signierschlüssel (geheim halten!)",
+          "icon": "Extension-Icon",
+          "main": "Anwendungs-Einstiegspunkt",
+          "app": "Root-Komponente",
+          "config": "Build-Konfiguration"
+        }
+      },
+      "manifest": {
+        "title": "Extension Manifest",
+        "intro": "Die manifest.json Datei definiert die Metadaten, Berechtigungen und Konfiguration deiner Extension. Sie ist das Herzstück deiner Extension.",
+        "basic": "Einfaches Manifest",
+        "fields": {
+          "title": "Feld-Referenz",
+          "name": "Eindeutiger Bezeichner für deine Extension (Kleinbuchstaben, Bindestriche erlaubt)",
+          "version": "Semantische Version (major.minor.patch)",
+          "publicKey": "Dein Ed25519 Public Key (generiert durch haex init)",
+          "signature": "Kryptographische Signatur (wird beim Build hinzugefügt)",
+          "entry": "HTML-Einstiegspunkt relativ zum Build-Output",
+          "displayMode": "Wie die Extension angezeigt wird: 'auto', 'window' oder 'iframe'",
+          "singleInstance": "Wenn true, kann nur eine Instanz gleichzeitig laufen"
+        }
+      },
+      "sdkSetup": {
+        "title": "SDK-Integration",
+        "intro": "Das SDK bietet framework-spezifische Adapter für nahtlose Integration. Wähle unten dein Framework, um den Setup-Code zu sehen.",
+        "tip": {
+          "title": "Tipp",
+          "description": "Das SDK handhabt automatisch die Kommunikation mit haex-vault, Kontextänderungen und Fehlerbehandlung. Importiere und verwende einfach das Composable/Hook."
+        }
+      },
+      "database": {
+        "title": "Datenbank",
+        "intro": "Extensions haben Zugriff auf eine SQLite-Datenbank mit automatischem Tabellen-Namespacing. Deine Tabellen werden mit deinem Public Key prefixed, um Konflikte mit anderen Extensions zu vermeiden.",
+        "migrations": {
+          "title": "Migrationen",
+          "description": "Definiere dein Datenbankschema mit Migrationen. Migrationen werden automatisch ausgeführt und getrackt, um doppelte Ausführung zu verhindern."
+        },
+        "crdt": {
+          "title": "Reservierte Spalten",
+          "description": "haex-vault fügt automatisch CRDT-Sync-Spalten (haex_timestamp, haex_column_hlcs, haex_deleted) zu allen Tabellen hinzu. Erstelle keine Spalten, die mit 'haex_' beginnen, da sie überschrieben werden."
+        },
+        "queries": {
+          "title": "Abfragen & Mutationen"
+        },
+        "drizzle": {
+          "title": "Drizzle ORM-Integration",
+          "description": "Für typsichere Abfragen kannst du Drizzle ORM mit der integrierten SDK-Integration verwenden."
+        }
+      },
+      "storage": {
+        "title": "Key-Value-Storage",
+        "intro": "Für einfache Daten, die keine Datenbankfunktionen benötigen, verwende die Storage API. Sie bietet eine localStorage-ähnliche Schnittstelle, die auf deine Extension begrenzt ist."
+      },
+      "filesystem": {
+        "title": "Dateisystemzugriff",
+        "intro": "Extensions können Dateien über die Filesystem API speichern und öffnen. Alle Operationen zeigen dem Benutzer native Dialoge zur Sicherheit."
+      },
+      "webRequests": {
+        "title": "HTTP-Anfragen",
+        "intro": "Stelle HTTP-Anfragen an externe APIs mit der Web API. Alle Anfragen müssen an URLs gehen, die in deinen Manifest-Berechtigungen deklariert sind."
+      },
+      "permissions": {
+        "title": "Berechtigungen",
+        "intro": "Extensions müssen alle erforderlichen Berechtigungen im Manifest deklarieren. Benutzer überprüfen und genehmigen diese Berechtigungen während der Installation.",
+        "manifest": {
+          "title": "Berechtigungen deklarieren"
+        },
+        "operations": {
+          "title": "Berechtigungstypen",
+          "database": "Datenbankoperationen",
+          "filesystem": "Dateisystemoperationen",
+          "fsRead": "Dateien von angegebenen Pfaden lesen",
+          "fsReadWrite": "Dateien lesen und schreiben",
+          "fsDelete": "Dateien und Verzeichnisse löschen",
+          "http": "HTTP-Anfragen",
+          "httpDescription": "Verwende Glob-Patterns, um erlaubte URLs anzugeben. Verwende ** für Pfad-Wildcards und * für einzelne Segment-Wildcards."
+        },
+        "checking": {
+          "title": "Berechtigungen zur Laufzeit prüfen"
+        }
+      },
+      "context": {
+        "title": "Anwendungskontext",
+        "intro": "Greife auf das aktuelle Theme, Locale und Plattforminformationen zu. Der Kontext wird automatisch aktualisiert, wenn der Benutzer Einstellungen ändert."
+      },
+      "buildSign": {
+        "title": "Build & Signieren",
+        "intro": "Wenn du bereit bist, deine Extension zu verteilen, baue und signiere sie mit deinem Private Key.",
+        "warning": {
+          "title": "Wichtig",
+          "description": "Bewahre deinen Private Key sicher auf und erstelle ein Backup. Wenn du ihn verlierst, kannst du deine Extension nicht aktualisieren und musst als neue Extension mit einer anderen Identität veröffentlichen."
+        }
+      },
+      "publish": {
+        "title": "Veröffentlichung",
+        "intro": "Teile deine Extension mit der haex.space Community über den Marketplace.",
+        "steps": {
+          "step1": {
+            "title": "Gründlich testen",
+            "description": "Teste deine Extension auf allen Plattformen, die du unterstützen möchtest. Überprüfe, ob die Berechtigungen korrekt funktionieren."
+          },
+          "step2": {
+            "title": "Assets vorbereiten",
+            "description": "Erstelle Screenshots, schreibe eine überzeugende Beschreibung und bereite dein Extension-Icon vor."
+          },
+          "step3": {
+            "title": "Im Marketplace einreichen",
+            "description": "Lade deine .haextension Datei mit deinen Listing-Details im Marketplace hoch."
+          },
+          "step4": {
+            "title": "Review-Prozess",
+            "description": "Unser Team überprüft Extensions auf Sicherheit und Qualität. Typische Review-Zeit beträgt 2-3 Werktage."
+          }
+        }
+      },
+      "completeExample": {
+        "title": "Vollständiges Beispiel",
+        "intro": "Hier ist eine vollständige Passwort-Manager-Extension, die alle Konzepte zusammen zeigt:"
+      }
+    }
+  }
+}

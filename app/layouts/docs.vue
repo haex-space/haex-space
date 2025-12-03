@@ -4,6 +4,7 @@ import { BookOpen, Puzzle, Rocket, Settings, Shield, Database, Code, ExternalLin
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
+const localePath = useLocalePath()
 
 // Mobile sidebar state
 const leftSidebarOpen = ref(false)
@@ -88,7 +89,7 @@ const tableOfContents = useState<Array<{ id: string; title: string; level?: numb
 
 // Check if current nav item is active
 function isActive(href: string) {
-  return route.path === href
+  return route.path === localePath(href)
 }
 
 // Smooth scroll to section and update URL hash
@@ -122,9 +123,9 @@ function scrollToSection(id: string) {
             <Menu class="w-5 h-5" />
           </button>
 
-          <NuxtLink to="/" class="flex items-center gap-2">
+          <NuxtLinkLocale to="/" class="flex items-center gap-2">
             <img src="/logo.png" alt="haex.space" class="h-8 w-auto" />
-          </NuxtLink>
+          </NuxtLinkLocale>
 
           <div class="hidden md:flex items-center gap-1 text-sm text-muted-foreground">
             <ChevronRight class="w-4 h-4" />
@@ -134,18 +135,18 @@ function scrollToSection(id: string) {
 
         <div class="flex items-center gap-4">
           <div class="hidden md:flex items-center gap-6">
-            <NuxtLink
+            <NuxtLinkLocale
               to="/download"
               class="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {{ t('common.download') }}
-            </NuxtLink>
-            <NuxtLink
+            </NuxtLinkLocale>
+            <NuxtLinkLocale
               to="/marketplace"
               class="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {{ t('common.marketplace') }}
-            </NuxtLink>
+            </NuxtLinkLocale>
           </div>
 
           <a
@@ -203,7 +204,7 @@ function scrollToSection(id: string) {
               </h3>
               <ul class="space-y-1">
                 <li v-for="item in section.items" :key="item.href">
-                  <NuxtLink
+                  <NuxtLinkLocale
                     :to="item.href"
                     :class="[
                       'flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors',
@@ -214,7 +215,7 @@ function scrollToSection(id: string) {
                   >
                     <component :is="item.icon" class="w-4 h-4 shrink-0" />
                     {{ item.title }}
-                  </NuxtLink>
+                  </NuxtLinkLocale>
                 </li>
               </ul>
             </div>
@@ -255,7 +256,9 @@ function scrollToSection(id: string) {
 
       <!-- Main Content (scrollable) -->
       <main ref="mainContent" class="flex-1 min-w-0 overflow-y-auto">
-        <slot />
+        <div class="max-w-4xl mx-auto px-6 py-12">
+          <slot />
+        </div>
       </main>
 
       <!-- Right Sidebar - Table of Contents (fixed) -->
