@@ -55,12 +55,22 @@ watch(() => form.marketplaceDescription, (newDescription) => {
 // Load extension data
 onMounted(async () => {
   try {
-    await store.fetchMyExtensions()
-    const found = store.extensions.find(e => e.slug === extensionSlug.value)
+    // First check if extension is already in store (preserves unsaved changes)
+    let found = store.extensions.find(e => e.slug === extensionSlug.value)
+
+    // Only fetch from server if not in store
+    if (!found) {
+      await store.fetchMyExtensions()
+      found = store.extensions.find(e => e.slug === extensionSlug.value)
+    }
+
     if (found) {
       extension.value = found
-      form.marketplaceDescription = found.description || ''
-      form.tags = found.tags?.join(', ') || ''
+      // Only update form if it's empty (first load)
+      if (!form.marketplaceDescription) {
+        form.marketplaceDescription = found.description || ''
+        form.tags = found.tags?.join(', ') || ''
+      }
     } else {
       notFound.value = true
     }
