@@ -51,7 +51,7 @@
         },
         "displayModes": {
           "title": "Anzeigemodi",
-          "intro": "Das display_mode Feld steuert, wie deine Extension in haex-vault erscheint:"
+          "intro": "Das displayMode Feld steuert, wie deine Extension in haex-vault erscheint:"
         },
         "permissions": {
           "title": "Berechtigungen",

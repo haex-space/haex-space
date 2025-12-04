@@ -40,7 +40,7 @@
           "formats": "Unterstützt .xt Extension-Pakete",
           "invalidFormat": "Ungültiges Dateiformat. Bitte lade eine .xt Datei hoch.",
           "noManifest": "Keine manifest.json im haextension Ordner gefunden.",
-          "invalidManifest": "Ungültiges Manifest: Pflichtfelder fehlen (name, public_key, version).",
+          "invalidManifest": "Ungültiges Manifest: Pflichtfelder fehlen (name, publicKey, version).",
           "parseError": "Extension-Paket konnte nicht gelesen werden.",
           "valid": "Gültiges Extension-Paket",
           "author": "Autor",

@@ -22,7 +22,7 @@ const code = {
   simpleManifest: `{
   "name": "my-extension",
   "version": "1.0.0",
-  "public_key": "a1b2c3d4e5f6..."
+  "publicKey": "a1b2c3d4e5f6..."
 }`,
 
   fullManifest: `{
@@ -34,10 +34,10 @@ const code = {
 
   "entry": "index.html",
   "icon": "icon.png",
-  "display_mode": "window",
-  "single_instance": true,
+  "displayMode": "window",
+  "singleInstance": true,
 
-  "public_key": "a1b2c3d4e5f6...",
+  "publicKey": "a1b2c3d4e5f6...",
   "signature": "",
 
   "permissions": {
@@ -89,7 +89,7 @@ const requiredFields = computed(() => [
   },
   {
     icon: Key,
-    name: 'public_key',
+    name: 'publicKey',
     type: 'string',
     description: t('docs.manifest.fields.publicKey')
   }
@@ -124,13 +124,13 @@ const optionalFields = computed(() => [
     description: t('docs.manifest.fields.icon')
   },
   {
-    name: 'display_mode',
+    name: 'displayMode',
     type: '"auto" | "window" | "iframe"',
     default: '"auto"',
     description: t('docs.manifest.fields.displayMode')
   },
   {
-    name: 'single_instance',
+    name: 'singleInstance',
     type: 'boolean',
     default: 'false',
     description: t('docs.manifest.fields.singleInstance')

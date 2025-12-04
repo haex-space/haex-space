@@ -40,7 +40,7 @@
           "formats": "Supports .xt extension packages",
           "invalidFormat": "Invalid file format. Please upload a .xt file.",
           "noManifest": "No manifest.json found in haextension folder.",
-          "invalidManifest": "Invalid manifest: missing required fields (name, public_key, version).",
+          "invalidManifest": "Invalid manifest: missing required fields (name, publicKey, version).",
           "parseError": "Failed to parse extension package.",
           "valid": "Valid extension package",
           "author": "Author",

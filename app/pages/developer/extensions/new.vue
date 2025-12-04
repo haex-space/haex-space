@@ -2,6 +2,7 @@
 import { ArrowLeft, Loader2, Upload, FileArchive, CheckCircle2, AlertCircle } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
 import JSZip from 'jszip'
+import type { ExtensionManifest } from '@haex-space/vault-sdk'
 
 definePageMeta({
   layout: false,
@@ -15,26 +16,6 @@ useSeoMeta({
   title: 'Create Extension - haex.space',
   description: 'Create a new extension for the haex marketplace.',
 })
-
-// Extension manifest interface
-interface ExtensionManifest {
-  name: string
-  version: string
-  author: string
-  public_key: string
-  signature: string
-  description: string | null
-  permissions: {
-    database: string[]
-    filesystem: string[]
-    http: Array<{ target: string }>
-    shell: string[]
-  }
-  icon: string | null
-  homepage: string | null
-  single_instance: boolean
-  display_mode: string
-}
 
 // State
 const file = ref<File | null>(null)
@@ -95,7 +76,7 @@ async function processFile(uploadedFile: File) {
     const parsedManifest = JSON.parse(manifestContent) as ExtensionManifest
 
     // Validate required fields
-    if (!parsedManifest.name || !parsedManifest.public_key || !parsedManifest.version) {
+    if (!parsedManifest.name || !parsedManifest.publicKey || !parsedManifest.version) {
       parseError.value = t('developer.extensions.new.upload.invalidManifest')
       return
     }
@@ -152,7 +133,7 @@ async function handleSubmit() {
       await store.createExtension({
         name: manifest.value.name,
         slug,
-        publicKey: manifest.value.public_key,
+        publicKey: manifest.value.publicKey,
         shortDescription: manifest.value.description || `${manifest.value.name} extension`,
         description: manifest.value.description || undefined,
       })
@@ -281,7 +262,7 @@ async function handleSubmit() {
                 </div>
                 <div class="py-2 border-b">
                   <span class="text-muted-foreground block mb-1">{{ t('developer.extensions.new.publicKey') }}</span>
-                  <span class="font-mono text-xs break-all">{{ manifest.public_key }}</span>
+                  <span class="font-mono text-xs break-all">{{ manifest.publicKey }}</span>
                 </div>
                 <div v-if="manifest.permissions.http.length > 0" class="py-2">
                   <span class="text-muted-foreground block mb-1">{{ t('developer.extensions.new.upload.permissions') }}</span>
