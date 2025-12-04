@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { ArrowLeft, Loader2, CheckCircle, AlertCircle, Upload, Package, ExternalLink } from 'lucide-vue-next'
+import { ArrowLeft, Loader2, CheckCircle, AlertCircle, Package, ExternalLink } from 'lucide-vue-next'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 import { useMarketplaceStore, type Extension } from '~/stores/marketplace'
 
 definePageMeta({
   layout: false,
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
-const localePath = useLocalePath()
 const store = useMarketplaceStore()
+const colorMode = useColorMode()
 
 const extensionSlug = computed(() => route.params.slug as string)
 
@@ -23,11 +25,9 @@ const extension = ref<Extension | null>(null)
 const loading = ref(true)
 const notFound = ref(false)
 
-// Form state
+// Form state (only editable fields - name/shortDescription come from manifest)
 const form = reactive({
-  name: '',
-  shortDescription: '',
-  description: '',
+  marketplaceDescription: '', // Markdown description for marketplace
   tags: '',
 })
 
@@ -35,7 +35,12 @@ const form = reactive({
 const saving = ref(false)
 const saveSuccess = ref(false)
 const saveError = ref('')
-const uploadingIcon = ref(false)
+
+// Editor theme based on color mode
+const editorTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light')
+
+// Editor language
+const editorLanguage = computed(() => locale.value === 'de' ? 'de-DE' : 'en-US')
 
 // Load extension data
 onMounted(async () => {
@@ -44,9 +49,7 @@ onMounted(async () => {
     const found = store.extensions.find(e => e.slug === extensionSlug.value)
     if (found) {
       extension.value = found
-      form.name = found.name
-      form.shortDescription = found.shortDescription
-      form.description = found.description || ''
+      form.marketplaceDescription = found.description || ''
       form.tags = found.tags?.join(', ') || ''
     } else {
       notFound.value = true
@@ -58,7 +61,7 @@ onMounted(async () => {
 
 // Handle save
 async function handleSave() {
-  if (!extension.value || !form.name || !form.shortDescription) return
+  if (!extension.value) return
 
   saving.value = true
   saveSuccess.value = false
@@ -71,9 +74,7 @@ async function handleSave() {
       .filter(tag => tag.length > 0)
 
     await store.updateExtension(extension.value.slug, {
-      name: form.name,
-      shortDescription: form.shortDescription,
-      description: form.description || undefined,
+      description: form.marketplaceDescription || undefined,
       tags,
     })
 
@@ -88,22 +89,21 @@ async function handleSave() {
   }
 }
 
-// Handle icon upload
-async function handleIconUpload(event: Event) {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
-  if (!file || !extension.value) return
+// Handle image upload for md-editor-v3
+async function handleEditorUploadImg(files: File[], callback: (urls: string[]) => void) {
+  if (!extension.value) return
 
-  uploadingIcon.value = true
-  try {
-    const result = await store.uploadExtensionIcon(extension.value.slug, file)
-    extension.value.iconUrl = result.iconUrl
-  } catch (err) {
-    console.error('Failed to upload icon:', err)
-  } finally {
-    uploadingIcon.value = false
-    target.value = ''
+  const urls: string[] = []
+  for (const file of files) {
+    if (!file.type.startsWith('image/')) continue
+    try {
+      const result = await store.uploadMarketplaceImage(extension.value.slug, file)
+      urls.push(result.url)
+    } catch (err) {
+      console.error('Failed to upload image:', err)
+    }
   }
+  callback(urls)
 }
 
 // Status helpers
@@ -177,44 +177,60 @@ function getStatusVariant(status: string) {
       <div class="grid gap-6 lg:grid-cols-3">
         <!-- Main Form -->
         <div class="lg:col-span-2 space-y-6">
+          <!-- Extension Info (read-only from manifest) -->
           <Card>
             <CardHeader>
-              <CardTitle>{{ t('developer.extensions.edit.title') }}</CardTitle>
+              <CardTitle>{{ t('developer.extensions.edit.extensionInfo') }}</CardTitle>
+              <CardDescription>{{ t('developer.extensions.edit.extensionInfoDescription') }}</CardDescription>
+            </CardHeader>
+            <CardContent class="space-y-4">
+              <div class="grid gap-3 text-sm">
+                <div class="flex justify-between py-2 border-b">
+                  <span class="text-muted-foreground">{{ t('developer.extensions.new.name') }}</span>
+                  <span class="font-medium">{{ extension.name }}</span>
+                </div>
+                <div class="py-2 border-b">
+                  <span class="text-muted-foreground block mb-1">{{ t('developer.extensions.edit.shortDescription') }}</span>
+                  <span>{{ extension.shortDescription }}</span>
+                </div>
+                <div class="flex justify-between py-2 border-b">
+                  <span class="text-muted-foreground">{{ t('developer.extensions.edit.latestVersion') }}</span>
+                  <span class="font-mono">{{ extension.latestVersion || '-' }}</span>
+                </div>
+                <div class="py-2">
+                  <span class="text-muted-foreground block mb-1">{{ t('developer.extensions.new.publicKey') }}</span>
+                  <span class="font-mono text-xs break-all">{{ extension.publicKey }}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <!-- Marketplace Description (editable) -->
+          <Card>
+            <CardHeader>
+              <CardTitle>{{ t('developer.extensions.edit.marketplaceDescription') }}</CardTitle>
+              <CardDescription>{{ t('developer.extensions.edit.marketplaceDescriptionHint') }}</CardDescription>
             </CardHeader>
             <CardContent>
               <form @submit.prevent="handleSave" class="space-y-6">
-                <!-- Name -->
+                <!-- Markdown Description with Image Upload -->
                 <div class="space-y-2">
-                  <Label for="name">{{ t('developer.extensions.new.name') }}</Label>
-                  <Input
-                    id="name"
-                    v-model="form.name"
-                    :placeholder="t('developer.extensions.new.name')"
-                    required
-                  />
-                </div>
-
-                <!-- Short Description -->
-                <div class="space-y-2">
-                  <Label for="shortDescription">{{ t('developer.extensions.new.shortDescription') }}</Label>
-                  <Input
-                    id="shortDescription"
-                    v-model="form.shortDescription"
-                    :placeholder="t('developer.extensions.new.shortDescription')"
-                    maxlength="150"
-                    required
-                  />
-                </div>
-
-                <!-- Description -->
-                <div class="space-y-2">
-                  <Label for="description">{{ t('developer.extensions.new.description') }}</Label>
-                  <Textarea
-                    id="description"
-                    v-model="form.description"
-                    :placeholder="t('developer.extensions.new.description')"
-                    rows="8"
-                  />
+                  <Label>{{ t('developer.extensions.edit.description') }}</Label>
+                  <ClientOnly>
+                    <MdEditor
+                      v-model="form.marketplaceDescription"
+                      :theme="editorTheme"
+                      :language="editorLanguage"
+                      :placeholder="t('developer.extensions.edit.descriptionPlaceholder')"
+                      :preview="false"
+                      :toolbars="['bold', 'italic', 'strikeThrough', '-', 'title', 'quote', 'unorderedList', 'orderedList', '-', 'link', 'image', 'table', 'code', 'codeRow', '-', 'revoke', 'next', '=', 'preview', 'fullscreen']"
+                      @on-upload-img="handleEditorUploadImg"
+                      style="height: 400px;"
+                    />
+                  </ClientOnly>
+                  <p class="text-xs text-muted-foreground">
+                    {{ t('developer.extensions.edit.markdownSupported') }}
+                  </p>
                 </div>
 
                 <!-- Tags -->
@@ -225,6 +241,9 @@ function getStatusVariant(status: string) {
                     v-model="form.tags"
                     placeholder="productivity, notes, sync"
                   />
+                  <p class="text-xs text-muted-foreground">
+                    {{ t('developer.extensions.edit.tagsHint') }}
+                  </p>
                 </div>
 
                 <!-- Success/Error messages -->
@@ -238,7 +257,7 @@ function getStatusVariant(status: string) {
                 </div>
 
                 <!-- Submit -->
-                <Button type="submit" :disabled="saving || !form.name || !form.shortDescription">
+                <Button type="submit" :disabled="saving">
                   <Loader2 v-if="saving" class="h-4 w-4 mr-2 animate-spin" />
                   {{ saving ? t('developer.extensions.edit.saving') : t('developer.extensions.edit.save') }}
                 </Button>
@@ -249,11 +268,11 @@ function getStatusVariant(status: string) {
 
         <!-- Sidebar -->
         <div class="space-y-6">
-          <!-- Icon Upload -->
+          <!-- Extension Icon (read-only, from bundle) -->
           <Card>
             <CardHeader>
               <CardTitle class="text-base">{{ t('developer.extensions.edit.icon') }}</CardTitle>
-              <CardDescription>{{ t('developer.extensions.edit.iconDescription') }}</CardDescription>
+              <CardDescription>{{ t('developer.extensions.edit.iconFromBundle') }}</CardDescription>
             </CardHeader>
             <CardContent>
               <div class="flex flex-col items-center gap-4">
@@ -262,23 +281,10 @@ function getStatusVariant(status: string) {
                     v-if="extension.iconUrl"
                     :src="extension.iconUrl"
                     :alt="extension.name"
-                    class="w-20 h-20 rounded"
+                    class="w-20 h-20 rounded object-contain"
                   />
                   <Package v-else class="h-10 w-10 text-muted-foreground" />
                 </div>
-                <label class="cursor-pointer">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    class="hidden"
-                    @change="handleIconUpload"
-                  />
-                  <Button as="span" variant="outline" size="sm" :disabled="uploadingIcon">
-                    <Loader2 v-if="uploadingIcon" class="h-4 w-4 mr-2 animate-spin" />
-                    <Upload v-else class="h-4 w-4 mr-2" />
-                    {{ t('developer.extensions.edit.changeIcon') }}
-                  </Button>
-                </label>
               </div>
             </CardContent>
           </Card>
@@ -286,15 +292,15 @@ function getStatusVariant(status: string) {
           <!-- Stats -->
           <Card>
             <CardHeader>
-              <CardTitle class="text-base">Statistics</CardTitle>
+              <CardTitle class="text-base">{{ t('developer.extensions.edit.statistics') }}</CardTitle>
             </CardHeader>
             <CardContent class="space-y-3">
               <div class="flex justify-between">
-                <span class="text-muted-foreground">Downloads</span>
+                <span class="text-muted-foreground">{{ t('developer.extensions.edit.downloads') }}</span>
                 <span class="font-medium">{{ extension.totalDownloads.toLocaleString() }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-muted-foreground">Rating</span>
+                <span class="text-muted-foreground">{{ t('developer.extensions.edit.rating') }}</span>
                 <span class="font-medium">
                   {{ extension.averageRating > 0 ? extension.averageRating.toFixed(1) : '-' }}
                   <span v-if="extension.reviewCount > 0" class="text-muted-foreground text-sm">

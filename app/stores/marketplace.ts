@@ -24,6 +24,8 @@ export interface Extension {
   shortDescription: string
   description?: string
   iconUrl?: string
+  publicKey: string
+  latestVersion?: string
   verified: boolean
   status: 'draft' | 'pending_review' | 'published' | 'rejected' | 'unlisted'
   totalDownloads: number
@@ -324,6 +326,29 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return response.json() as Promise<{ version: { id: string; version: string } }>
   }
 
+  async function uploadMarketplaceImage(slug: string, file: File) {
+    const apiUrl = config.public.marketplaceApiUrl as string
+    const token = accessToken.value
+
+    const formData = new FormData()
+    formData.append('image', file)
+
+    const response = await fetch(`${apiUrl}/publish/extensions/${slug}/images`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: formData
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Upload failed' }))
+      throw new Error(error.error || 'Upload failed')
+    }
+
+    return response.json() as Promise<{ url: string }>
+  }
+
   // Public data actions
   async function fetchCategories() {
     const data = await fetchApi<{ categories: Category[] }>('/categories')
@@ -387,6 +412,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     updateExtension,
     uploadExtensionIcon,
     uploadExtensionBundle,
+    uploadMarketplaceImage,
 
     // Public
     fetchCategories,
