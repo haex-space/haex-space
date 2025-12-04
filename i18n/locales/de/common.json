@@ -13,6 +13,8 @@
     "theme": "Erscheinungsbild",
     "themeLight": "Hell",
     "themeDark": "Dunkel",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "remove": "Entfernen",
+    "cancel": "Abbrechen"
   }
 }

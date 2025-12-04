@@ -39,6 +39,7 @@ interface ExtensionManifest {
 // State
 const file = ref<File | null>(null)
 const manifest = ref<ExtensionManifest | null>(null)
+const iconUrl = ref<string | null>(null)
 const parseError = ref('')
 const isDragging = ref(false)
 const creating = ref(false)
@@ -70,6 +71,7 @@ async function processFile(uploadedFile: File) {
   // Reset state
   file.value = null
   manifest.value = null
+  iconUrl.value = null
   parseError.value = ''
   error.value = ''
 
@@ -98,6 +100,23 @@ async function processFile(uploadedFile: File) {
       return
     }
 
+    // Extract icon (default: favicon.ico in root)
+    const iconName = parsedManifest.icon || 'favicon.ico'
+    // Try root first, then haextension folder
+    const iconFile = zip.file(iconName) || zip.file(`haextension/${iconName}`)
+
+    if (iconFile) {
+      const iconBlob = await iconFile.async('blob')
+      const iconPath = iconName.toLowerCase()
+      const mimeType = iconPath.endsWith('.svg') ? 'image/svg+xml'
+        : iconPath.endsWith('.png') ? 'image/png'
+        : iconPath.endsWith('.jpg') || iconPath.endsWith('.jpeg') ? 'image/jpeg'
+        : iconPath.endsWith('.ico') ? 'image/x-icon'
+        : iconPath.endsWith('.webp') ? 'image/webp'
+        : 'image/png'
+      iconUrl.value = URL.createObjectURL(new Blob([iconBlob], { type: mimeType }))
+    }
+
     file.value = uploadedFile
     manifest.value = parsedManifest
   } catch (err) {
@@ -108,8 +127,12 @@ async function processFile(uploadedFile: File) {
 
 // Clear selected file
 function clearFile() {
+  if (iconUrl.value) {
+    URL.revokeObjectURL(iconUrl.value)
+  }
   file.value = null
   manifest.value = null
+  iconUrl.value = null
   parseError.value = ''
   error.value = ''
 }
@@ -219,7 +242,8 @@ async function handleSubmit() {
           <div v-else class="space-y-6">
             <!-- File Info -->
             <div class="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-              <FileArchive class="h-10 w-10 text-primary" />
+              <img v-if="iconUrl" :src="iconUrl" alt="Extension icon" class="h-10 w-10 rounded object-contain" />
+              <FileArchive v-else class="h-10 w-10 text-primary" />
               <div class="flex-1 min-w-0">
                 <p class="font-medium truncate">{{ file?.name }}</p>
                 <p class="text-sm text-muted-foreground">
