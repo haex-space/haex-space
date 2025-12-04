@@ -147,7 +147,12 @@ async function handleSubmit() {
     await navigateTo(localePath(`/developer/extensions/${slug}`))
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error'
-    error.value = message
+    // Map API error messages to i18n keys
+    if (message.includes('Version already exists')) {
+      error.value = t('developer.extensions.new.upload.versionExists')
+    } else {
+      error.value = message
+    }
   } finally {
     creating.value = false
   }

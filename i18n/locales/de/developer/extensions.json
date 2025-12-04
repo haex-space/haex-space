@@ -44,7 +44,9 @@
           "parseError": "Extension-Paket konnte nicht gelesen werden.",
           "valid": "Gültiges Extension-Paket",
           "author": "Autor",
-          "permissions": "HTTP Berechtigungen"
+          "permissions": "HTTP Berechtigungen",
+          "versionExists": "Diese Version existiert bereits. Bitte erhöhe die Versionsnummer in deinem Manifest.",
+          "uploadFailed": "Extension-Paket konnte nicht hochgeladen werden."
         }
       },
       "edit": {

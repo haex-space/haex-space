@@ -44,7 +44,9 @@
           "parseError": "Failed to parse extension package.",
           "valid": "Valid extension package",
           "author": "Author",
-          "permissions": "HTTP Permissions"
+          "permissions": "HTTP Permissions",
+          "versionExists": "This version already exists. Please increment the version number in your manifest.",
+          "uploadFailed": "Failed to upload extension bundle."
         }
       },
       "edit": {
