@@ -2,6 +2,10 @@
 import { Package, Download, Star, Plus, BookOpen, Store, AlertCircle, Loader2 } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
 
+definePageMeta({
+  layout: false, // Layout handled by parent developer.vue
+})
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 const store = useMarketplaceStore()
@@ -9,11 +13,6 @@ const store = useMarketplaceStore()
 useSeoMeta({
   title: 'Developer Dashboard - haex.space',
   description: 'Manage your extensions on the haex marketplace.',
-})
-
-// Initialize store
-onMounted(() => {
-  store.init()
 })
 
 // Redirect to login if not authenticated (after loading)

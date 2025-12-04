@@ -20,10 +20,6 @@ const password = ref('')
 const isLoading = ref(false)
 const error = ref('')
 
-onMounted(() => {
-  store.init()
-})
-
 // Redirect if already logged in
 watch(() => store.isAuthenticated, (isAuth) => {
   if (isAuth) {
