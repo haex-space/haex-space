@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { Package, Download, Star, Plus, BookOpen, Store, AlertCircle } from 'lucide-vue-next'
+import { Package, Download, Star, Plus, BookOpen, Store, AlertCircle, Loader2 } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
-
-definePageMeta({
-  layout: 'developer',
-})
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -13,6 +9,18 @@ const store = useMarketplaceStore()
 useSeoMeta({
   title: 'Developer Dashboard - haex.space',
   description: 'Manage your extensions on the haex marketplace.',
+})
+
+// Initialize store
+onMounted(() => {
+  store.init()
+})
+
+// Redirect to login if not authenticated (after loading)
+watch([() => store.loading, () => store.isAuthenticated], ([loading, isAuth]) => {
+  if (!loading && !isAuth) {
+    navigateTo(localePath('/developer/auth/login'))
+  }
 })
 
 // Fetch extensions when publisher is available
@@ -36,9 +44,15 @@ const averageRating = computed(() => {
 </script>
 
 <template>
-  <div class="space-y-8">
-    <!-- Header -->
-    <div>
+  <div class="container mx-auto px-4 py-8">
+    <!-- Loading state -->
+    <div v-if="store.loading" class="flex items-center justify-center min-h-[50vh]">
+      <Loader2 class="h-8 w-8 animate-spin text-primary" />
+    </div>
+
+    <div v-else class="space-y-8">
+      <!-- Header -->
+      <div>
       <h1 class="text-3xl font-bold">{{ t('developer.dashboard.title') }}</h1>
       <p class="text-muted-foreground mt-1">
         {{ t('developer.dashboard.welcome') }}, {{ store.user?.email }}
@@ -206,6 +220,7 @@ const averageRating = computed(() => {
           </CardContent>
         </Card>
       </NuxtLinkLocale>
+    </div>
     </div>
   </div>
 </template>
