@@ -60,10 +60,10 @@ const categories = ref([
       <section class="container mx-auto px-4 pb-12">
         <h2 class="text-xl font-semibold mb-6">{{ t('marketplace.categories') }}</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <NuxtLink
+          <NuxtLinkLocale
             v-for="category in categories"
             :key="category.slug"
-            :to="`/marketplace/category/${category.slug}`"
+            :to="{ path: '/marketplace', query: { category: category.slug } }"
             class="group"
           >
             <Card class="transition-colors hover:border-primary/50">
@@ -74,7 +74,7 @@ const categories = ref([
                 </div>
               </CardHeader>
             </Card>
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </section>
 
@@ -84,15 +84,15 @@ const categories = ref([
       <section class="container mx-auto px-4 py-12">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-semibold">{{ t('marketplace.featured') }}</h2>
-          <NuxtLinkLocale to="/marketplace/all" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <NuxtLinkLocale to="/marketplace" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
             {{ t('common.viewAll') }}
           </NuxtLinkLocale>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
-          <NuxtLink
+          <NuxtLinkLocale
             v-for="ext in featuredExtensions"
             :key="ext.slug"
-            :to="`/marketplace/extension/${ext.slug}`"
+            :to="`/marketplace/${ext.slug}`"
             class="group"
           >
             <Card class="h-full transition-all hover:border-primary/50 hover:shadow-lg">
@@ -123,7 +123,7 @@ const categories = ref([
                 </div>
               </CardContent>
             </Card>
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </section>
 
@@ -136,12 +136,12 @@ const categories = ref([
           <p class="text-muted-foreground max-w-xl mx-auto mb-8">
             {{ t('marketplace.publishCta.description') }}
           </p>
-          <NuxtLinkLocale to="/developer">
-            <Button size="lg" variant="secondary" class="gap-2">
+          <Button as-child size="lg" variant="secondary" class="gap-2">
+            <NuxtLinkLocale to="/developer">
               <Code class="w-5 h-5" />
               {{ t('marketplace.publishCta.button') }}
-            </Button>
-          </NuxtLinkLocale>
+            </NuxtLinkLocale>
+          </Button>
         </div>
       </section>
   </div>

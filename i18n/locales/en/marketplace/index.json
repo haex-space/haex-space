@@ -8,7 +8,18 @@
     "publishCta": {
       "title": "Build Your Own Extension",
       "description": "Have an idea? Create and publish your own extensions to share with the community.",
-      "button": "Developer Documentation"
+      "button": "Start Publishing"
+    },
+    "extension": {
+      "description": "Description",
+      "install": "Install Extension",
+      "installButton": "Install",
+      "version": "Version",
+      "info": "Information",
+      "publisher": "Publisher",
+      "updated": "Last Updated",
+      "downloads": "Downloads",
+      "tags": "Tags"
     }
   }
 }

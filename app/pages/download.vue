@@ -96,7 +96,7 @@ const mobilePlatforms = computed(() => [
     icon: 'mdi:android',
     requirements: 'Android 8.0 or later',
     downloads: [
-      { label: 'APK (Universal)', pattern: 'app-universal-release.apk' },
+      { label: 'APK (Universal)', pattern: '_universal.apk' },
     ],
     comingSoon: false,
   },
