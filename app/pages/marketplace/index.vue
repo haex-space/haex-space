@@ -136,10 +136,12 @@ const categories = ref([
           <p class="text-muted-foreground max-w-xl mx-auto mb-8">
             {{ t('marketplace.publishCta.description') }}
           </p>
-          <Button size="lg" variant="secondary" class="gap-2">
-            <Code class="w-5 h-5" />
-            {{ t('marketplace.publishCta.button') }}
-          </Button>
+          <NuxtLinkLocale to="/developer">
+            <Button size="lg" variant="secondary" class="gap-2">
+              <Code class="w-5 h-5" />
+              {{ t('marketplace.publishCta.button') }}
+            </Button>
+          </NuxtLinkLocale>
         </div>
       </section>
   </div>
