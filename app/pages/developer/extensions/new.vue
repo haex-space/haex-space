@@ -121,20 +121,30 @@ async function handleSubmit() {
   creating.value = true
   error.value = ''
 
+  const slug = manifest.value.name
+
   try {
-    // First create the extension metadata
-    const extension = await store.createExtension({
-      name: manifest.value.name,
-      slug: manifest.value.name, // Use name as slug
-      publicKey: manifest.value.public_key,
-      shortDescription: manifest.value.description || `${manifest.value.name} extension`,
-      description: manifest.value.description || undefined,
-    })
+    // Try to create the extension first
+    try {
+      await store.createExtension({
+        name: manifest.value.name,
+        slug,
+        publicKey: manifest.value.public_key,
+        shortDescription: manifest.value.description || `${manifest.value.name} extension`,
+        description: manifest.value.description || undefined,
+      })
+    } catch (createErr: unknown) {
+      // If extension already exists, that's fine - we'll just upload a new version
+      const message = createErr instanceof Error ? createErr.message : ''
+      if (!message.includes('already taken') && !message.includes('already exists')) {
+        throw createErr
+      }
+    }
 
-    // Then upload the bundle with version info and manifest
-    await store.uploadExtensionBundle(extension.slug, file.value, manifest.value.version, manifest.value as unknown as Record<string, unknown>)
+    // Upload the bundle with version info and manifest
+    await store.uploadExtensionBundle(slug, file.value, manifest.value.version, manifest.value as unknown as Record<string, unknown>)
 
-    await navigateTo(localePath(`/developer/extensions/${extension.slug}`))
+    await navigateTo(localePath(`/developer/extensions/${slug}`))
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error'
     error.value = message
