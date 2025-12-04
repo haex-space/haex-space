@@ -19,7 +19,8 @@
       "publisher": "Publisher",
       "updated": "Last Updated",
       "downloads": "Downloads",
-      "tags": "Tags"
+      "tags": "Tags",
+      "edit": "Edit"
     }
   }
 }

@@ -42,6 +42,16 @@ const editorTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light'
 // Editor language
 const editorLanguage = computed(() => locale.value === 'de' ? 'de-DE' : 'en-US')
 
+// Sync form changes to store for preview (without saving to server)
+watch(() => form.marketplaceDescription, (newDescription) => {
+  if (extension.value) {
+    const ext = store.extensions.find(e => e.slug === extension.value!.slug)
+    if (ext) {
+      ext.description = newDescription
+    }
+  }
+})
+
 // Load extension data
 onMounted(async () => {
   try {
@@ -135,7 +145,7 @@ function getStatusVariant(status: string) {
     </div>
 
     <!-- Edit form -->
-    <div v-else-if="extension" class="max-w-4xl mx-auto space-y-6">
+    <div v-else-if="extension" class="space-y-6">
       <!-- Back Link -->
       <NuxtLinkLocale to="/developer/extensions" class="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft class="h-4 w-4" />
@@ -165,7 +175,7 @@ function getStatusVariant(status: string) {
           </div>
         </div>
         <div class="flex gap-2">
-          <NuxtLinkLocale :to="`/marketplace/${extension.slug}`" target="_blank">
+          <NuxtLinkLocale :to="`/marketplace/${extension.slug}`">
             <Button variant="outline" size="sm">
               <ExternalLink class="h-4 w-4 mr-2" />
               {{ t('developer.extensions.edit.preview') }}
@@ -268,27 +278,6 @@ function getStatusVariant(status: string) {
 
         <!-- Sidebar -->
         <div class="space-y-6">
-          <!-- Extension Icon (read-only, from bundle) -->
-          <Card>
-            <CardHeader>
-              <CardTitle class="text-base">{{ t('developer.extensions.edit.icon') }}</CardTitle>
-              <CardDescription>{{ t('developer.extensions.edit.iconFromBundle') }}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div class="flex flex-col items-center gap-4">
-                <div class="w-24 h-24 rounded-lg bg-muted flex items-center justify-center">
-                  <img
-                    v-if="extension.iconUrl"
-                    :src="extension.iconUrl"
-                    :alt="extension.name"
-                    class="w-20 h-20 rounded object-contain"
-                  />
-                  <Package v-else class="h-10 w-10 text-muted-foreground" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           <!-- Stats -->
           <Card>
             <CardHeader>
