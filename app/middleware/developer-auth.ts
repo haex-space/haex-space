@@ -6,6 +6,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
+  // Only run on client - Supabase auth uses localStorage which isn't available on server
+  if (import.meta.server) {
+    return
+  }
+
   const store = useMarketplaceStore()
   const localePath = useLocalePath()
 
