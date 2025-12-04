@@ -1,0 +1,78 @@
+{
+  "developer": {
+    "extensions": {
+      "title": "Your Extensions",
+      "description": "Manage and publish your extensions.",
+      "empty": "You haven't created any extensions yet.",
+      "create": "Create Extension",
+      "search": "Search extensions...",
+      "filters": {
+        "all": "All",
+        "published": "Published",
+        "draft": "Draft",
+        "pending": "Pending Review"
+      },
+      "table": {
+        "name": "Name",
+        "status": "Status",
+        "downloads": "Downloads",
+        "rating": "Rating",
+        "updated": "Updated",
+        "actions": "Actions"
+      },
+      "status": {
+        "draft": "Draft",
+        "pending_review": "Pending Review",
+        "published": "Published",
+        "rejected": "Rejected",
+        "unlisted": "Unlisted"
+      },
+      "new": {
+        "title": "Create Extension",
+        "description": "Create a new extension for the marketplace.",
+        "name": "Extension Name",
+        "nameDescription": "A unique name for your extension.",
+        "slug": "Extension ID",
+        "slugDescription": "A unique identifier used in URLs. Cannot be changed later.",
+        "shortDescription": "Short Description",
+        "shortDescriptionDescription": "A brief summary shown in search results (max 150 characters).",
+        "description": "Full Description",
+        "descriptionDescription": "Detailed description of your extension. Supports Markdown.",
+        "category": "Category",
+        "categoryDescription": "Choose the most relevant category.",
+        "tags": "Tags",
+        "tagsDescription": "Add tags to help users find your extension (comma-separated).",
+        "submit": "Create Extension",
+        "creating": "Creating..."
+      },
+      "edit": {
+        "title": "Edit Extension",
+        "save": "Save Changes",
+        "saving": "Saving...",
+        "saved": "Changes saved successfully!",
+        "error": "Failed to save changes. Please try again.",
+        "versions": "Versions",
+        "uploadVersion": "Upload New Version",
+        "icon": "Extension Icon",
+        "iconDescription": "Upload a square icon (recommended: 256x256 pixels).",
+        "changeIcon": "Change Icon",
+        "preview": "Preview",
+        "publish": "Publish",
+        "unpublish": "Unpublish",
+        "delete": "Delete Extension",
+        "deleteWarning": "This will permanently delete your extension and all its versions."
+      },
+      "version": {
+        "title": "Upload Version",
+        "number": "Version Number",
+        "numberDescription": "Semantic version (e.g., 1.0.0)",
+        "bundle": "Extension Bundle",
+        "bundleDescription": "Upload your extension package (.zip file).",
+        "changelog": "Changelog",
+        "changelogDescription": "What's new in this version?",
+        "upload": "Upload Version",
+        "uploading": "Uploading..."
+      }
+    }
+  }
+}

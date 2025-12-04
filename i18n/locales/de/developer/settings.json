@@ -1,0 +1,41 @@
+{
+  "developer": {
+    "settings": {
+      "title": "Publisher-Einstellungen",
+      "description": "Verwalte dein Publisher-Profil und Kontoeinstellungen.",
+      "profile": {
+        "title": "Publisher-Profil",
+        "description": "Diese Informationen werden öffentlich auf deinen Extensions angezeigt.",
+        "displayName": "Anzeigename",
+        "displayNameDescription": "Der Name, der Nutzern auf deinen Extensions angezeigt wird.",
+        "slug": "Publisher-ID",
+        "slugDescription": "Ein eindeutiger Bezeichner für dein Publisher-Profil. Wird in URLs verwendet.",
+        "slugTaken": "Diese Publisher-ID ist bereits vergeben.",
+        "email": "Kontakt-E-Mail",
+        "emailDescription": "Öffentliche E-Mail-Adresse, über die Nutzer dich erreichen können.",
+        "website": "Website",
+        "websiteDescription": "Deine persönliche oder Unternehmens-Website.",
+        "bio": "Über mich",
+        "bioDescription": "Eine kurze Beschreibung über dich oder deine Organisation.",
+        "save": "Änderungen speichern",
+        "saving": "Speichern...",
+        "saved": "Profil erfolgreich gespeichert!",
+        "error": "Speichern fehlgeschlagen. Bitte versuche es erneut."
+      },
+      "createProfile": {
+        "title": "Publisher-Profil erstellen",
+        "description": "Richte dein Publisher-Profil ein, um Extensions zu veröffentlichen.",
+        "submit": "Profil erstellen",
+        "creating": "Erstellen..."
+      },
+      "account": {
+        "title": "Konto",
+        "email": "E-Mail-Adresse",
+        "changePassword": "Passwort ändern",
+        "dangerZone": "Gefahrenzone",
+        "deleteAccount": "Konto löschen",
+        "deleteWarning": "Sobald du dein Konto löschst, gibt es kein Zurück. Bitte sei dir sicher."
+      }
+    }
+  }
+}

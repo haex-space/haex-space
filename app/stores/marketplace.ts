@@ -48,6 +48,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
   const user = ref<User | null>(null)
   const session = ref<Session | null>(null)
   const loading = ref(true)
+  const initialized = ref(false)
   const publisher = ref<Publisher | null>(null)
   const extensions = ref<Extension[]>([])
   const categories = ref<Category[]>([])
@@ -108,6 +109,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
       }
     } finally {
       loading.value = false
+      initialized.value = true
     }
   }
 
@@ -354,6 +356,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     user,
     session,
     loading,
+    initialized,
     publisher,
     extensions,
     categories,

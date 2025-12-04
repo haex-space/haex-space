@@ -7,7 +7,6 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 const store = useMarketplaceStore()
 
 useSeoMeta({
@@ -15,19 +14,12 @@ useSeoMeta({
   description: 'Manage your extensions on the haex marketplace.',
 })
 
-// Redirect to login if not authenticated (after loading)
-watch([() => store.loading, () => store.isAuthenticated], ([loading, isAuth]) => {
-  if (!loading && !isAuth) {
-    navigateTo(localePath('/developer/auth/login'))
-  }
-})
-
-// Fetch extensions when publisher is available
-watch(() => store.hasPublisher, async (hasPublisher) => {
-  if (hasPublisher) {
+// Fetch extensions on mount (middleware already ensures auth)
+onMounted(async () => {
+  if (store.hasPublisher) {
     await store.fetchMyExtensions()
   }
-}, { immediate: true })
+})
 
 // Calculate stats
 const totalDownloads = computed(() => {

@@ -1,0 +1,41 @@
+{
+  "developer": {
+    "settings": {
+      "title": "Publisher Settings",
+      "description": "Manage your publisher profile and account settings.",
+      "profile": {
+        "title": "Publisher Profile",
+        "description": "This information will be displayed publicly on your extensions.",
+        "displayName": "Display Name",
+        "displayNameDescription": "The name shown to users on your extensions.",
+        "slug": "Publisher ID",
+        "slugDescription": "A unique identifier for your publisher profile. Used in URLs.",
+        "slugTaken": "This publisher ID is already taken.",
+        "email": "Contact Email",
+        "emailDescription": "Public contact email for users to reach you.",
+        "website": "Website",
+        "websiteDescription": "Your personal or company website.",
+        "bio": "Bio",
+        "bioDescription": "A short description about you or your organization.",
+        "save": "Save Changes",
+        "saving": "Saving...",
+        "saved": "Profile saved successfully!",
+        "error": "Failed to save profile. Please try again."
+      },
+      "createProfile": {
+        "title": "Create Publisher Profile",
+        "description": "Set up your publisher profile to start publishing extensions.",
+        "submit": "Create Profile",
+        "creating": "Creating..."
+      },
+      "account": {
+        "title": "Account",
+        "email": "Email Address",
+        "changePassword": "Change Password",
+        "dangerZone": "Danger Zone",
+        "deleteAccount": "Delete Account",
+        "deleteWarning": "Once you delete your account, there is no going back. Please be certain."
+      }
+    }
+  }
+}

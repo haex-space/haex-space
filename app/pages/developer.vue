@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { useMarketplaceStore } from '~/stores/marketplace'
+definePageMeta({
+  middleware: 'developer-auth',
+})
 
 const route = useRoute()
-const store = useMarketplaceStore()
 
 // Check if we're on an auth page
 const isAuthPage = computed(() => route.path.includes('/developer/auth'))
-
-// Initialize store once for all developer pages
-onMounted(() => {
-  store.init()
-})
 </script>
 
 <template>
