@@ -1,0 +1,37 @@
+{
+  "developer": {
+    "title": "Developer Portal",
+    "nav": {
+      "dashboard": "Dashboard",
+      "extensions": "Extensions",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome back",
+      "setupPublisher": {
+        "title": "Set Up Your Publisher Profile",
+        "description": "Before you can publish extensions, you need to create a publisher profile.",
+        "cta": "Create Publisher Profile"
+      },
+      "stats": {
+        "totalExtensions": "Total Extensions",
+        "totalDownloads": "Total Downloads",
+        "averageRating": "Average Rating"
+      },
+      "extensions": {
+        "title": "Your Extensions",
+        "empty": "You haven't published any extensions yet.",
+        "create": "Create Extension",
+        "viewAll": "View All"
+      },
+      "quickActions": {
+        "title": "Quick Actions",
+        "newExtension": "New Extension",
+        "documentation": "Documentation",
+        "marketplace": "View Marketplace"
+      }
+    }
+  }
+}

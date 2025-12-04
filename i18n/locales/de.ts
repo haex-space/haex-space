@@ -20,6 +20,8 @@ import docsSdkDatabase from './de/docs/sdk/database.json'
 import docsSdkStorage from './de/docs/sdk/storage.json'
 import docsSdkFilesystem from './de/docs/sdk/filesystem.json'
 import docsSdkWeb from './de/docs/sdk/web.json'
+import developerAuth from './de/developer/auth.json'
+import developerIndex from './de/developer/index.json'
 
 function deepMerge(...objects: Record<string, unknown>[]): Record<string, unknown> {
   const result: Record<string, unknown> = {}
@@ -66,6 +68,8 @@ export default defineI18nLocale(() => {
     docsSdkDatabase,
     docsSdkStorage,
     docsSdkFilesystem,
-    docsSdkWeb
+    docsSdkWeb,
+    developerAuth,
+    developerIndex
   )
 })

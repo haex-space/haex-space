@@ -6,6 +6,14 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/tailwind.css"],
 
+  runtimeConfig: {
+    public: {
+      marketplaceSupabaseUrl: process.env.NUXT_PUBLIC_MARKETPLACE_SUPABASE_URL,
+      marketplaceSupabaseKey: process.env.NUXT_PUBLIC_MARKETPLACE_SUPABASE_KEY,
+      marketplaceApiUrl: process.env.NUXT_PUBLIC_MARKETPLACE_API_URL,
+    },
+  },
+
   vite: {
     plugins: [tailwindcss()],
     resolve: {
@@ -23,6 +31,7 @@ export default defineNuxtConfig({
     "@nuxtjs/mdc",
     "@nuxtjs/color-mode",
     "@nuxtjs/supabase",
+    "@pinia/nuxt",
   ],
 
   supabase: {

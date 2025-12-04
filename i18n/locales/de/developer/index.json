@@ -1,0 +1,37 @@
+{
+  "developer": {
+    "title": "Entwicklerportal",
+    "nav": {
+      "dashboard": "Dashboard",
+      "extensions": "Extensions",
+      "settings": "Einstellungen",
+      "logout": "Abmelden"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Willkommen zurück",
+      "setupPublisher": {
+        "title": "Publisher-Profil einrichten",
+        "description": "Bevor du Extensions veröffentlichen kannst, musst du ein Publisher-Profil erstellen.",
+        "cta": "Publisher-Profil erstellen"
+      },
+      "stats": {
+        "totalExtensions": "Gesamte Extensions",
+        "totalDownloads": "Gesamte Downloads",
+        "averageRating": "Durchschnittliche Bewertung"
+      },
+      "extensions": {
+        "title": "Deine Extensions",
+        "empty": "Du hast noch keine Extensions veröffentlicht.",
+        "create": "Extension erstellen",
+        "viewAll": "Alle anzeigen"
+      },
+      "quickActions": {
+        "title": "Schnellaktionen",
+        "newExtension": "Neue Extension",
+        "documentation": "Dokumentation",
+        "marketplace": "Marketplace ansehen"
+      }
+    }
+  }
+}
