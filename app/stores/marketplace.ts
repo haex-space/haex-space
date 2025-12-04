@@ -238,6 +238,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
   async function createExtension(data: {
     name: string
     slug: string
+    publicKey: string
     shortDescription: string
     description?: string
     categoryId?: string

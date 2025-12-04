@@ -21,22 +21,45 @@ const { slug, error: slugError, isValid: isSlugValid, generate: generateSlug, se
 // Form state
 const form = reactive({
   name: '',
+  publicKey: '',
   shortDescription: '',
   description: '',
   tags: '',
 })
 
+// Field errors from API validation
+const fieldErrors = reactive<Record<string, string>>({})
+
 // UI state
 const creating = ref(false)
 const error = ref('')
 
+// Parse Zod errors from API response
+function parseZodErrors(message: string): Record<string, string> {
+  const errors: Record<string, string> = {}
+  try {
+    const parsed = JSON.parse(message)
+    if (Array.isArray(parsed)) {
+      for (const err of parsed) {
+        if (err.path && err.path.length > 0) {
+          errors[err.path[0]] = err.message
+        }
+      }
+    }
+  } catch {
+    // Not a JSON error, ignore
+  }
+  return errors
+}
+
 // Handle form submission
 async function handleSubmit() {
-  if (!form.name || !slug.value || !form.shortDescription) return
+  if (!form.name || !slug.value || !form.shortDescription || !form.publicKey) return
 
   creating.value = true
   error.value = ''
   slugError.value = ''
+  Object.keys(fieldErrors).forEach(key => delete fieldErrors[key])
 
   try {
     const tags = form.tags
@@ -47,6 +70,7 @@ async function handleSubmit() {
     const extension = await store.createExtension({
       name: form.name,
       slug: slug.value,
+      publicKey: form.publicKey,
       shortDescription: form.shortDescription,
       description: form.description || undefined,
       tags: tags.length > 0 ? tags : undefined,
@@ -55,7 +79,15 @@ async function handleSubmit() {
     await navigateTo(localePath(`/developer/extensions/${extension.slug}`))
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error'
-    if (message.includes('slug') || message.includes('taken') || message.includes('duplicate')) {
+
+    // Try to parse field-level errors
+    const zodErrors = parseZodErrors(message)
+    if (Object.keys(zodErrors).length > 0) {
+      Object.assign(fieldErrors, zodErrors)
+      if (zodErrors.slug) {
+        setSlugError(zodErrors.slug)
+      }
+    } else if (message.includes('slug') || message.includes('taken') || message.includes('duplicate')) {
       setSlugError(t('developer.settings.profile.slugTaken'))
     } else {
       error.value = message
@@ -94,10 +126,14 @@ async function handleSubmit() {
                 id="name"
                 v-model="form.name"
                 :placeholder="t('developer.extensions.new.name')"
+                :class="{ 'border-destructive': fieldErrors.name }"
                 required
                 @blur="!slug && generateSlug(form.name)"
               />
-              <p class="text-sm text-muted-foreground">
+              <p v-if="fieldErrors.name" class="text-sm text-destructive">
+                {{ fieldErrors.name }}
+              </p>
+              <p v-else class="text-sm text-muted-foreground">
                 {{ t('developer.extensions.new.nameDescription') }}
               </p>
             </div>
@@ -123,6 +159,26 @@ async function handleSubmit() {
               </p>
             </div>
 
+            <!-- Public Key -->
+            <div class="space-y-2">
+              <Label for="publicKey">{{ t('developer.extensions.new.publicKey') }}</Label>
+              <Textarea
+                id="publicKey"
+                v-model="form.publicKey"
+                :placeholder="t('developer.extensions.new.publicKeyPlaceholder')"
+                :class="{ 'border-destructive': fieldErrors.publicKey }"
+                rows="4"
+                class="font-mono text-xs"
+                required
+              />
+              <p v-if="fieldErrors.publicKey" class="text-sm text-destructive">
+                {{ fieldErrors.publicKey }}
+              </p>
+              <p v-else class="text-sm text-muted-foreground">
+                {{ t('developer.extensions.new.publicKeyDescription') }}
+              </p>
+            </div>
+
             <!-- Short Description -->
             <div class="space-y-2">
               <Label for="shortDescription">{{ t('developer.extensions.new.shortDescription') }}</Label>
@@ -130,10 +186,14 @@ async function handleSubmit() {
                 id="shortDescription"
                 v-model="form.shortDescription"
                 :placeholder="t('developer.extensions.new.shortDescription')"
+                :class="{ 'border-destructive': fieldErrors.shortDescription }"
                 maxlength="150"
                 required
               />
-              <p class="text-sm text-muted-foreground">
+              <p v-if="fieldErrors.shortDescription" class="text-sm text-destructive">
+                {{ fieldErrors.shortDescription }}
+              </p>
+              <p v-else class="text-sm text-muted-foreground">
                 {{ t('developer.extensions.new.shortDescriptionDescription') }}
               </p>
             </div>
@@ -172,7 +232,7 @@ async function handleSubmit() {
 
             <!-- Submit -->
             <div class="flex gap-4">
-              <Button type="submit" :disabled="creating || !form.name || !slug || !form.shortDescription || !isSlugValid">
+              <Button type="submit" :disabled="creating || !form.name || !slug || !form.publicKey || !form.shortDescription || !isSlugValid">
                 <Loader2 v-if="creating" class="h-4 w-4 mr-2 animate-spin" />
                 {{ creating ? t('developer.extensions.new.creating') : t('developer.extensions.new.submit') }}
               </Button>
