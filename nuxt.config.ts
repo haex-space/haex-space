@@ -6,6 +6,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/tailwind.css"],
 
+  build: {
+    transpile: ["@supabase/supabase-js"],
+  },
+
   runtimeConfig: {
     public: {
       marketplaceSupabaseUrl: process.env.NUXT_PUBLIC_MARKETPLACE_SUPABASE_URL,
