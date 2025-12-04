@@ -297,13 +297,16 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return response.json() as Promise<{ iconUrl: string }>
   }
 
-  async function uploadExtensionBundle(slug: string, file: File, version: string) {
+  async function uploadExtensionBundle(slug: string, file: File, version: string, manifest?: Record<string, unknown>) {
     const apiUrl = config.public.marketplaceApiUrl as string
     const token = accessToken.value
 
     const formData = new FormData()
     formData.append('bundle', file)
     formData.append('version', version)
+    if (manifest) {
+      formData.append('manifest', JSON.stringify(manifest))
+    }
 
     const response = await fetch(`${apiUrl}/publish/extensions/${slug}/bundle`, {
       method: 'POST',
