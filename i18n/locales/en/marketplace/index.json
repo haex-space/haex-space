@@ -1,22 +1,22 @@
 {
   "marketplace": {
     "title": "Extension Marketplace",
-    "subtitle": "Discover extensions built by the community to enhance your haex.space experience.",
+    "subtitle": "Discover and install extensions to enhance your haex.space experience.",
     "categories": "Categories",
-    "featured": "Featured Extensions",
+    "featured": "Extensions",
+    "empty": "No extensions available yet.",
     "by": "by",
     "publishCta": {
       "title": "Build Your Own Extension",
-      "description": "Have an idea? Create and publish your own extensions to share with the community.",
-      "button": "Start Publishing"
+      "description": "Create and publish extensions for the haex.space community. Share your tools with thousands of users.",
+      "button": "Start Building"
     },
     "extension": {
       "description": "Description",
-      "install": "Install Extension",
-      "installButton": "Install",
+      "install": "Installation",
+      "installButton": "Install Extension",
       "version": "Version",
       "info": "Information",
-      "publisher": "Publisher",
       "updated": "Last Updated",
       "downloads": "Downloads",
       "tags": "Tags",

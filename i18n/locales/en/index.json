@@ -17,7 +17,7 @@
         "description": "Your data belongs to you. No tracking, no ads, no data sales. Full control over your information."
       },
       "offline": {
-        "title": "100% Offline-capable",
+        "title": "Offline & Local First",
         "description": "The app works completely without internet. Sync is optional – use our servers or host your own."
       },
       "sync": {
@@ -31,6 +31,18 @@
       "crossPlatform": {
         "title": "One App, All Platforms",
         "description": "Developers build one web extension and instantly reach all platforms. No platform-specific adaptations required."
+      },
+      "crdt": {
+        "title": "Conflict-Free Sync",
+        "description": "CRDTs enable safe synchronization across devices – even with encrypted data. No conflicts, no data loss."
+      },
+      "localStorage": {
+        "title": "True Local Storage",
+        "description": "Your data lives on your disk, not in browser cache. Encrypted SQLite database under your full control."
+      },
+      "selfHostable": {
+        "title": "Self-Hostable",
+        "description": "Run your own sync server for maximum independence. Your infrastructure, your rules."
       }
     },
     "marketplaceCta": {

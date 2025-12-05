@@ -1,47 +1,29 @@
 <script setup lang="ts">
-import { Puzzle, Download, Star, Code } from 'lucide-vue-next'
+import { Puzzle, Download, Star, Code, Loader2, Package } from 'lucide-vue-next'
+import { useMarketplaceStore } from '~/stores/marketplace'
 
 const { t } = useI18n()
+const store = useMarketplaceStore()
 
 useSeoMeta({
   title: 'Extension Marketplace - haex.space',
   description: 'Discover and install extensions to enhance your haex.space experience.',
 })
 
-// Placeholder data - will be fetched from API later
-const featuredExtensions = ref([
-  {
-    slug: 'markdown-editor',
-    name: 'Markdown Editor',
-    shortDescription: 'A powerful markdown editor with live preview and syntax highlighting.',
-    publisher: 'haex',
-    downloads: 1250,
-    rating: 4.8,
-  },
-  {
-    slug: 'task-manager',
-    name: 'Task Manager',
-    shortDescription: 'Organize your tasks with projects, tags, and due dates.',
-    publisher: 'community',
-    downloads: 890,
-    rating: 4.6,
-  },
-  {
-    slug: 'code-snippets',
-    name: 'Code Snippets',
-    shortDescription: 'Save and organize your code snippets with syntax highlighting.',
-    publisher: 'haex',
-    downloads: 2100,
-    rating: 4.9,
-  },
-])
+const loading = ref(true)
+const extensions = ref<Awaited<ReturnType<typeof store.fetchPublicExtensions>>['extensions']>([])
 
-const categories = ref([
-  { slug: 'productivity', name: 'Productivity', icon: 'LucideZap', count: 12 },
-  { slug: 'developer-tools', name: 'Developer Tools', icon: 'LucideCode', count: 8 },
-  { slug: 'writing', name: 'Writing', icon: 'LucidePenTool', count: 5 },
-  { slug: 'utilities', name: 'Utilities', icon: 'LucideWrench', count: 15 },
-])
+onMounted(async () => {
+  try {
+    await store.fetchCategories()
+    const result = await store.fetchPublicExtensions({ limit: 12 })
+    extensions.value = result.extensions
+  } catch (error) {
+    console.error('Failed to load marketplace data:', error)
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
 <template>
@@ -56,76 +38,89 @@ const categories = ref([
         </p>
       </section>
 
-      <!-- Categories -->
-      <section class="container mx-auto px-4 pb-12">
-        <h2 class="text-xl font-semibold mb-6">{{ t('marketplace.categories') }}</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <NuxtLinkLocale
-            v-for="category in categories"
-            :key="category.slug"
-            :to="{ path: '/marketplace', query: { category: category.slug } }"
-            class="group"
-          >
-            <Card class="transition-colors hover:border-primary/50">
-              <CardHeader class="pb-3">
-                <div class="flex items-center justify-between">
+      <!-- Loading State -->
+      <div v-if="loading" class="container mx-auto px-4 py-12 flex items-center justify-center min-h-[40vh]">
+        <Loader2 class="h-8 w-8 animate-spin text-primary" />
+      </div>
+
+      <template v-else>
+        <!-- Categories -->
+        <section v-if="store.categories.length > 0" class="container mx-auto px-4 pb-12">
+          <h2 class="text-xl font-semibold mb-6">{{ t('marketplace.categories') }}</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <NuxtLinkLocale
+              v-for="category in store.categories"
+              :key="category.slug"
+              :to="{ path: '/marketplace', query: { category: category.slug } }"
+              class="group"
+            >
+              <Card class="transition-colors hover:border-primary/50">
+                <CardHeader class="pb-3">
                   <CardTitle class="text-base">{{ category.name }}</CardTitle>
-                  <Badge variant="secondary">{{ category.count }}</Badge>
-                </div>
-              </CardHeader>
-            </Card>
-          </NuxtLinkLocale>
-        </div>
-      </section>
+                </CardHeader>
+              </Card>
+            </NuxtLinkLocale>
+          </div>
+        </section>
 
-      <Separator class="container mx-auto" />
+        <Separator v-if="store.categories.length > 0" class="container mx-auto" />
 
-      <!-- Featured Extensions -->
-      <section class="container mx-auto px-4 py-12">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-semibold">{{ t('marketplace.featured') }}</h2>
-          <NuxtLinkLocale to="/marketplace" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            {{ t('common.viewAll') }}
-          </NuxtLinkLocale>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-          <NuxtLinkLocale
-            v-for="ext in featuredExtensions"
-            :key="ext.slug"
-            :to="`/marketplace/${ext.slug}`"
-            class="group"
-          >
-            <Card class="h-full transition-all hover:border-primary/50 hover:shadow-lg">
-              <CardHeader>
-                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3">
-                  <Puzzle class="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle class="group-hover:text-primary transition-colors">
-                  {{ ext.name }}
-                </CardTitle>
-                <CardDescription>
-                  {{ ext.shortDescription }}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div class="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{{ t('marketplace.by') }} {{ ext.publisher }}</span>
-                  <div class="flex items-center gap-3">
-                    <span class="flex items-center gap-1">
-                      <Download class="w-4 h-4" />
-                      {{ ext.downloads }}
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      {{ ext.rating }}
-                    </span>
+        <!-- Extensions -->
+        <section class="container mx-auto px-4 py-12">
+          <h2 class="text-xl font-semibold mb-6">{{ t('marketplace.featured') }}</h2>
+
+          <!-- Empty State -->
+          <div v-if="extensions.length === 0" class="text-center py-12">
+            <Package class="h-12 w-12 mx-auto text-muted-foreground/50" />
+            <p class="mt-4 text-muted-foreground">{{ t('marketplace.empty') }}</p>
+          </div>
+
+          <!-- Extensions Grid -->
+          <div v-else class="grid md:grid-cols-3 gap-6">
+            <NuxtLinkLocale
+              v-for="ext in extensions"
+              :key="ext.slug"
+              :to="`/marketplace/${ext.slug}`"
+              class="group"
+            >
+              <Card class="h-full transition-all hover:border-primary/50 hover:shadow-lg">
+                <CardHeader>
+                  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3">
+                    <img
+                      v-if="ext.iconUrl"
+                      :src="ext.iconUrl"
+                      :alt="ext.name"
+                      class="w-10 h-10 rounded"
+                    />
+                    <Puzzle v-else class="w-6 h-6 text-primary" />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </NuxtLinkLocale>
-        </div>
-      </section>
+                  <CardTitle class="group-hover:text-primary transition-colors">
+                    {{ ext.name }}
+                  </CardTitle>
+                  <CardDescription>
+                    {{ ext.shortDescription }}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div class="flex items-center justify-between text-sm text-muted-foreground">
+                    <span>{{ t('marketplace.by') }} {{ ext.author || 'Unknown' }}</span>
+                    <div class="flex items-center gap-3">
+                      <span class="flex items-center gap-1">
+                        <Download class="w-4 h-4" />
+                        {{ ext.totalDownloads.toLocaleString() }}
+                      </span>
+                      <span v-if="ext.reviewCount > 0" class="flex items-center gap-1">
+                        <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        {{ ext.averageRating.toFixed(1) }}
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </NuxtLinkLocale>
+          </div>
+        </section>
+      </template>
 
       <!-- Publish CTA -->
       <section class="bg-muted/50 py-16">

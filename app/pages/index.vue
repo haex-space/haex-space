@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Download, Store, Shield, RefreshCw, Puzzle, Layers, WifiOff, Lock, ArrowRight } from 'lucide-vue-next'
+import { Download, Store, Shield, RefreshCw, Puzzle, Layers, WifiOff, Lock, ArrowRight, GitMerge, HardDrive, Server } from 'lucide-vue-next'
 
 const { t } = useI18n()
 
@@ -7,6 +7,18 @@ useSeoMeta({
   title: 'haex.space - Secure Sync & Extensions',
   description: 'Synchronize your data securely across devices and discover powerful extensions for your workflow.',
 })
+
+const features = computed(() => [
+  { icon: Shield, title: t('home.features.encryption.title'), description: t('home.features.encryption.description') },
+  { icon: Lock, title: t('home.features.privacy.title'), description: t('home.features.privacy.description') },
+  { icon: WifiOff, title: t('home.features.offline.title'), description: t('home.features.offline.description') },
+  { icon: RefreshCw, title: t('home.features.sync.title'), description: t('home.features.sync.description') },
+  { icon: Puzzle, title: t('home.features.extensions.title'), description: t('home.features.extensions.description') },
+  { icon: Layers, title: t('home.features.crossPlatform.title'), description: t('home.features.crossPlatform.description') },
+  { icon: GitMerge, title: t('home.features.crdt.title'), description: t('home.features.crdt.description') },
+  { icon: HardDrive, title: t('home.features.localStorage.title'), description: t('home.features.localStorage.description') },
+  { icon: Server, title: t('home.features.selfHostable.title'), description: t('home.features.selfHostable.description') },
+])
 </script>
 
 <template>
@@ -41,77 +53,13 @@ useSeoMeta({
     <!-- Features Section -->
     <section class="container mx-auto px-4 py-16">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <Card>
-          <CardHeader>
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <Shield class="w-6 h-6 text-primary" />
-            </div>
-            <CardTitle>{{ t('home.features.encryption.title') }}</CardTitle>
-            <CardDescription>
-              {{ t('home.features.encryption.description') }}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <Lock class="w-6 h-6 text-primary" />
-            </div>
-            <CardTitle>{{ t('home.features.privacy.title') }}</CardTitle>
-            <CardDescription>
-              {{ t('home.features.privacy.description') }}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <WifiOff class="w-6 h-6 text-primary" />
-            </div>
-            <CardTitle>{{ t('home.features.offline.title') }}</CardTitle>
-            <CardDescription>
-              {{ t('home.features.offline.description') }}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <RefreshCw class="w-6 h-6 text-primary" />
-            </div>
-            <CardTitle>{{ t('home.features.sync.title') }}</CardTitle>
-            <CardDescription>
-              {{ t('home.features.sync.description') }}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <Puzzle class="w-6 h-6 text-primary" />
-            </div>
-            <CardTitle>{{ t('home.features.extensions.title') }}</CardTitle>
-            <CardDescription>
-              {{ t('home.features.extensions.description') }}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <Layers class="w-6 h-6 text-primary" />
-            </div>
-            <CardTitle>{{ t('home.features.crossPlatform.title') }}</CardTitle>
-            <CardDescription>
-              {{ t('home.features.crossPlatform.description') }}
-            </CardDescription>
-          </CardHeader>
-        </Card>
+        <FeatureCard
+          v-for="(feature, index) in features"
+          :key="index"
+          :icon="feature.icon"
+          :title="feature.title"
+          :description="feature.description"
+        />
       </div>
     </section>
 

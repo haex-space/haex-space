@@ -17,7 +17,7 @@
         "description": "Deine Daten gehören dir. Keine Tracking, keine Werbung, keine Datenverkäufe. Volle Kontrolle über deine Informationen."
       },
       "offline": {
-        "title": "100% Offline-fähig",
+        "title": "Offline & Local First",
         "description": "Die App funktioniert komplett ohne Internet. Sync ist optional – nutze unsere Server oder hoste deinen eigenen."
       },
       "sync": {
@@ -31,6 +31,18 @@
       "crossPlatform": {
         "title": "Eine App, alle Plattformen",
         "description": "Entwickler bauen eine Web-Extension und erreichen damit sofort alle Plattformen. Keine plattformspezifischen Anpassungen nötig."
+      },
+      "crdt": {
+        "title": "Konfliktfreie Synchronisation",
+        "description": "CRDTs ermöglichen sichere Synchronisation über alle Geräte – auch mit verschlüsselten Daten. Keine Konflikte, kein Datenverlust."
+      },
+      "localStorage": {
+        "title": "Echte lokale Speicherung",
+        "description": "Deine Daten liegen auf deiner Festplatte, nicht im Browser-Cache. Verschlüsselte SQLite-Datenbank unter deiner vollen Kontrolle."
+      },
+      "selfHostable": {
+        "title": "Self-Hostable",
+        "description": "Betreibe deinen eigenen Sync-Server für maximale Unabhängigkeit. Deine Infrastruktur, deine Regeln."
       }
     },
     "marketplaceCta": {

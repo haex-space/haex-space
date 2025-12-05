@@ -154,9 +154,6 @@ const averageRating = computed(() => {
                 <p class="text-sm font-medium">{{ extension.totalDownloads.toLocaleString() }}</p>
                 <p class="text-xs text-muted-foreground">Downloads</p>
               </div>
-              <Badge :variant="extension.status === 'published' ? 'default' : 'secondary'">
-                {{ extension.status }}
-              </Badge>
               <NuxtLinkLocale :to="`/developer/extensions/${extension.slug}`">
                 <Button variant="ghost" size="sm">Edit</Button>
               </NuxtLinkLocale>

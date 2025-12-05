@@ -21,37 +21,18 @@ onMounted(async () => {
   loading.value = false
 })
 
-// Search and filter
+// Search
 const searchQuery = ref('')
-const statusFilter = ref('all')
 
 const filteredExtensions = computed(() => {
-  let result = store.extensions
+  if (!searchQuery.value) return store.extensions
 
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    result = result.filter(ext =>
-      ext.name.toLowerCase().includes(query) ||
-      ext.shortDescription.toLowerCase().includes(query)
-    )
-  }
-
-  if (statusFilter.value !== 'all') {
-    result = result.filter(ext => ext.status === statusFilter.value)
-  }
-
-  return result
+  const query = searchQuery.value.toLowerCase()
+  return store.extensions.filter(ext =>
+    ext.name.toLowerCase().includes(query) ||
+    ext.shortDescription.toLowerCase().includes(query)
+  )
 })
-
-function getStatusVariant(status: string) {
-  switch (status) {
-    case 'published': return 'default'
-    case 'draft': return 'secondary'
-    case 'pending_review': return 'outline'
-    case 'rejected': return 'destructive'
-    default: return 'secondary'
-  }
-}
 
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString()
@@ -82,27 +63,14 @@ function formatDate(dateString: string) {
         </NuxtLinkLocale>
       </div>
 
-      <!-- Filters -->
-      <div class="flex flex-col sm:flex-row gap-4">
-        <div class="relative flex-1">
-          <Search class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            v-model="searchQuery"
-            :placeholder="t('developer.extensions.search')"
-            class="pl-9"
-          />
-        </div>
-        <Select v-model="statusFilter">
-          <SelectTrigger class="w-full sm:w-48">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">{{ t('developer.extensions.filters.all') }}</SelectItem>
-            <SelectItem value="published">{{ t('developer.extensions.filters.published') }}</SelectItem>
-            <SelectItem value="draft">{{ t('developer.extensions.filters.draft') }}</SelectItem>
-            <SelectItem value="pending_review">{{ t('developer.extensions.filters.pending') }}</SelectItem>
-          </SelectContent>
-        </Select>
+      <!-- Search -->
+      <div class="relative max-w-md">
+        <Search class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          v-model="searchQuery"
+          :placeholder="t('developer.extensions.search')"
+          class="pl-9"
+        />
       </div>
 
       <!-- Extensions List -->
@@ -126,7 +94,6 @@ function formatDate(dateString: string) {
               <thead class="border-b">
                 <tr class="text-left text-sm text-muted-foreground">
                   <th class="p-4 font-medium">{{ t('developer.extensions.table.name') }}</th>
-                  <th class="p-4 font-medium hidden sm:table-cell">{{ t('developer.extensions.table.status') }}</th>
                   <th class="p-4 font-medium hidden md:table-cell">{{ t('developer.extensions.table.downloads') }}</th>
                   <th class="p-4 font-medium hidden lg:table-cell">{{ t('developer.extensions.table.updated') }}</th>
                   <th class="p-4 font-medium text-right">{{ t('developer.extensions.table.actions') }}</th>
@@ -148,16 +115,8 @@ function formatDate(dateString: string) {
                       <div class="min-w-0">
                         <p class="font-medium truncate">{{ extension.name }}</p>
                         <p class="text-sm text-muted-foreground truncate">{{ extension.shortDescription }}</p>
-                        <Badge :variant="getStatusVariant(extension.status)" class="sm:hidden mt-1">
-                          {{ t(`developer.extensions.status.${extension.status}`) }}
-                        </Badge>
                       </div>
                     </div>
-                  </td>
-                  <td class="p-4 hidden sm:table-cell">
-                    <Badge :variant="getStatusVariant(extension.status)">
-                      {{ t(`developer.extensions.status.${extension.status}`) }}
-                    </Badge>
                   </td>
                   <td class="p-4 hidden md:table-cell">
                     {{ extension.totalDownloads.toLocaleString() }}
