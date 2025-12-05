@@ -68,10 +68,17 @@ export interface PublisherExtension {
 export const useMarketplaceStore = defineStore('marketplace', () => {
   const config = useRuntimeConfig()
 
-  // Marketplace SDK client for public API
-  const marketplaceClient = createMarketplaceClient({
-    baseUrl: config.public.marketplaceApiUrl as string,
-  })
+  // Marketplace SDK client for public API (lazy initialized, client-side only)
+  let _marketplaceClient: MarketplaceClient | null = null
+  function getMarketplaceClient(): MarketplaceClient {
+    if (!_marketplaceClient) {
+      _marketplaceClient = createMarketplaceClient({
+        baseUrl: config.public.marketplaceApiUrl as string,
+        fetch: globalThis.fetch?.bind(globalThis),
+      })
+    }
+    return _marketplaceClient
+  }
 
   // State
   const client = ref<SupabaseClient | null>(null)
@@ -378,23 +385,23 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
 
   // Public data actions (using SDK)
   async function fetchCategories() {
-    const response = await marketplaceClient.listCategories()
+    const response = await getMarketplaceClient().listCategories()
     categories.value = response.categories
     return response.categories
   }
 
   async function fetchPublicExtensions(params?: ListExtensionsParams) {
-    const response = await marketplaceClient.listExtensions(params)
+    const response = await getMarketplaceClient().listExtensions(params)
     return response
   }
 
   async function fetchExtension(slug: string) {
-    const extension = await marketplaceClient.getExtension(slug)
+    const extension = await getMarketplaceClient().getExtension(slug)
     return extension
   }
 
   async function getDownloadUrl(slug: string, version?: string) {
-    return marketplaceClient.getDownloadUrl(slug, version)
+    return getMarketplaceClient().getDownloadUrl(slug, version)
   }
 
   return {

@@ -172,28 +172,23 @@ useSeoMeta({
 
         <!-- Sidebar -->
         <div class="space-y-6">
-          <!-- Install Card -->
-          <Card>
-            <CardHeader>
-              <CardTitle class="text-base">{{ t('marketplace.extension.install') }}</CardTitle>
-            </CardHeader>
-            <CardContent class="space-y-4">
-              <Button class="w-full" size="lg">
-                <Download class="w-4 h-4 mr-2" />
-                {{ t('marketplace.extension.installButton') }}
-              </Button>
-              <p v-if="extension.latestVersion" class="text-xs text-muted-foreground text-center">
-                {{ t('marketplace.extension.version') }}: {{ extension.latestVersion }}
-              </p>
-            </CardContent>
-          </Card>
-
           <!-- Info Card -->
           <Card>
             <CardHeader>
               <CardTitle class="text-base">{{ t('marketplace.extension.info') }}</CardTitle>
             </CardHeader>
             <CardContent class="space-y-3 text-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-muted-foreground flex items-center gap-2">
+                  <Star class="w-4 h-4" />
+                  {{ t('marketplace.extension.rating') }}
+                </span>
+                <span v-if="extension.averageRating && extension.averageRating > 0" class="flex items-center gap-1">
+                  <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  {{ extension.averageRating.toFixed(1) }} ({{ extension.reviewCount }})
+                </span>
+                <span v-else>-</span>
+              </div>
               <div class="flex items-center justify-between">
                 <span class="text-muted-foreground flex items-center gap-2">
                   <Calendar class="w-4 h-4" />
