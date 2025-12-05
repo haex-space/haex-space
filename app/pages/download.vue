@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Download, Shield, RefreshCw, HardDrive, ExternalLink } from 'lucide-vue-next'
+import { Download, ExternalLink } from 'lucide-vue-next'
 
 const { t } = useI18n()
 
@@ -107,24 +107,6 @@ const mobilePlatforms = computed(() => [
     requirements: 'iOS 14.0 or later',
     downloads: [],
     comingSoon: true,
-  },
-])
-
-const features = computed(() => [
-  {
-    icon: Shield,
-    title: t('download.features.encryption.title'),
-    description: t('download.features.encryption.description'),
-  },
-  {
-    icon: RefreshCw,
-    title: t('download.features.sync.title'),
-    description: t('download.features.sync.description'),
-  },
-  {
-    icon: HardDrive,
-    title: t('download.features.offline.title'),
-    description: t('download.features.offline.description'),
   },
 ])
 </script>
@@ -239,24 +221,6 @@ const features = computed(() => [
               </a>
             </CardContent>
           </Card>
-        </div>
-      </section>
-
-      <!-- Features -->
-      <section class="bg-muted/50 py-16">
-        <div class="container mx-auto px-4">
-          <h2 class="text-2xl font-bold text-center mb-12">
-            {{ t('download.whyVault') }}
-          </h2>
-          <div class="grid md:grid-cols-3 gap-8">
-            <div v-for="feature in features" :key="feature.title" class="text-center">
-              <div class="w-12 h-12 rounded-lg bg-background border border-border flex items-center justify-center mx-auto mb-4">
-                <component :is="feature.icon" class="w-6 h-6 text-primary" />
-              </div>
-              <h3 class="font-semibold mb-2">{{ feature.title }}</h3>
-              <p class="text-sm text-muted-foreground">{{ feature.description }}</p>
-            </div>
-          </div>
         </div>
       </section>
 
