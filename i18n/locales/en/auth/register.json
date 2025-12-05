@@ -2,7 +2,13 @@
   "auth": {
     "register": {
       "title": "Create your account",
-      "subtitle": "Enter your email below to create your account",
+      "subtitle": "Choose your account type to get started",
+      "tabs": {
+        "sync": "Vault Sync",
+        "marketplace": "Marketplace"
+      },
+      "syncDescription": "Create an account to sync your vault data across devices.",
+      "marketplaceDescription": "Create a developer account to publish and manage your extensions.",
       "email": "Email",
       "emailPlaceholder": "mail{'@'}example.com",
       "password": "Password",

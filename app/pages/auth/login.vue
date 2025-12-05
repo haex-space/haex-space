@@ -1,33 +1,50 @@
 <script setup lang="ts">
-import { Loader2 } from 'lucide-vue-next'
+import { Loader2, RefreshCw, Store } from 'lucide-vue-next'
+import { useMarketplaceStore } from '~/stores/marketplace'
 
 definePageMeta({
   layout: 'auth',
 })
 
 const { t } = useI18n()
+const route = useRoute()
 const localePath = useLocalePath()
+const marketplaceStore = useMarketplaceStore()
 
 useSeoMeta({
   title: 'Login - haex.space',
   description: 'Sign in to your haex.space account.',
 })
 
-const email = ref('')
-const password = ref('')
-const isLoading = ref(false)
-const error = ref('')
+// Tab state - check query param for initial tab
+const activeTab = ref(route.query.tab === 'marketplace' ? 'marketplace' : 'sync')
+
+// Sync form state
+const sync = reactive({
+  email: '',
+  password: '',
+  loading: false,
+  error: '',
+})
+
+// Marketplace form state
+const marketplace = reactive({
+  email: '',
+  password: '',
+  loading: false,
+  error: '',
+})
 
 const supabase = useSupabaseClient()
 
-async function handleLogin() {
-  isLoading.value = true
-  error.value = ''
+async function handleSyncLogin() {
+  sync.loading = true
+  sync.error = ''
 
   try {
     const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value,
+      email: sync.email,
+      password: sync.password,
     })
 
     if (signInError) {
@@ -36,52 +53,83 @@ async function handleLogin() {
 
     await navigateTo(localePath('/dashboard'))
   } catch (e: any) {
-    error.value = e.message || t('auth.login.errors.failed')
+    sync.error = e.message || t('auth.login.errors.failed')
   } finally {
-    isLoading.value = false
+    sync.loading = false
+  }
+}
+
+async function handleMarketplaceLogin() {
+  marketplace.loading = true
+  marketplace.error = ''
+
+  try {
+    await marketplaceStore.signIn(marketplace.email, marketplace.password)
+    await navigateTo(localePath('/developer'))
+  } catch (e: any) {
+    marketplace.error = e.message || t('auth.login.errors.failed')
+  } finally {
+    marketplace.loading = false
   }
 }
 </script>
 
 <template>
   <Card class="w-full max-w-md">
-        <CardHeader class="text-center">
-          <CardTitle class="text-2xl">{{ t('auth.login.title') }}</CardTitle>
-          <CardDescription>
-            {{ t('auth.login.subtitle') }}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form @submit.prevent="handleLogin" class="space-y-4">
+    <CardHeader class="text-center">
+      <CardTitle class="text-2xl">{{ t('auth.login.title') }}</CardTitle>
+      <CardDescription>
+        {{ t('auth.login.subtitle') }}
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Tabs v-model="activeTab" class="w-full">
+        <TabsList class="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger value="sync" class="flex items-center gap-2">
+            <RefreshCw class="h-4 w-4" />
+            {{ t('auth.login.tabs.sync') }}
+          </TabsTrigger>
+          <TabsTrigger value="marketplace" class="flex items-center gap-2">
+            <Store class="h-4 w-4" />
+            {{ t('auth.login.tabs.marketplace') }}
+          </TabsTrigger>
+        </TabsList>
+
+        <!-- Vault Sync Tab -->
+        <TabsContent value="sync">
+          <p class="text-sm text-muted-foreground mb-4">
+            {{ t('auth.login.syncDescription') }}
+          </p>
+          <form @submit.prevent="handleSyncLogin" class="space-y-4">
             <div class="space-y-2">
-              <Label for="email">{{ t('auth.login.email') }}</Label>
+              <Label for="sync-email">{{ t('auth.login.email') }}</Label>
               <Input
-                id="email"
-                v-model="email"
+                id="sync-email"
+                v-model="sync.email"
                 type="email"
                 :placeholder="t('auth.login.emailPlaceholder')"
                 required
-                :disabled="isLoading"
+                :disabled="sync.loading"
               />
             </div>
             <div class="space-y-2">
-              <Label for="password">{{ t('auth.login.password') }}</Label>
+              <Label for="sync-password">{{ t('auth.login.password') }}</Label>
               <Input
-                id="password"
-                v-model="password"
+                id="sync-password"
+                v-model="sync.password"
                 type="password"
                 :placeholder="t('auth.login.passwordPlaceholder')"
                 required
-                :disabled="isLoading"
+                :disabled="sync.loading"
               />
             </div>
 
-            <p v-if="error" class="text-sm text-destructive">
-              {{ error }}
+            <p v-if="sync.error" class="text-sm text-destructive">
+              {{ sync.error }}
             </p>
 
-            <Button type="submit" class="w-full" :disabled="isLoading">
-              <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" />
+            <Button type="submit" class="w-full" :disabled="sync.loading">
+              <Loader2 v-if="sync.loading" class="w-4 h-4 mr-2 animate-spin" />
               {{ t('auth.login.submit') }}
             </Button>
           </form>
@@ -92,6 +140,55 @@ async function handleLogin() {
               {{ t('auth.login.signUp') }}
             </NuxtLinkLocale>
           </div>
-        </CardContent>
+        </TabsContent>
+
+        <!-- Marketplace Tab -->
+        <TabsContent value="marketplace">
+          <p class="text-sm text-muted-foreground mb-4">
+            {{ t('auth.login.marketplaceDescription') }}
+          </p>
+          <form @submit.prevent="handleMarketplaceLogin" class="space-y-4">
+            <div class="space-y-2">
+              <Label for="marketplace-email">{{ t('auth.login.email') }}</Label>
+              <Input
+                id="marketplace-email"
+                v-model="marketplace.email"
+                type="email"
+                :placeholder="t('auth.login.emailPlaceholder')"
+                required
+                :disabled="marketplace.loading"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="marketplace-password">{{ t('auth.login.password') }}</Label>
+              <Input
+                id="marketplace-password"
+                v-model="marketplace.password"
+                type="password"
+                :placeholder="t('auth.login.passwordPlaceholder')"
+                required
+                :disabled="marketplace.loading"
+              />
+            </div>
+
+            <p v-if="marketplace.error" class="text-sm text-destructive">
+              {{ marketplace.error }}
+            </p>
+
+            <Button type="submit" class="w-full" :disabled="marketplace.loading">
+              <Loader2 v-if="marketplace.loading" class="w-4 h-4 mr-2 animate-spin" />
+              {{ t('auth.login.submit') }}
+            </Button>
+          </form>
+
+          <div class="mt-6 text-center text-sm text-muted-foreground">
+            {{ t('auth.login.noAccount') }}
+            <NuxtLinkLocale to="/auth/register?tab=marketplace" class="text-primary hover:underline">
+              {{ t('auth.login.signUp') }}
+            </NuxtLinkLocale>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </CardContent>
   </Card>
 </template>

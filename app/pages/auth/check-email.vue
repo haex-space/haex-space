@@ -6,6 +6,10 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const route = useRoute()
+
+// Determine account type from query param
+const isMarketplace = computed(() => route.query.type === 'marketplace')
 
 useSeoMeta({
   title: 'Check Your Email - haex.space',
@@ -29,7 +33,7 @@ useSeoMeta({
         {{ t('auth.checkEmail.description') }}
       </p>
       <div class="pt-4">
-        <NuxtLinkLocale to="/auth/login">
+        <NuxtLinkLocale :to="isMarketplace ? '/auth/login?tab=marketplace' : '/auth/login'">
           <Button variant="outline" class="w-full">
             {{ t('auth.checkEmail.backToLogin') }}
           </Button>

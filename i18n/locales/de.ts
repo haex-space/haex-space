@@ -20,7 +20,6 @@ import docsSdkDatabase from './de/docs/sdk/database.json'
 import docsSdkStorage from './de/docs/sdk/storage.json'
 import docsSdkFilesystem from './de/docs/sdk/filesystem.json'
 import docsSdkWeb from './de/docs/sdk/web.json'
-import developerAuth from './de/developer/auth.json'
 import developerIndex from './de/developer/index.json'
 import developerSettings from './de/developer/settings.json'
 import developerExtensions from './de/developer/extensions.json'
@@ -71,7 +70,6 @@ export default defineI18nLocale(() => {
     docsSdkStorage,
     docsSdkFilesystem,
     docsSdkWeb,
-    developerAuth,
     developerIndex,
     developerSettings,
     developerExtensions

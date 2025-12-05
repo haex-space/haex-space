@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CheckCircle, XCircle, Loader2 } from 'lucide-vue-next'
+import { useMarketplaceStore } from '~/stores/marketplace'
 
 definePageMeta({
   layout: 'auth',
@@ -7,6 +8,11 @@ definePageMeta({
 
 const { t } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
+const marketplaceStore = useMarketplaceStore()
+
+// Determine account type from query param
+const isMarketplace = computed(() => route.query.type === 'marketplace')
 
 useSeoMeta({
   title: 'Email Verification - haex.space',
@@ -17,30 +23,63 @@ const status = ref<'loading' | 'success' | 'error'>('loading')
 const errorMessage = ref('')
 
 onMounted(async () => {
-  // Supabase handles the token exchange automatically via the URL hash
-  // We just need to check if the user is now authenticated
-  const supabase = useSupabaseClient()
+  if (isMarketplace.value) {
+    // Marketplace account verification
+    await marketplaceStore.init()
 
-  try {
-    const { data: { session }, error } = await supabase.auth.getSession()
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
+    const accessToken = hashParams.get('access_token')
+    const refreshToken = hashParams.get('refresh_token')
+    const type = hashParams.get('type')
 
-    if (error) {
-      throw error
-    }
+    if (accessToken && type === 'signup') {
+      const { error } = await marketplaceStore.client?.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken || ''
+      }) ?? { error: new Error('Client not initialized') }
 
-    if (session) {
+      if (error) {
+        status.value = 'error'
+        errorMessage.value = error.message || t('auth.confirm.errors.failed')
+      } else {
+        status.value = 'success'
+        setTimeout(() => {
+          navigateTo(localePath('/developer'))
+        }, 2000)
+      }
+    } else if (marketplaceStore.isAuthenticated) {
       status.value = 'success'
-      // Redirect to dashboard after a short delay
       setTimeout(() => {
-        navigateTo(localePath('/dashboard'))
+        navigateTo(localePath('/developer'))
       }, 2000)
     } else {
       status.value = 'error'
       errorMessage.value = t('auth.confirm.errors.noSession')
     }
-  } catch (e: any) {
-    status.value = 'error'
-    errorMessage.value = e.message || t('auth.confirm.errors.failed')
+  } else {
+    // Vault Sync account verification
+    const supabase = useSupabaseClient()
+
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession()
+
+      if (error) {
+        throw error
+      }
+
+      if (session) {
+        status.value = 'success'
+        setTimeout(() => {
+          navigateTo(localePath('/dashboard'))
+        }, 2000)
+      } else {
+        status.value = 'error'
+        errorMessage.value = t('auth.confirm.errors.noSession')
+      }
+    } catch (e: any) {
+      status.value = 'error'
+      errorMessage.value = e.message || t('auth.confirm.errors.failed')
+    }
   }
 })
 </script>
@@ -93,12 +132,12 @@ onMounted(async () => {
             {{ t('auth.confirm.error.description') }}
           </p>
           <div class="flex gap-2 justify-center">
-            <NuxtLinkLocale to="/auth/register">
+            <NuxtLinkLocale :to="isMarketplace ? '/auth/register?tab=marketplace' : '/auth/register'">
               <Button variant="outline">
                 {{ t('auth.confirm.error.tryAgain') }}
               </Button>
             </NuxtLinkLocale>
-            <NuxtLinkLocale to="/auth/login">
+            <NuxtLinkLocale :to="isMarketplace ? '/auth/login?tab=marketplace' : '/auth/login'">
               <Button>
                 {{ t('auth.confirm.error.login') }}
               </Button>

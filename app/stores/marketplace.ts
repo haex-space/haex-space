@@ -1,7 +1,18 @@
 import { defineStore } from 'pinia'
 import { createClient, type SupabaseClient, type User, type Session } from '@supabase/supabase-js'
+import {
+  createMarketplaceClient,
+  type MarketplaceClient,
+  type CategoryWithCount,
+  type ExtensionListItem,
+  type ExtensionDetail,
+  type ListExtensionsParams,
+} from '@haex-space/marketplace-sdk'
 
-// Types
+// Re-export SDK types for convenience
+export type { CategoryWithCount, ExtensionListItem, ExtensionDetail, ListExtensionsParams }
+
+// Types for publisher-specific functionality (not in SDK)
 export interface Publisher {
   id: string
   userId: string
@@ -32,7 +43,8 @@ export interface ExtensionVersion {
   createdAt: string
 }
 
-export interface Extension {
+// Extension type for publisher dashboard (includes versions)
+export interface PublisherExtension {
   id: string
   publisherId: string
   name: string
@@ -53,14 +65,13 @@ export interface Extension {
   updatedAt: string
 }
 
-export interface Category {
-  id: string
-  name: string
-  slug: string
-}
-
 export const useMarketplaceStore = defineStore('marketplace', () => {
   const config = useRuntimeConfig()
+
+  // Marketplace SDK client for public API
+  const marketplaceClient = createMarketplaceClient({
+    baseUrl: config.public.marketplaceApiUrl as string,
+  })
 
   // State
   const client = ref<SupabaseClient | null>(null)
@@ -69,8 +80,8 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
   const loading = ref(true)
   const initialized = ref(false)
   const publisher = ref<Publisher | null>(null)
-  const extensions = ref<Extension[]>([])
-  const categories = ref<Category[]>([])
+  const extensions = ref<PublisherExtension[]>([])
+  const categories = ref<CategoryWithCount[]>([])
 
   // Getters
   const isAuthenticated = computed(() => !!user.value)
@@ -158,7 +169,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/developer/auth/confirm`
+        emailRedirectTo: `${window.location.origin}/auth/confirm?type=marketplace`
       }
     })
 
@@ -247,9 +258,9 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return result.publisher
   }
 
-  // Extension actions
+  // Extension actions (publisher-specific, not using SDK)
   async function fetchMyExtensions() {
-    const data = await fetchApi<{ extensions: Extension[] }>('/publish/extensions')
+    const data = await fetchApi<{ extensions: PublisherExtension[] }>('/publish/extensions')
     extensions.value = data.extensions
     return data.extensions
   }
@@ -263,7 +274,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     categoryId?: string
     tags?: string[]
   }) {
-    const result = await fetchApi<{ extension: Extension }>('/publish/extensions', {
+    const result = await fetchApi<{ extension: PublisherExtension }>('/publish/extensions', {
       method: 'POST',
       body: JSON.stringify(data)
     })
@@ -278,13 +289,13 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     categoryId: string
     tags: string[]
   }>) {
-    const result = await fetchApi<{ extension: Extension }>(`/publish/extensions/${slug}`, {
+    const result = await fetchApi<{ extension: PublisherExtension }>(`/publish/extensions/${slug}`, {
       method: 'PATCH',
       body: JSON.stringify(data)
     })
 
     // Update in local state
-    const index = extensions.value.findIndex(e => e.slug === slug)
+    const index = extensions.value.findIndex((e: PublisherExtension) => e.slug === slug)
     if (index !== -1) {
       extensions.value[index] = result.extension
     }
@@ -365,34 +376,25 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return response.json() as Promise<{ url: string }>
   }
 
-  // Public data actions
+  // Public data actions (using SDK)
   async function fetchCategories() {
-    const data = await fetchApi<{ categories: Category[] }>('/categories')
-    categories.value = data.categories
-    return data.categories
+    const response = await marketplaceClient.listCategories()
+    categories.value = response.categories
+    return response.categories
   }
 
-  async function fetchPublicExtensions(params?: {
-    page?: number
-    limit?: number
-    category?: string
-    search?: string
-  }) {
-    const searchParams = new URLSearchParams()
-    if (params?.page) searchParams.set('page', String(params.page))
-    if (params?.limit) searchParams.set('limit', String(params.limit))
-    if (params?.category) searchParams.set('category', params.category)
-    if (params?.search) searchParams.set('search', params.search)
-
-    const query = searchParams.toString()
-    return fetchApi<{
-      extensions: Extension[]
-      pagination: { page: number; limit: number; total: number; totalPages: number }
-    }>(`/extensions${query ? `?${query}` : ''}`)
+  async function fetchPublicExtensions(params?: ListExtensionsParams) {
+    const response = await marketplaceClient.listExtensions(params)
+    return response
   }
 
   async function fetchExtension(slug: string) {
-    return fetchApi<{ extension: Extension }>(`/extensions/${slug}`)
+    const extension = await marketplaceClient.getExtension(slug)
+    return extension
+  }
+
+  async function getDownloadUrl(slug: string, version?: string) {
+    return marketplaceClient.getDownloadUrl(slug, version)
   }
 
   return {
@@ -434,5 +436,6 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     fetchCategories,
     fetchPublicExtensions,
     fetchExtension,
+    getDownloadUrl,
   }
 })

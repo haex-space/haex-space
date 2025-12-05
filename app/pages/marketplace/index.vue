@@ -103,13 +103,13 @@ onMounted(async () => {
                 </CardHeader>
                 <CardContent>
                   <div class="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>{{ t('marketplace.by') }} {{ ext.author || 'Unknown' }}</span>
+                    <span>{{ t('marketplace.by') }} {{ ext.publisher?.displayName || 'Unknown' }}</span>
                     <div class="flex items-center gap-3">
                       <span class="flex items-center gap-1">
                         <Download class="w-4 h-4" />
                         {{ ext.totalDownloads.toLocaleString() }}
                       </span>
-                      <span v-if="ext.reviewCount > 0" class="flex items-center gap-1">
+                      <span v-if="ext.reviewCount > 0 && ext.averageRating" class="flex items-center gap-1">
                         <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
                         {{ ext.averageRating.toFixed(1) }}
                       </span>

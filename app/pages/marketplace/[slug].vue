@@ -2,7 +2,7 @@
 import { ArrowLeft, Download, Star, Calendar, Pencil, Puzzle, Loader2, Package } from 'lucide-vue-next'
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
-import { useMarketplaceStore, type Extension } from '~/stores/marketplace'
+import { useMarketplaceStore, type ExtensionDetail, type PublisherExtension } from '~/stores/marketplace'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -14,15 +14,25 @@ const previewTheme = computed(() => colorMode.value === 'dark' ? 'dark' : 'light
 
 const extensionSlug = computed(() => route.params.slug as string)
 
-// State
-const extension = ref<Extension | null>(null)
+// State - can be either ExtensionDetail (from public API) or PublisherExtension (from owner's list)
+const extension = ref<ExtensionDetail | PublisherExtension | null>(null)
 const loading = ref(true)
 const notFound = ref(false)
+
+// Check if this is a publisher extension (for owner-specific functionality)
+const isPublisherExtension = computed(() => {
+  return extension.value && 'publisherId' in extension.value
+})
 
 // Check if current user owns this extension
 const isOwner = computed(() => {
   if (!store.user || !store.publisher || !extension.value) return false
-  return extension.value.publisherId === store.publisher.id
+  if (isPublisherExtension.value) {
+    return (extension.value as PublisherExtension).publisherId === store.publisher.id
+  }
+  // For ExtensionDetail, check via publisher slug
+  const ext = extension.value as ExtensionDetail
+  return ext.publisher?.slug === store.publisher.slug
 })
 
 // Load extension and publisher info
@@ -62,7 +72,7 @@ onMounted(async () => {
 
     // If still not found, fetch from public API
     if (!extension.value) {
-      const { extension: ext } = await store.fetchExtension(extensionSlug.value)
+      const ext = await store.fetchExtension(extensionSlug.value)
       extension.value = ext
     }
   } catch {
@@ -96,12 +106,41 @@ useSeoMeta({
 
     <!-- Extension details -->
     <div v-else-if="extension">
-      <!-- Back Link & Edit -->
-      <div class="flex items-center justify-between mb-6">
+      <!-- Breadcrumbs -->
+      <div class="mb-6">
         <NuxtLinkLocale to="/marketplace" class="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft class="h-4 w-4" />
           {{ t('marketplace.title') }}
         </NuxtLinkLocale>
+      </div>
+
+      <!-- Header -->
+      <div class="flex items-start justify-between gap-4 mb-8">
+        <div class="flex items-start gap-4">
+          <div class="w-16 h-16 rounded-lg bg-muted flex items-center justify-center shrink-0">
+            <img
+              v-if="extension.iconUrl"
+              :src="extension.iconUrl"
+              :alt="extension.name"
+              class="w-14 h-14 rounded object-contain"
+            />
+            <Puzzle v-else class="w-8 h-8 text-muted-foreground" />
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold">{{ extension.name }}</h1>
+            <p class="text-muted-foreground mt-1">{{ extension.shortDescription }}</p>
+            <div class="flex items-center gap-4 mt-3">
+              <div v-if="extension.averageRating && extension.averageRating > 0" class="flex items-center gap-1 text-sm text-muted-foreground">
+                <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                {{ extension.averageRating.toFixed(1) }} ({{ extension.reviewCount }})
+              </div>
+              <div class="flex items-center gap-1 text-sm text-muted-foreground">
+                <Download class="w-4 h-4" />
+                {{ extension.totalDownloads.toLocaleString() }}
+              </div>
+            </div>
+          </div>
+        </div>
         <NuxtLinkLocale v-if="isOwner" :to="`/developer/extensions/${extension.slug}`">
           <Button variant="outline" size="sm">
             <Pencil class="h-4 w-4 mr-2" />
@@ -113,33 +152,6 @@ useSeoMeta({
       <div class="grid lg:grid-cols-3 gap-8">
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">
-          <!-- Header -->
-          <div class="flex items-start gap-4">
-            <div class="w-16 h-16 rounded-lg bg-muted flex items-center justify-center shrink-0">
-              <img
-                v-if="extension.iconUrl"
-                :src="extension.iconUrl"
-                :alt="extension.name"
-                class="w-14 h-14 rounded object-contain"
-              />
-              <Puzzle v-else class="w-8 h-8 text-muted-foreground" />
-            </div>
-            <div>
-              <h1 class="text-3xl font-bold">{{ extension.name }}</h1>
-              <p class="text-muted-foreground mt-1">{{ extension.shortDescription }}</p>
-              <div class="flex items-center gap-4 mt-3">
-                <div v-if="extension.averageRating > 0" class="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  {{ extension.averageRating.toFixed(1) }} ({{ extension.reviewCount }})
-                </div>
-                <div class="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Download class="w-4 h-4" />
-                  {{ extension.totalDownloads.toLocaleString() }}
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Description -->
           <Card>
             <CardHeader>

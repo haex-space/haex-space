@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@haex-space/marketplace-sdk':
+        specifier: ^0.1.0
+        version: 0.1.0(vue@3.5.25(typescript@5.9.3))
       '@haex-space/vault-sdk':
         specifier: ^2.2.4
         version: 2.2.4(@nuxt/kit@4.2.1(magicast@0.5.1))(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
@@ -533,6 +536,14 @@ packages:
 
   '@floating-ui/vue@1.1.9':
     resolution: {integrity: sha512-BfNqNW6KA83Nexspgb9DZuz578R7HT8MZw1CfK9I6Ah4QReNWEJsXWHN+SdmOVLNGmTPDi+fDT535Df5PzMLbQ==}
+
+  '@haex-space/marketplace-sdk@0.1.0':
+    resolution: {integrity: sha512-dTIibS8if2w9CAjMz6NJEZC/x1kJWylqXsI382i6w0OsEyCELzoCPBUjL14UUZVhZERw7y0qByK6GG6QO3Ssqg==}
+    peerDependencies:
+      vue: ^3.0.0
+    peerDependenciesMeta:
+      vue:
+        optional: true
 
   '@haex-space/vault-sdk@2.2.4':
     resolution: {integrity: sha512-/TW8dvvLc9j0LK0pGoNIZDQVUNnMr1U16AzZILBEAoIEZnE6RVuYrDwazeQa0ibd8d5Bw79Kmqi9oqTLcNJUVw==}
@@ -5707,6 +5718,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@haex-space/marketplace-sdk@0.1.0(vue@3.5.25(typescript@5.9.3))':
+    optionalDependencies:
+      vue: 3.5.25(typescript@5.9.3)
 
   '@haex-space/vault-sdk@2.2.4(@nuxt/kit@4.2.1(magicast@0.5.1))(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
     dependencies:

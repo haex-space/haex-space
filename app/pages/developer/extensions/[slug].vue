@@ -2,7 +2,7 @@
 import { ArrowLeft, Loader2, CheckCircle, AlertCircle, Package, ExternalLink, Upload, FileArchive, Save } from 'lucide-vue-next'
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import { useMarketplaceStore, type Extension } from '~/stores/marketplace'
+import { useMarketplaceStore, type PublisherExtension } from '~/stores/marketplace'
 import { useExtensionUpload } from '~/composables/useExtensionUpload'
 
 definePageMeta({
@@ -22,7 +22,7 @@ useSeoMeta({
 })
 
 // Extension data
-const extension = ref<Extension | null>(null)
+const extension = ref<PublisherExtension | null>(null)
 const loading = ref(true)
 const notFound = ref(false)
 

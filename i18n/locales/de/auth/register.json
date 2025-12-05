@@ -2,7 +2,13 @@
   "auth": {
     "register": {
       "title": "Konto erstellen",
-      "subtitle": "Gib deine E-Mail-Adresse ein, um dein Konto zu erstellen",
+      "subtitle": "Wähle deinen Kontotyp, um zu beginnen",
+      "tabs": {
+        "sync": "Vault Sync",
+        "marketplace": "Marketplace"
+      },
+      "syncDescription": "Erstelle ein Konto, um deine Vault-Daten über alle Geräte zu synchronisieren.",
+      "marketplaceDescription": "Erstelle ein Entwickler-Konto, um deine Extensions zu veröffentlichen und zu verwalten.",
       "email": "E-Mail",
       "emailPlaceholder": "mail{'@'}example.com",
       "password": "Passwort",

@@ -2,7 +2,13 @@
   "auth": {
     "login": {
       "title": "Willkommen zurück",
-      "subtitle": "Gib deine E-Mail-Adresse ein, um dich anzumelden",
+      "subtitle": "Melde dich bei deinem Konto an",
+      "tabs": {
+        "sync": "Vault Sync",
+        "marketplace": "Marketplace"
+      },
+      "syncDescription": "Melde dich an, um deine Vault-Daten über alle Geräte zu synchronisieren.",
+      "marketplaceDescription": "Melde dich an, um deine Extensions zu veröffentlichen und zu verwalten.",
       "email": "E-Mail",
       "emailPlaceholder": "mail{'@'}example.com",
       "password": "Passwort",

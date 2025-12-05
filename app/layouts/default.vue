@@ -114,13 +114,10 @@ const themeIcon = computed(() => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <!-- Header Actions Slot (default: login/register buttons) -->
+          <!-- Header Actions Slot (default: login button) -->
           <slot name="header-actions">
             <NuxtLinkLocale to="/auth/login">
               <Button variant="outline">{{ t('common.login') }}</Button>
-            </NuxtLinkLocale>
-            <NuxtLinkLocale to="/auth/register">
-              <Button>{{ t('common.register') }}</Button>
             </NuxtLinkLocale>
           </slot>
         </div>
