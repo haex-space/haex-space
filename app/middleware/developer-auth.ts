@@ -21,7 +21,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   // Redirect to login if not authenticated
   if (!store.isAuthenticated) {
-    return navigateTo(localePath('/developer/auth/login'))
+    return navigateTo(localePath('/auth/login?tab=marketplace'))
   }
 
   // Redirect to settings if no publisher profile (except settings page itself)

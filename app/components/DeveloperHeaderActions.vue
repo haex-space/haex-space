@@ -8,7 +8,7 @@ const store = useMarketplaceStore()
 
 async function handleLogout() {
   await store.signOut()
-  await navigateTo(localePath('/developer/auth/login'))
+  await navigateTo(localePath('/auth/login?tab=marketplace'))
 }
 </script>
 
