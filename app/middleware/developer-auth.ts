@@ -1,11 +1,6 @@
 import { useMarketplaceStore } from '~/stores/marketplace'
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  // Skip middleware for auth pages
-  if (to.path.includes('/developer/auth')) {
-    return
-  }
-
   // Only run on client - Supabase auth uses localStorage which isn't available on server
   if (import.meta.server) {
     return
