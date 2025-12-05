@@ -1,7 +1,7 @@
 {
   "name": "haex-space",
   "dependencies": {
-    "@haex-space/vault-sdk": "^2.2.2",
+    "@haex-space/vault-sdk": "^2.2.4",
     "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/i18n": "10.2.1",
     "@nuxtjs/mdc": "^0.19.1",

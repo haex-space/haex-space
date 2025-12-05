@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ArrowLeft, Loader2, Upload, FileArchive, CheckCircle2, AlertCircle } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
-import JSZip from 'jszip'
-import type { ExtensionManifest } from '@haex-space/vault-sdk'
+import { useExtensionUpload } from '~/composables/useExtensionUpload'
 
 definePageMeta({
   layout: false,
@@ -17,106 +16,28 @@ useSeoMeta({
   description: 'Create a new extension for the haex marketplace.',
 })
 
-// State
-const file = ref<File | null>(null)
-const manifest = ref<ExtensionManifest | null>(null)
-const iconUrl = ref<string | null>(null)
-const parseError = ref('')
-const isDragging = ref(false)
+// Use composable for file upload
+const {
+  file,
+  manifest,
+  iconUrl,
+  parseError,
+  isValid: isValidExtension,
+  dropZoneRef,
+  isOverDropZone,
+  handleFileInput,
+  clear: clearFile,
+  getIconFile,
+} = useExtensionUpload()
+
+// Submission state
 const creating = ref(false)
 const error = ref('')
 
-// Computed
-const isValidExtension = computed(() => !!manifest.value && !!file.value)
-
-// Handle file drop
-function handleDrop(e: DragEvent) {
-  isDragging.value = false
-  const droppedFile = e.dataTransfer?.files[0]
-  if (droppedFile) {
-    processFile(droppedFile)
-  }
-}
-
-// Handle file input change
-function handleFileInput(e: Event) {
-  const target = e.target as HTMLInputElement
-  const selectedFile = target.files?.[0]
-  if (selectedFile) {
-    processFile(selectedFile)
-  }
-}
-
-// Process uploaded file
-async function processFile(uploadedFile: File) {
-  // Reset state
-  file.value = null
-  manifest.value = null
-  iconUrl.value = null
-  parseError.value = ''
+// Clear error when file changes
+watch(file, () => {
   error.value = ''
-
-  // Validate file extension
-  if (!uploadedFile.name.endsWith('.xt')) {
-    parseError.value = t('developer.extensions.new.upload.invalidFormat')
-    return
-  }
-
-  try {
-    const zip = await JSZip.loadAsync(uploadedFile)
-
-    // Read manifest.json from haextension folder
-    const manifestFile = zip.file('haextension/manifest.json')
-    if (!manifestFile) {
-      parseError.value = t('developer.extensions.new.upload.noManifest')
-      return
-    }
-
-    const manifestContent = await manifestFile.async('string')
-    const parsedManifest = JSON.parse(manifestContent) as ExtensionManifest
-
-    // Validate required fields
-    if (!parsedManifest.name || !parsedManifest.publicKey || !parsedManifest.version) {
-      parseError.value = t('developer.extensions.new.upload.invalidManifest')
-      return
-    }
-
-    // Extract icon (default: favicon.ico in root)
-    const iconName = parsedManifest.icon || 'favicon.ico'
-    // Try root first, then haextension folder
-    const iconFile = zip.file(iconName) || zip.file(`haextension/${iconName}`)
-
-    if (iconFile) {
-      const iconBlob = await iconFile.async('blob')
-      const iconPath = iconName.toLowerCase()
-      const mimeType = iconPath.endsWith('.svg') ? 'image/svg+xml'
-        : iconPath.endsWith('.png') ? 'image/png'
-        : iconPath.endsWith('.jpg') || iconPath.endsWith('.jpeg') ? 'image/jpeg'
-        : iconPath.endsWith('.ico') ? 'image/x-icon'
-        : iconPath.endsWith('.webp') ? 'image/webp'
-        : 'image/png'
-      iconUrl.value = URL.createObjectURL(new Blob([iconBlob], { type: mimeType }))
-    }
-
-    file.value = uploadedFile
-    manifest.value = parsedManifest
-  } catch (err) {
-    console.error('Failed to parse extension:', err)
-    parseError.value = t('developer.extensions.new.upload.parseError')
-  }
-}
-
-// Clear selected file
-function clearFile() {
-  if (iconUrl.value) {
-    URL.revokeObjectURL(iconUrl.value)
-  }
-  file.value = null
-  manifest.value = null
-  iconUrl.value = null
-  parseError.value = ''
-  error.value = ''
-}
+})
 
 // Handle form submission
 async function handleSubmit() {
@@ -147,6 +68,17 @@ async function handleSubmit() {
 
     // Upload the bundle with version info and manifest
     await store.uploadExtensionBundle(slug, file.value, manifest.value.version, manifest.value as unknown as Record<string, unknown>)
+
+    // Upload icon if available
+    const iconFile = await getIconFile()
+    if (iconFile) {
+      try {
+        await store.uploadExtensionIcon(slug, iconFile)
+      } catch (iconErr) {
+        console.error('Failed to upload icon:', iconErr)
+        // Don't fail the whole submission for icon upload failure
+      }
+    }
 
     await navigateTo(localePath(`/developer/extensions/${slug}`))
   } catch (err: unknown) {
@@ -186,14 +118,12 @@ async function handleSubmit() {
           <div v-if="!manifest" class="space-y-4">
             <!-- Dropzone -->
             <div
+              ref="dropZoneRef"
               class="border-2 border-dashed rounded-lg p-12 text-center transition-colors cursor-pointer"
               :class="[
-                isDragging ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary/50',
+                isOverDropZone ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary/50',
                 parseError ? 'border-destructive' : ''
               ]"
-              @dragover.prevent="isDragging = true"
-              @dragleave.prevent="isDragging = false"
-              @drop.prevent="handleDrop"
               @click="($refs.fileInput as HTMLInputElement).click()"
             >
               <input
@@ -264,7 +194,7 @@ async function handleSubmit() {
                   <span class="text-muted-foreground block mb-1">{{ t('developer.extensions.new.publicKey') }}</span>
                   <span class="font-mono text-xs break-all">{{ manifest.publicKey }}</span>
                 </div>
-                <div v-if="manifest.permissions.http.length > 0" class="py-2">
+                <div v-if="manifest.permissions.http?.length" class="py-2">
                   <span class="text-muted-foreground block mb-1">{{ t('developer.extensions.new.upload.permissions') }}</span>
                   <div class="flex flex-wrap gap-1">
                     <Badge v-for="perm in manifest.permissions.http" :key="perm.target" variant="secondary">

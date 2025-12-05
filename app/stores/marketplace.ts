@@ -16,18 +16,35 @@ export interface Publisher {
   updatedAt: string
 }
 
+export interface ExtensionVersion {
+  id: string
+  extensionId: string
+  version: string
+  changelog?: string
+  bundlePath: string
+  bundleSize: number
+  bundleHash: string
+  manifest?: Record<string, unknown>
+  minAppVersion?: string
+  maxAppVersion?: string
+  permissions?: string[]
+  publishedAt?: string
+  createdAt: string
+}
+
 export interface Extension {
   id: string
   publisherId: string
   name: string
   slug: string
+  author?: string
   shortDescription: string
   description?: string
   iconUrl?: string
   publicKey: string
   latestVersion?: string
+  versions?: ExtensionVersion[]
   verified: boolean
-  status: 'draft' | 'pending_review' | 'published' | 'rejected' | 'unlisted'
   totalDownloads: number
   averageRating: number
   reviewCount: number
@@ -260,7 +277,6 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     description: string
     categoryId: string
     tags: string[]
-    status: string
   }>) {
     const result = await fetchApi<{ extension: Extension }>(`/publish/extensions/${slug}`, {
       method: 'PATCH',

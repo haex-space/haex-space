@@ -80,7 +80,8 @@
         "tagsHint": "Tags mit Kommas trennen",
         "statistics": "Statistiken",
         "downloads": "Downloads",
-        "rating": "Bewertung"
+        "rating": "Bewertung",
+        "unsavedChanges": "Ungespeicherte Änderungen"
       },
       "version": {
         "title": "Version hochladen",
@@ -90,8 +91,16 @@
         "bundleDescription": "Lade dein Extension-Paket hoch (.zip-Datei).",
         "changelog": "Änderungsprotokoll",
         "changelogDescription": "Was ist neu in dieser Version?",
-        "upload": "Version hochladen",
-        "uploading": "Hochladen..."
+        "upload": "Neue Version",
+        "uploadDescription": "Lade eine neue Version deiner Extension hoch.",
+        "uploadButton": "Version hochladen",
+        "uploading": "Hochladen...",
+        "uploaded": "Version erfolgreich hochgeladen!",
+        "publicKeyMismatch": "Der Public Key stimmt nicht überein. Stelle sicher, dass du das richtige Extension-Paket hochlädst.",
+        "uploadOnSave": "Diese Version wird beim Speichern hochgeladen.",
+        "versionTooLow": "Version {new} muss höher sein als die aktuelle Version {current}.",
+        "changes": "Änderungen in dieser Version",
+        "iconUpdated": "Wird aktualisiert"
       }
     }
   }

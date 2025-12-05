@@ -80,7 +80,8 @@
         "tagsHint": "Separate tags with commas",
         "statistics": "Statistics",
         "downloads": "Downloads",
-        "rating": "Rating"
+        "rating": "Rating",
+        "unsavedChanges": "Unsaved changes"
       },
       "version": {
         "title": "Upload Version",
@@ -90,8 +91,16 @@
         "bundleDescription": "Upload your extension package (.zip file).",
         "changelog": "Changelog",
         "changelogDescription": "What's new in this version?",
-        "upload": "Upload Version",
-        "uploading": "Uploading..."
+        "upload": "New Version",
+        "uploadDescription": "Upload a new version of your extension.",
+        "uploadButton": "Upload Version",
+        "uploading": "Uploading...",
+        "uploaded": "Version uploaded successfully!",
+        "publicKeyMismatch": "Public key does not match. Make sure you're uploading the correct extension package.",
+        "uploadOnSave": "This version will be uploaded when you save changes.",
+        "versionTooLow": "Version {new} must be higher than current version {current}.",
+        "changes": "Changes in this version",
+        "iconUpdated": "Will be updated"
       }
     }
   }
