@@ -181,7 +181,7 @@ const mobilePlatforms = computed(() => [
       <!-- Mobile Downloads -->
       <section class="container mx-auto px-4 pb-16">
         <h2 class="text-2xl font-bold mb-6">{{ t('download.mobile') }}</h2>
-        <div class="grid md:grid-cols-2 gap-6 max-w-2xl">
+        <div class="grid md:grid-cols-2 gap-6 md:max-w-[calc(66.666%+0.75rem)] md:mx-auto">
           <Card v-for="platform in mobilePlatforms" :key="platform.id" class="relative overflow-hidden">
             <CardHeader>
               <div class="flex items-center gap-3 mb-2">
