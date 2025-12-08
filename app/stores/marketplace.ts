@@ -404,6 +404,11 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return getMarketplaceClient().getDownloadUrl(slug, version)
   }
 
+  async function listVersions(slug: string) {
+    const response = await getMarketplaceClient().listVersions(slug)
+    return response.versions
+  }
+
   return {
     // State
     client,
@@ -444,5 +449,6 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     fetchPublicExtensions,
     fetchExtension,
     getDownloadUrl,
+    listVersions,
   }
 })

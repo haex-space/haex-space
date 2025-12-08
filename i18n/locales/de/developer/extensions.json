@@ -81,7 +81,8 @@
         "statistics": "Statistiken",
         "downloads": "Downloads",
         "rating": "Bewertung",
-        "unsavedChanges": "Ungespeicherte Änderungen"
+        "unsavedChanges": "Ungespeicherte Änderungen",
+        "versions": "Alle Versionen anzeigen"
       },
       "version": {
         "title": "Version hochladen",
@@ -101,6 +102,22 @@
         "versionTooLow": "Version {new} muss höher sein als die aktuelle Version {current}.",
         "changes": "Änderungen in dieser Version",
         "iconUpdated": "Wird aktualisiert"
+      },
+      "versions": {
+        "title": "Versionshistorie",
+        "description": "Alle veröffentlichten Versionen deiner Extension anzeigen.",
+        "notFound": "Extension nicht gefunden.",
+        "backToList": "Zurück zu Extensions",
+        "empty": "Noch keine Versionen veröffentlicht.",
+        "latest": "Aktuell",
+        "download": "Download",
+        "totalVersions": "{count} Version(en) veröffentlicht",
+        "table": {
+          "version": "Version",
+          "size": "Größe",
+          "published": "Veröffentlicht",
+          "actions": "Aktionen"
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowLeft, Loader2, CheckCircle, AlertCircle, Package, ExternalLink, Upload, FileArchive, Save } from 'lucide-vue-next'
+import { ArrowLeft, Loader2, CheckCircle, AlertCircle, Package, ExternalLink, Upload, FileArchive, Save, History } from 'lucide-vue-next'
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { useMarketplaceStore, type PublisherExtension } from '~/stores/marketplace'
@@ -444,6 +444,21 @@ async function handleEditorUploadImg(files: File[], callback: (urls: string[]) =
                   {{ t('developer.extensions.version.uploadOnSave') }}
                 </p>
               </div>
+            </CardContent>
+          </Card>
+
+          <!-- Version History Link -->
+          <Card>
+            <CardHeader>
+              <CardTitle class="text-base">{{ t('developer.extensions.versions.title') }}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <NuxtLinkLocale :to="`/developer/extensions/${extension.slug}/versions`">
+                <Button variant="outline" class="w-full">
+                  <History class="h-4 w-4 mr-2" />
+                  {{ t('developer.extensions.edit.versions') }}
+                </Button>
+              </NuxtLinkLocale>
             </CardContent>
           </Card>
 
