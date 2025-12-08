@@ -102,21 +102,21 @@ onMounted(async () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent class="pt-0">
-                  <div class="flex flex-col gap-2 text-sm text-muted-foreground">
+                  <div class="flex flex-col gap-3 text-sm text-muted-foreground">
                     <span>{{ t('marketplace.by') }} {{ ext.publisher?.displayName || 'Unknown' }}</span>
-                    <div class="flex items-center gap-4">
-                      <span class="flex items-center gap-1">
-                        <Download class="w-4 h-4" />
-                        {{ ext.totalDownloads.toLocaleString() }}
-                      </span>
-                      <span class="flex items-center gap-1">
-                        <Star class="w-4 h-4" :class="ext.averageRating ? 'fill-yellow-400 text-yellow-400' : ''" />
-                        {{ ext.averageRating ? ext.averageRating.toFixed(1) : '-' }}
-                      </span>
-                      <span class="flex items-center gap-1 font-mono text-xs">
-                        <Tag class="w-4 h-4" />
-                        {{ ext.versions?.[0]?.version || '-' }}
-                      </span>
+                    <div class="grid grid-cols-3 gap-2">
+                      <div class="flex items-center justify-center gap-1.5">
+                        <Download class="w-4 h-4 shrink-0" />
+                        <span>{{ ext.totalDownloads.toLocaleString() }}</span>
+                      </div>
+                      <div class="flex items-center justify-center gap-1.5">
+                        <Star class="w-4 h-4 shrink-0" :class="ext.averageRating ? 'fill-yellow-400 text-yellow-400' : ''" />
+                        <span>{{ ext.averageRating ? ext.averageRating.toFixed(1) : '-' }}</span>
+                      </div>
+                      <div class="flex items-center justify-center gap-1.5">
+                        <Tag class="w-4 h-4 shrink-0" />
+                        <span class="font-mono text-xs">{{ ext.versions?.[0]?.version || '-' }}</span>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
