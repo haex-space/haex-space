@@ -76,7 +76,7 @@ onMounted(async () => {
           </div>
 
           <!-- Extensions Grid -->
-          <div v-else class="grid md:grid-cols-3 gap-6">
+          <div v-else class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
             <NuxtLinkLocale
               v-for="ext in extensions"
               :key="ext.slug"
@@ -84,27 +84,27 @@ onMounted(async () => {
               class="group"
             >
               <Card class="h-full transition-all hover:border-primary/50 hover:shadow-lg">
-                <CardHeader>
-                  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3">
+                <CardHeader class="pb-4">
+                  <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4">
                     <img
                       v-if="ext.iconUrl"
                       :src="ext.iconUrl"
                       :alt="ext.name"
-                      class="w-10 h-10 rounded"
+                      class="w-14 h-14 rounded-lg object-contain"
                     />
-                    <Puzzle v-else class="w-6 h-6 text-primary" />
+                    <Puzzle v-else class="w-8 h-8 text-primary" />
                   </div>
-                  <CardTitle class="group-hover:text-primary transition-colors">
+                  <CardTitle class="text-lg group-hover:text-primary transition-colors">
                     {{ ext.name }}
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription class="line-clamp-2 min-h-10">
                     {{ ext.shortDescription }}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div class="flex items-center justify-between text-sm text-muted-foreground">
+                <CardContent class="pt-0">
+                  <div class="flex flex-col gap-2 text-sm text-muted-foreground">
                     <span>{{ t('marketplace.by') }} {{ ext.publisher?.displayName || 'Unknown' }}</span>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-4">
                       <span class="flex items-center gap-1">
                         <Download class="w-4 h-4" />
                         {{ ext.totalDownloads.toLocaleString() }}
