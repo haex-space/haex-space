@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowLeft, Download, Star, Calendar, Pencil, Puzzle, Loader2, Package } from 'lucide-vue-next'
+import { ArrowLeft, Download, Star, Calendar, Pencil, Puzzle, Loader2, Package, Tag } from 'lucide-vue-next'
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
 import { useMarketplaceStore, type ExtensionDetail, type PublisherExtension } from '~/stores/marketplace'
@@ -202,6 +202,13 @@ useSeoMeta({
                   {{ t('marketplace.extension.downloads') }}
                 </span>
                 <span>{{ extension.totalDownloads.toLocaleString() }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-muted-foreground flex items-center gap-2">
+                  <Tag class="w-4 h-4" />
+                  {{ t('marketplace.extension.version') }}
+                </span>
+                <span class="font-mono">{{ 'latestVersion' in extension && extension.latestVersion ? (typeof extension.latestVersion === 'string' ? extension.latestVersion : extension.latestVersion.version) : '-' }}</span>
               </div>
             </CardContent>
           </Card>

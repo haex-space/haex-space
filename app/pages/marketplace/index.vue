@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Puzzle, Download, Star, Code, Loader2, Package } from 'lucide-vue-next'
+import { Puzzle, Download, Star, Code, Loader2, Package, Tag } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
 
 const { t } = useI18n()
@@ -109,9 +109,13 @@ onMounted(async () => {
                         <Download class="w-4 h-4" />
                         {{ ext.totalDownloads.toLocaleString() }}
                       </span>
-                      <span v-if="ext.reviewCount > 0 && ext.averageRating" class="flex items-center gap-1">
-                        <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        {{ ext.averageRating.toFixed(1) }}
+                      <span class="flex items-center gap-1">
+                        <Star class="w-4 h-4" :class="ext.averageRating ? 'fill-yellow-400 text-yellow-400' : ''" />
+                        {{ ext.averageRating ? ext.averageRating.toFixed(1) : '-' }}
+                      </span>
+                      <span class="flex items-center gap-1 font-mono text-xs">
+                        <Tag class="w-4 h-4" />
+                        {{ ext.versions?.[0]?.version || '-' }}
                       </span>
                     </div>
                   </div>
