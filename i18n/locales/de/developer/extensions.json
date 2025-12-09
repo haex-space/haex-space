@@ -43,6 +43,7 @@
           "noManifest": "Keine manifest.json im haextension Ordner gefunden.",
           "invalidManifest": "Ungültiges Manifest: Pflichtfelder fehlen (name, publicKey, version).",
           "parseError": "Extension-Paket konnte nicht gelesen werden.",
+          "invalidSignature": "Die Signatur des Extension-Pakets ist ungültig. Stelle sicher, dass das Paket mit dem korrekten Private Key signiert wurde.",
           "valid": "Gültiges Extension-Paket",
           "author": "Autor",
           "permissions": "HTTP Berechtigungen",

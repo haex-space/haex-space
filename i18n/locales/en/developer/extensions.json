@@ -43,6 +43,7 @@
           "noManifest": "No manifest.json found in haextension folder.",
           "invalidManifest": "Invalid manifest: missing required fields (name, publicKey, version).",
           "parseError": "Failed to parse extension package.",
+          "invalidSignature": "The extension package signature is invalid. Make sure the package was signed with the correct private key.",
           "valid": "Valid extension package",
           "author": "Author",
           "permissions": "HTTP Permissions",

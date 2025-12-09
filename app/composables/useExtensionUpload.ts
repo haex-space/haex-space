@@ -1,5 +1,5 @@
 import JSZip from 'jszip'
-import type { ExtensionManifest } from '@haex-space/vault-sdk'
+import { verifyExtensionSignature, type ExtensionManifest, type ZipFileEntry } from '@haex-space/vault-sdk'
 import { useDropZone } from '@vueuse/core'
 
 /**
@@ -114,6 +114,23 @@ export function useExtensionUpload(options: ExtensionUploadOptions = {}) {
           current: currentVer,
           new: parsedManifest.version,
         })
+        isProcessing.value = false
+        return
+      }
+
+      // Verify cryptographic signature
+      const files: ZipFileEntry[] = []
+      for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+        if (!zipEntry.dir) {
+          const content = await zipEntry.async('uint8array')
+          files.push({ path: relativePath, content })
+        }
+      }
+
+      const verifyResult = await verifyExtensionSignature(files, parsedManifest)
+      if (!verifyResult.valid) {
+        console.error('Signature verification failed:', verifyResult.error)
+        parseError.value = t('developer.extensions.new.upload.invalidSignature')
         isProcessing.value = false
         return
       }
