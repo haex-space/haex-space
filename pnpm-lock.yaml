@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.3
         version: 0.1.3(vue@3.5.25(typescript@5.9.3))
       '@haex-space/vault-sdk':
-        specifier: ^2.3.4
-        version: 2.3.4(@nuxt/kit@4.2.1(magicast@0.5.1))(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+        specifier: ^2.3.8
+        version: 2.3.8(@nuxt/kit@4.2.1(magicast@0.5.1))(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxtjs/color-mode':
         specifier: ^4.0.0
         version: 4.0.0(magicast@0.5.1)
@@ -545,8 +545,8 @@ packages:
       vue:
         optional: true
 
-  '@haex-space/vault-sdk@2.3.4':
-    resolution: {integrity: sha512-oPZLldigFVOffkgqiur+2QgRotIDiJtGuiZ4ZXPi5l/YLSaqH8Hp36SgPJH6LHXh9hYOUKQx9Vlc0tCXfqyplw==}
+  '@haex-space/vault-sdk@2.3.8':
+    resolution: {integrity: sha512-0WR6fttqLqXMksmSWgUWxRirRX+h0RCEHXF+1HZnzWC8Is6tkIB7yjq49LDDqHI9gwW5EoouRMO4Cj8TO9yjvA==}
     hasBin: true
     peerDependencies:
       '@nuxt/kit': ^3.0.0 || ^4.0.0
@@ -5723,11 +5723,12 @@ snapshots:
     optionalDependencies:
       vue: 3.5.25(typescript@5.9.3)
 
-  '@haex-space/vault-sdk@2.3.4(@nuxt/kit@4.2.1(magicast@0.5.1))(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
+  '@haex-space/vault-sdk@2.3.8(@nuxt/kit@4.2.1(magicast@0.5.1))(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       archiver: 7.0.1
       commander: 14.0.2
       drizzle-orm: 0.45.0
+      jszip: 3.10.1
     optionalDependencies:
       '@nuxt/kit': 4.2.1(magicast@0.5.1)
       vite: 7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
