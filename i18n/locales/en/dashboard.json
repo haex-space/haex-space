@@ -42,7 +42,11 @@
         "title": "Delete Vault",
         "description": "Are you sure you want to delete the vault \"{name}\"? This will permanently remove all synced data from the server. This action cannot be undone.",
         "confirm": "Delete"
-      }
+      },
+      "enterPassword": "Enter your password to decrypt vault names.",
+      "passwordPlaceholder": "Your password",
+      "decrypt": "Decrypt",
+      "decryptError": "Failed to decrypt. Please check your password."
     },
     "account": {
       "title": "Account",

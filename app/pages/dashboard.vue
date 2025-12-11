@@ -2,13 +2,14 @@
 import {
   Loader2,
   Download,
-  FolderPlus,
-  LogIn,
+  Plus,
+  Cloud,
   ChevronRight,
   FolderLock,
-  CheckCircle2,
   RefreshCw,
   Trash2,
+  BookOpen,
+  Store,
 } from 'lucide-vue-next'
 import { useVaultSyncStore } from '~/stores/vaultSync'
 
@@ -45,6 +46,10 @@ onMounted(async () => {
 async function handleRefresh() {
   try {
     await vaultSyncStore.fetchVaults()
+    // Re-decrypt vault names after refresh
+    if (vaultSyncStore.serverPassword) {
+      await vaultSyncStore.decryptVaultNames(vaultSyncStore.serverPassword)
+    }
   } catch (e) {
     console.error('Failed to refresh vaults:', e)
   }
@@ -80,7 +85,38 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString()
 }
 
+// Password input for decryption
+const decrypting = ref(false)
+const decryptError = ref('')
+
+const needsPassword = computed(() =>
+  vaultSyncStore.vaults.length > 0 && !vaultSyncStore.isDecrypted
+)
+
+async function handleDecrypt() {
+  if (!vaultSyncStore.serverPassword) return
+
+  decrypting.value = true
+  decryptError.value = ''
+
+  try {
+    const success = await vaultSyncStore.decryptVaultNames(vaultSyncStore.serverPassword)
+    if (!success) {
+      decryptError.value = t('dashboard.vaults.decryptError')
+      vaultSyncStore.clearServerPassword()
+    }
+  } catch (e) {
+    decryptError.value = t('dashboard.vaults.decryptError')
+    vaultSyncStore.clearServerPassword()
+    console.error('Failed to decrypt vault names:', e)
+  } finally {
+    decrypting.value = false
+  }
+}
+
 // Onboarding steps
+const allOnboardingCompleted = computed(() => onboardingSteps.value.every(step => step.completed))
+
 const onboardingSteps = computed(() => [
   {
     id: 'download',
@@ -89,20 +125,20 @@ const onboardingSteps = computed(() => [
     icon: Download,
     link: localePath('/download'),
     linkText: t('dashboard.onboarding.steps.download.action'),
-    completed: false,
+    completed: vaultSyncStore.vaultCount > 0,
   },
   {
     id: 'createVault',
     title: t('dashboard.onboarding.steps.createVault.title'),
     description: t('dashboard.onboarding.steps.createVault.description'),
-    icon: FolderPlus,
+    icon: Plus,
     completed: vaultSyncStore.vaultCount > 0,
   },
   {
     id: 'connect',
     title: t('dashboard.onboarding.steps.connect.title'),
     description: t('dashboard.onboarding.steps.connect.description'),
-    icon: LogIn,
+    icon: Cloud,
     completed: vaultSyncStore.isConnected && vaultSyncStore.vaultCount > 0,
   },
 ])
@@ -123,7 +159,7 @@ const onboardingSteps = computed(() => [
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Onboarding Card -->
-          <Card>
+          <Card v-if="!allOnboardingCompleted">
             <CardHeader>
               <CardTitle class="flex items-center gap-2">
                 <FolderLock class="h-5 w-5" />
@@ -141,13 +177,12 @@ const onboardingSteps = computed(() => [
                   class="flex gap-4"
                 >
                   <!-- Step indicator -->
-                  <div class="flex flex-col items-center">
+                  <div class="flex flex-col items-center shrink-0">
                     <div
-                      class="flex h-10 w-10 items-center justify-center rounded-full"
-                      :class="step.completed ? 'bg-primary text-primary-foreground' : 'bg-muted'"
+                      class="flex h-10 w-10 aspect-square items-center justify-center rounded-full border-2 shrink-0"
+                      :class="step.completed ? 'bg-primary border-primary text-primary-foreground' : 'bg-muted border-muted text-muted-foreground'"
                     >
-                      <CheckCircle2 v-if="step.completed" class="h-5 w-5" />
-                      <component v-else :is="step.icon" class="h-5 w-5" />
+                      <component :is="step.icon" class="h-5 w-5 shrink-0" />
                     </div>
                     <div
                       v-if="index < onboardingSteps.length - 1"
@@ -196,6 +231,29 @@ const onboardingSteps = computed(() => [
               </div>
             </CardHeader>
             <CardContent>
+              <!-- Password input for decryption -->
+              <div v-if="needsPassword" class="mb-4 p-4 rounded-lg border bg-muted/50">
+                <p class="text-sm text-muted-foreground mb-3">
+                  {{ t('dashboard.vaults.enterPassword') }}
+                </p>
+                <form class="flex gap-2" @submit.prevent="handleDecrypt">
+                  <Input
+                    v-model="vaultSyncStore.serverPassword"
+                    type="password"
+                    :placeholder="t('dashboard.vaults.passwordPlaceholder')"
+                    class="flex-1"
+                    :disabled="decrypting"
+                  />
+                  <Button type="submit" :disabled="decrypting || !vaultSyncStore.serverPassword">
+                    <Loader2 v-if="decrypting" class="h-4 w-4 animate-spin" />
+                    <span v-else>{{ t('dashboard.vaults.decrypt') }}</span>
+                  </Button>
+                </form>
+                <p v-if="decryptError" class="text-sm text-destructive mt-2">
+                  {{ decryptError }}
+                </p>
+              </div>
+
               <!-- Loading state -->
               <div v-if="vaultSyncStore.loading" class="flex items-center justify-center py-8">
                 <Loader2 class="h-8 w-8 animate-spin text-muted-foreground" />
@@ -280,11 +338,11 @@ const onboardingSteps = computed(() => [
                 <span class="text-sm">{{ t('dashboard.quickLinks.download') }}</span>
               </NuxtLinkLocale>
               <NuxtLinkLocale to="/docs" class="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors">
-                <FolderPlus class="h-4 w-4 text-muted-foreground" />
+                <BookOpen class="h-4 w-4 text-muted-foreground" />
                 <span class="text-sm">{{ t('dashboard.quickLinks.docs') }}</span>
               </NuxtLinkLocale>
               <NuxtLinkLocale to="/marketplace" class="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors">
-                <FolderLock class="h-4 w-4 text-muted-foreground" />
+                <Store class="h-4 w-4 text-muted-foreground" />
                 <span class="text-sm">{{ t('dashboard.quickLinks.marketplace') }}</span>
               </NuxtLinkLocale>
             </CardContent>

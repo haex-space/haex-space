@@ -42,7 +42,11 @@
         "title": "Vault löschen",
         "description": "Möchtest du den Vault \"{name}\" wirklich löschen? Alle synchronisierten Daten werden dauerhaft vom Server entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
         "confirm": "Löschen"
-      }
+      },
+      "enterPassword": "Gib dein Passwort ein, um die Vault-Namen zu entschlüsseln.",
+      "passwordPlaceholder": "Dein Passwort",
+      "decrypt": "Entschlüsseln",
+      "decryptError": "Entschlüsselung fehlgeschlagen. Bitte überprüfe dein Passwort."
     },
     "account": {
       "title": "Account",

@@ -43,6 +43,7 @@ export default defineNuxtConfig({
   turnstile: {
     siteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
     secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY,
+    addValidateEndpoint: true,
   },
 
   supabase: {

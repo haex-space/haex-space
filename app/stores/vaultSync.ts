@@ -20,7 +20,7 @@ export const useVaultSyncStore = defineStore('vaultSync', () => {
   const isDecrypted = ref(false)
   const decryptionError = ref<string | null>(null)
   // Password stored in memory only (not persisted)
-  const serverPassword = ref<string | null>(null)
+  const serverPassword = ref('')
 
   // Getters
   const isConnected = computed(() => hasFetched.value)
@@ -79,7 +79,7 @@ export const useVaultSyncStore = defineStore('vaultSync', () => {
 
   // Clear the password (called on logout)
   function clearServerPassword() {
-    serverPassword.value = null
+    serverPassword.value = ''
   }
 
   // Delete a vault from the server
