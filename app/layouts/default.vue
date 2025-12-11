@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { Languages, Moon, Sun, Monitor, Check } from 'lucide-vue-next'
+import { Languages, Moon, Sun, Monitor, Check, LogOut, User } from 'lucide-vue-next'
+import { useVaultSyncStore } from '~/stores/vaultSync'
 
 const { t, locale, locales, setLocale } = useI18n()
 const colorMode = useColorMode()
+const user = useSupabaseUser()
+const supabase = useSupabaseClient()
+const localePath = useLocalePath()
+const vaultSyncStore = useVaultSyncStore()
 
 const availableLocales = computed(() =>
   (locales.value as Array<{ code: string; name: string }>).map(l => ({
@@ -20,6 +25,13 @@ const themeIcon = computed(() => {
   if (colorMode.preference === 'light') return Sun
   return Monitor
 })
+
+async function handleLogout() {
+  vaultSyncStore.clearServerPassword()
+  vaultSyncStore.reset()
+  await supabase.auth.signOut()
+  await navigateTo(localePath('/'))
+}
 </script>
 
 <template>
@@ -114,11 +126,37 @@ const themeIcon = computed(() => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <!-- Header Actions Slot (default: login button) -->
+          <!-- Header Actions Slot (default: login/logout button) -->
           <slot name="header-actions">
-            <NuxtLinkLocale to="/auth/login">
-              <Button variant="outline">{{ t('common.login') }}</Button>
-            </NuxtLinkLocale>
+            <template v-if="user">
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                  <Button variant="ghost" size="icon">
+                    <User class="h-4 w-4" />
+                    <span class="sr-only">{{ t('common.account') }}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>{{ user.email }}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem as-child>
+                    <NuxtLinkLocale to="/dashboard" class="flex items-center gap-2 cursor-pointer">
+                      <User class="h-4 w-4" />
+                      {{ t('common.dashboard') }}
+                    </NuxtLinkLocale>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem @click="handleLogout" class="flex items-center gap-2 cursor-pointer text-destructive">
+                    <LogOut class="h-4 w-4" />
+                    {{ t('common.logout') }}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </template>
+            <template v-else>
+              <NuxtLinkLocale to="/auth/login">
+                <Button variant="outline">{{ t('common.login') }}</Button>
+              </NuxtLinkLocale>
+            </template>
           </slot>
         </div>
       </nav>

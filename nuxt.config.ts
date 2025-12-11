@@ -15,7 +15,6 @@ export default defineNuxtConfig({
       marketplaceSupabaseUrl: process.env.NUXT_PUBLIC_MARKETPLACE_SUPABASE_URL,
       marketplaceSupabaseKey: process.env.NUXT_PUBLIC_MARKETPLACE_SUPABASE_KEY,
       marketplaceApiUrl: process.env.NUXT_PUBLIC_MARKETPLACE_API_URL,
-      turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
     },
   },
 
@@ -26,6 +25,7 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       exclude: ["@vueuse/core"],
+      include: ["@supabase/supabase-js"],
     },
   },
 
@@ -37,12 +37,12 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@nuxtjs/supabase",
     "@pinia/nuxt",
-    "@nuxt/scripts",
     "@nuxtjs/turnstile",
   ],
 
   turnstile: {
-    siteKey: '', // Will be overridden by NUXT_PUBLIC_TURNSTILE_SITE_KEY at runtime
+    siteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
+    secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY,
   },
 
   supabase: {

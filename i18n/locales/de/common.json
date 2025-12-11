@@ -2,6 +2,9 @@
   "common": {
     "login": "Anmelden",
     "register": "Jetzt starten",
+    "logout": "Abmelden",
+    "account": "Konto",
+    "dashboard": "Dashboard",
     "marketplace": "Marketplace",
     "download": "Download",
     "privacy": "Datenschutz",

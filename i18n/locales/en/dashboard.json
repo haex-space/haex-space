@@ -1,0 +1,58 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome",
+    "onboarding": {
+      "title": "Get Started with Vault Sync",
+      "description": "Follow these steps to start synchronizing your vaults across devices.",
+      "steps": {
+        "download": {
+          "title": "Download haex",
+          "description": "Download and install the haex app on your device to create and manage encrypted vaults.",
+          "action": "Go to Downloads"
+        },
+        "createVault": {
+          "title": "Create a Vault",
+          "description": "Open the haex app and create a new vault. Your vault is encrypted locally with your password."
+        },
+        "connect": {
+          "title": "Connect to Sync",
+          "description": "In the app, go to Settings > Sync and sign in with your haex.space account to sync your vaults."
+        }
+      }
+    },
+    "vaults": {
+      "title": "Your Vaults",
+      "description": "Vaults connected to your account.",
+      "empty": "No vaults connected yet",
+      "emptyHint": "Create a vault in the haex app and connect it to your account.",
+      "connect": "Connect to Sync Server",
+      "connecting": "Connecting...",
+      "disconnect": "Disconnect",
+      "createdAt": "Created",
+      "syncDialog": {
+        "title": "Connect to Sync Server",
+        "description": "Enter your password to connect to the sync server and view your vaults.",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your haex.space password",
+        "submit": "Connect",
+        "error": "Failed to connect. Please check your password."
+      },
+      "deleteDialog": {
+        "title": "Delete Vault",
+        "description": "Are you sure you want to delete the vault \"{name}\"? This will permanently remove all synced data from the server. This action cannot be undone.",
+        "confirm": "Delete"
+      }
+    },
+    "account": {
+      "title": "Account",
+      "memberSince": "Member since"
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "download": "Download haex",
+      "docs": "Documentation",
+      "marketplace": "Marketplace"
+    }
+  }
+}

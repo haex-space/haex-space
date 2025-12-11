@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Loader2, RefreshCw, Store } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
+import { useVaultSyncStore } from '~/stores/vaultSync'
 
 definePageMeta({
   layout: 'auth',
@@ -10,6 +11,7 @@ const { t } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const marketplaceStore = useMarketplaceStore()
+const vaultSyncStore = useVaultSyncStore()
 
 useSeoMeta({
   title: 'Login - haex.space',
@@ -62,6 +64,9 @@ async function handleSyncLogin() {
     if (signInError) {
       throw signInError
     }
+
+    // Store password for vault name decryption
+    vaultSyncStore.setServerPassword(sync.password)
 
     await navigateTo(localePath('/dashboard'))
   } catch (e: any) {

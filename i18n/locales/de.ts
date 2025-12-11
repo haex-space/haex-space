@@ -23,6 +23,7 @@ import docsSdkWeb from './de/docs/sdk/web.json'
 import developerIndex from './de/developer/index.json'
 import developerSettings from './de/developer/settings.json'
 import developerExtensions from './de/developer/extensions.json'
+import dashboard from './de/dashboard.json'
 
 function deepMerge(...objects: Record<string, unknown>[]): Record<string, unknown> {
   const result: Record<string, unknown> = {}
@@ -72,6 +73,7 @@ export default defineI18nLocale(() => {
     docsSdkWeb,
     developerIndex,
     developerSettings,
-    developerExtensions
+    developerExtensions,
+    dashboard
   )
 })

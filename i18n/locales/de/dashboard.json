@@ -1,0 +1,58 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen",
+    "onboarding": {
+      "title": "Erste Schritte mit Vault Sync",
+      "description": "Folge diesen Schritten, um deine Vaults auf allen Geräten zu synchronisieren.",
+      "steps": {
+        "download": {
+          "title": "haex herunterladen",
+          "description": "Lade die haex App herunter und installiere sie, um verschlüsselte Vaults zu erstellen und zu verwalten.",
+          "action": "Zu den Downloads"
+        },
+        "createVault": {
+          "title": "Vault erstellen",
+          "description": "Öffne die haex App und erstelle einen neuen Vault. Dein Vault wird lokal mit deinem Passwort verschlüsselt."
+        },
+        "connect": {
+          "title": "Mit Sync verbinden",
+          "description": "Gehe in der App zu Einstellungen > Sync und melde dich mit deinem haex.space Account an, um deine Vaults zu synchronisieren."
+        }
+      }
+    },
+    "vaults": {
+      "title": "Deine Vaults",
+      "description": "Mit deinem Account verbundene Vaults.",
+      "empty": "Noch keine Vaults verbunden",
+      "emptyHint": "Erstelle einen Vault in der haex App und verbinde ihn mit deinem Account.",
+      "connect": "Mit Sync-Server verbinden",
+      "connecting": "Verbinde...",
+      "disconnect": "Trennen",
+      "createdAt": "Erstellt",
+      "syncDialog": {
+        "title": "Mit Sync-Server verbinden",
+        "description": "Gib dein Passwort ein, um dich mit dem Sync-Server zu verbinden und deine Vaults anzuzeigen.",
+        "password": "Passwort",
+        "passwordPlaceholder": "Dein haex.space Passwort eingeben",
+        "submit": "Verbinden",
+        "error": "Verbindung fehlgeschlagen. Bitte überprüfe dein Passwort."
+      },
+      "deleteDialog": {
+        "title": "Vault löschen",
+        "description": "Möchtest du den Vault \"{name}\" wirklich löschen? Alle synchronisierten Daten werden dauerhaft vom Server entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+        "confirm": "Löschen"
+      }
+    },
+    "account": {
+      "title": "Account",
+      "memberSince": "Mitglied seit"
+    },
+    "quickLinks": {
+      "title": "Schnellzugriff",
+      "download": "haex herunterladen",
+      "docs": "Dokumentation",
+      "marketplace": "Marketplace"
+    }
+  }
+}
