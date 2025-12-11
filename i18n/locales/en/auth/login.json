@@ -17,6 +17,7 @@
       "noAccount": "Don't have an account?",
       "signUp": "Sign up",
       "errors": {
+        "captchaRequired": "Please complete the captcha verification",
         "failed": "Login failed"
       }
     }

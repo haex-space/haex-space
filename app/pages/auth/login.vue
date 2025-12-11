@@ -35,9 +35,18 @@ const marketplace = reactive({
   error: '',
 })
 
+// Turnstile captcha
+const turnstileToken = ref<string>('')
+const turnstileRef = ref()
+
 const supabase = useSupabaseClient()
 
 async function handleSyncLogin() {
+  if (!turnstileToken.value) {
+    sync.error = t('auth.login.errors.captchaRequired')
+    return
+  }
+
   sync.loading = true
   sync.error = ''
 
@@ -45,6 +54,9 @@ async function handleSyncLogin() {
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: sync.email,
       password: sync.password,
+      options: {
+        captchaToken: turnstileToken.value,
+      },
     })
 
     if (signInError) {
@@ -54,20 +66,27 @@ async function handleSyncLogin() {
     await navigateTo(localePath('/dashboard'))
   } catch (e: any) {
     sync.error = e.message || t('auth.login.errors.failed')
+    turnstileRef.value?.reset()
   } finally {
     sync.loading = false
   }
 }
 
 async function handleMarketplaceLogin() {
+  if (!turnstileToken.value) {
+    marketplace.error = t('auth.login.errors.captchaRequired')
+    return
+  }
+
   marketplace.loading = true
   marketplace.error = ''
 
   try {
-    await marketplaceStore.signIn(marketplace.email, marketplace.password)
+    await marketplaceStore.signIn(marketplace.email, marketplace.password, turnstileToken.value)
     await navigateTo(localePath('/developer'))
   } catch (e: any) {
     marketplace.error = e.message || t('auth.login.errors.failed')
+    turnstileRef.value?.reset()
   } finally {
     marketplace.loading = false
   }
@@ -124,11 +143,13 @@ async function handleMarketplaceLogin() {
               />
             </div>
 
+            <NuxtTurnstile v-if="activeTab === 'sync'" ref="turnstileRef" v-model="turnstileToken" />
+
             <p v-if="sync.error" class="text-sm text-destructive">
               {{ sync.error }}
             </p>
 
-            <Button type="submit" class="w-full" :disabled="sync.loading">
+            <Button type="submit" class="w-full" :disabled="sync.loading || !turnstileToken">
               <Loader2 v-if="sync.loading" class="w-4 h-4 mr-2 animate-spin" />
               {{ t('auth.login.submit') }}
             </Button>
@@ -171,11 +192,13 @@ async function handleMarketplaceLogin() {
               />
             </div>
 
+            <NuxtTurnstile v-if="activeTab === 'marketplace'" ref="turnstileRef" v-model="turnstileToken" />
+
             <p v-if="marketplace.error" class="text-sm text-destructive">
               {{ marketplace.error }}
             </p>
 
-            <Button type="submit" class="w-full" :disabled="marketplace.loading">
+            <Button type="submit" class="w-full" :disabled="marketplace.loading || !turnstileToken">
               <Loader2 v-if="marketplace.loading" class="w-4 h-4 mr-2 animate-spin" />
               {{ t('auth.login.submit') }}
             </Button>

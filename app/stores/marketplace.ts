@@ -151,13 +151,16 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
   }
 
   // Auth actions
-  async function signIn(email: string, password: string) {
+  async function signIn(email: string, password: string, captchaToken?: string) {
     const supabase = initClient()
     if (!supabase) throw new Error('Marketplace client not initialized')
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
+      options: {
+        captchaToken,
+      },
     })
 
     if (error) throw error
@@ -168,7 +171,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return data
   }
 
-  async function signUp(email: string, password: string) {
+  async function signUp(email: string, password: string, captchaToken?: string) {
     const supabase = initClient()
     if (!supabase) throw new Error('Marketplace client not initialized')
 
@@ -176,7 +179,8 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/confirm?type=marketplace`
+        emailRedirectTo: `${window.location.origin}/auth/confirm?type=marketplace`,
+        captchaToken,
       }
     })
 

@@ -21,6 +21,7 @@
       "errors": {
         "passwordMismatch": "Passwords do not match",
         "passwordTooShort": "Password must be at least 8 characters",
+        "captchaRequired": "Please complete the captcha verification",
         "failed": "Registration failed"
       }
     }

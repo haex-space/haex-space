@@ -41,9 +41,18 @@ const marketplace = reactive({
   showConfirmPassword: false,
 })
 
+// Turnstile captcha
+const turnstileToken = ref<string>('')
+const turnstileRef = ref()
+
 const supabase = useSupabaseClient()
 
 async function handleSyncRegister() {
+  if (!turnstileToken.value) {
+    sync.error = t('auth.register.errors.captchaRequired')
+    return
+  }
+
   if (sync.password !== sync.confirmPassword) {
     sync.error = t('auth.register.errors.passwordMismatch')
     return
@@ -63,6 +72,7 @@ async function handleSyncRegister() {
       password: sync.password,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/confirm`,
+        captchaToken: turnstileToken.value,
       },
     })
 
@@ -73,12 +83,19 @@ async function handleSyncRegister() {
     await navigateTo(localePath('/auth/check-email'))
   } catch (e: any) {
     sync.error = e.message || t('auth.register.errors.failed')
+    // Reset captcha on error so user can try again
+    turnstileRef.value?.reset()
   } finally {
     sync.loading = false
   }
 }
 
 async function handleMarketplaceRegister() {
+  if (!turnstileToken.value) {
+    marketplace.error = t('auth.register.errors.captchaRequired')
+    return
+  }
+
   if (marketplace.password !== marketplace.confirmPassword) {
     marketplace.error = t('auth.register.errors.passwordMismatch')
     return
@@ -93,10 +110,12 @@ async function handleMarketplaceRegister() {
   marketplace.error = ''
 
   try {
-    await marketplaceStore.signUp(marketplace.email, marketplace.password)
+    await marketplaceStore.signUp(marketplace.email, marketplace.password, turnstileToken.value)
     await navigateTo(localePath('/auth/check-email?type=marketplace'))
   } catch (e: any) {
     marketplace.error = e.message || t('auth.register.errors.failed')
+    // Reset captcha on error so user can try again
+    turnstileRef.value?.reset()
   } finally {
     marketplace.loading = false
   }
@@ -186,11 +205,13 @@ async function handleMarketplaceRegister() {
               </div>
             </div>
 
+            <NuxtTurnstile v-if="activeTab === 'sync'" ref="turnstileRef" v-model="turnstileToken" />
+
             <p v-if="sync.error" class="text-sm text-destructive">
               {{ sync.error }}
             </p>
 
-            <Button type="submit" class="w-full" :disabled="sync.loading">
+            <Button type="submit" class="w-full" :disabled="sync.loading || !turnstileToken">
               <Loader2 v-if="sync.loading" class="w-4 h-4 mr-2 animate-spin" />
               {{ t('auth.register.submit') }}
             </Button>
@@ -266,11 +287,13 @@ async function handleMarketplaceRegister() {
               </div>
             </div>
 
+            <NuxtTurnstile v-if="activeTab === 'marketplace'" ref="turnstileRef" v-model="turnstileToken" />
+
             <p v-if="marketplace.error" class="text-sm text-destructive">
               {{ marketplace.error }}
             </p>
 
-            <Button type="submit" class="w-full" :disabled="marketplace.loading">
+            <Button type="submit" class="w-full" :disabled="marketplace.loading || !turnstileToken">
               <Loader2 v-if="marketplace.loading" class="w-4 h-4 mr-2 animate-spin" />
               {{ t('auth.register.submit') }}
             </Button>
