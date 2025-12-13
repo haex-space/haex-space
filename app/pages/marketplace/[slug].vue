@@ -181,12 +181,14 @@ useSeoMeta({
           <div>
             <h1 class="text-3xl font-bold">{{ extension.name }}</h1>
             <p class="text-muted-foreground mt-1">{{ extension.shortDescription }}</p>
-            <div class="flex items-center gap-4 mt-3">
-              <div v-if="extension.averageRating && extension.averageRating > 0" class="flex items-center gap-1 text-sm text-muted-foreground">
-                <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                {{ (extension.averageRating / 100).toFixed(1) }} ({{ extension.reviewCount }})
-              </div>
-              <div class="flex items-center gap-1 text-sm text-muted-foreground">
+            <div class="flex items-center gap-4 mt-3 text-muted-foreground">
+              <StarRating
+                v-if="extension.averageRating && extension.averageRating > 0"
+                :rating="extension.averageRating"
+                :count="extension.reviewCount"
+                href="#reviews"
+              />
+              <div class="flex items-center gap-1 text-sm">
                 <Download class="w-4 h-4" />
                 {{ extension.totalDownloads.toLocaleString() }}
               </div>
@@ -222,7 +224,7 @@ useSeoMeta({
           </Card>
 
           <!-- Reviews Section -->
-          <Card>
+          <Card id="reviews">
             <CardHeader>
               <div class="flex items-center justify-between">
                 <CardTitle class="flex items-center gap-2">
@@ -308,10 +310,12 @@ useSeoMeta({
                   <Star class="w-4 h-4" />
                   {{ t('marketplace.extension.rating') }}
                 </span>
-                <span v-if="extension.averageRating && extension.averageRating > 0" class="flex items-center gap-1">
-                  <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  {{ (extension.averageRating / 100).toFixed(1) }} ({{ extension.reviewCount }})
-                </span>
+                <StarRating
+                  v-if="extension.averageRating && extension.averageRating > 0"
+                  :rating="extension.averageRating"
+                  :count="extension.reviewCount"
+                  href="#reviews"
+                />
                 <span v-else>-</span>
               </div>
               <div class="flex items-center justify-between">

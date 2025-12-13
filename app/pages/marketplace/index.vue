@@ -109,10 +109,15 @@ onMounted(async () => {
                         <Download class="w-4 h-4 shrink-0" />
                         <span>{{ ext.totalDownloads.toLocaleString() }}</span>
                       </div>
-                      <div class="flex items-center justify-center gap-1.5">
-                        <Star class="w-4 h-4 shrink-0" :class="ext.averageRating ? 'fill-yellow-400 text-yellow-400' : ''" />
-                        <span>{{ ext.averageRating ? (ext.averageRating / 100).toFixed(1) : '-' }}</span>
-                      </div>
+                      <StarRating
+                        v-if="ext.averageRating"
+                        :rating="ext.averageRating"
+                        :show-count="false"
+                      />
+                      <span v-else class="flex items-center justify-center gap-1.5">
+                        <Star class="w-4 h-4 shrink-0" />
+                        <span>-</span>
+                      </span>
                       <div class="flex items-center justify-center gap-1.5">
                         <Tag class="w-4 h-4 shrink-0" />
                         <span class="font-mono text-xs">{{ ext.versions?.[0]?.version || '-' }}</span>
