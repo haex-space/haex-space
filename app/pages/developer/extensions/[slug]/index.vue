@@ -475,7 +475,7 @@ async function handleEditorUploadImg(files: File[], callback: (urls: string[]) =
               <div class="flex justify-between">
                 <span class="text-muted-foreground">{{ t('developer.extensions.edit.rating') }}</span>
                 <span class="font-medium">
-                  {{ extension.averageRating > 0 ? extension.averageRating.toFixed(1) : '-' }}
+                  {{ extension.averageRating > 0 ? (extension.averageRating / 100).toFixed(1) : '-' }}
                   <span v-if="extension.reviewCount > 0" class="text-muted-foreground text-sm">
                     ({{ extension.reviewCount }})
                   </span>

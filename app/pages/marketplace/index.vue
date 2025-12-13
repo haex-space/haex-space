@@ -111,7 +111,7 @@ onMounted(async () => {
                       </div>
                       <div class="flex items-center justify-center gap-1.5">
                         <Star class="w-4 h-4 shrink-0" :class="ext.averageRating ? 'fill-yellow-400 text-yellow-400' : ''" />
-                        <span>{{ ext.averageRating ? ext.averageRating.toFixed(1) : '-' }}</span>
+                        <span>{{ ext.averageRating ? (ext.averageRating / 100).toFixed(1) : '-' }}</span>
                       </div>
                       <div class="flex items-center justify-center gap-1.5">
                         <Tag class="w-4 h-4 shrink-0" />

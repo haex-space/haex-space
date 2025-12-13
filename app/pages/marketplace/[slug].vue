@@ -184,7 +184,7 @@ useSeoMeta({
             <div class="flex items-center gap-4 mt-3">
               <div v-if="extension.averageRating && extension.averageRating > 0" class="flex items-center gap-1 text-sm text-muted-foreground">
                 <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                {{ extension.averageRating.toFixed(1) }} ({{ extension.reviewCount }})
+                {{ (extension.averageRating / 100).toFixed(1) }} ({{ extension.reviewCount }})
               </div>
               <div class="flex items-center gap-1 text-sm text-muted-foreground">
                 <Download class="w-4 h-4" />
@@ -310,7 +310,7 @@ useSeoMeta({
                 </span>
                 <span v-if="extension.averageRating && extension.averageRating > 0" class="flex items-center gap-1">
                   <Star class="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  {{ extension.averageRating.toFixed(1) }} ({{ extension.reviewCount }})
+                  {{ (extension.averageRating / 100).toFixed(1) }} ({{ extension.reviewCount }})
                 </span>
                 <span v-else>-</span>
               </div>

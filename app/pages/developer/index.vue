@@ -30,7 +30,7 @@ const averageRating = computed(() => {
   const rated = store.extensions.filter(ext => ext.reviewCount > 0)
   if (rated.length === 0) return 0
   const sum = rated.reduce((acc, ext) => acc + ext.averageRating, 0)
-  return (sum / rated.length).toFixed(1)
+  return (sum / rated.length / 100).toFixed(1)
 })
 </script>
 
