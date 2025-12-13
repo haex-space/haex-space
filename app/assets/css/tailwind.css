@@ -132,33 +132,58 @@
   background-color: var(--shiki-dark-bg);
 }
 
-/* md-editor-v3 theme customization */
-.markdown-preview.md-editor,
+/* md-editor-v3 theme customization - using native CSS variables */
 .md-editor {
-  --md-bk-color: transparent !important;
-  --md-theme-bg-color: transparent !important;
-  background-color: transparent !important;
+  /* Core editor variables - light mode */
+  --md-color: var(--foreground) !important;
+  --md-hover-color: var(--foreground) !important;
+  --md-bk-color: var(--background) !important;
+  --md-bk-color-outstand: var(--muted) !important;
+  --md-bk-hover-color: var(--accent) !important;
+  --md-border-color: var(--border) !important;
+  --md-border-hover-color: var(--ring) !important;
+  --md-border-active-color: var(--ring) !important;
+  --md-modal-mask: rgba(0, 0, 0, 0.5) !important;
+  --md-modal-shadow: 0px 6px 24px 2px rgba(0, 0, 0, 0.15) !important;
+  --md-scrollbar-bg-color: var(--muted) !important;
+  --md-scrollbar-thumb-color: var(--muted-foreground) !important;
+  --md-scrollbar-thumb-hover-color: var(--foreground) !important;
+  --md-scrollbar-thumb-active-color: var(--foreground) !important;
 }
 
+/* Dark mode overrides */
+.dark .md-editor {
+  --md-modal-mask: rgba(0, 0, 0, 0.7) !important;
+  --md-modal-shadow: 0px 6px 24px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Preview-only mode (MdPreview component) - transparent background */
+.markdown-preview.md-editor,
 .markdown-preview .md-editor-preview-wrapper,
-.md-editor .md-editor-preview-wrapper {
+.markdown-preview .md-editor-preview {
   background-color: transparent !important;
 }
 
-.markdown-preview .md-editor-preview,
+.markdown-preview.md-editor {
+  --md-bk-color: transparent !important;
+}
+
+/* Preview content styling */
 .md-editor .md-editor-preview {
-  background-color: transparent !important;
+  --md-theme-color: var(--muted-foreground) !important;
+  --md-theme-bg-color: transparent !important;
+  --md-theme-border-color: var(--border) !important;
+  --md-theme-link-color: var(--primary) !important;
+  --md-theme-link-hover-color: var(--primary) !important;
+}
+
+.md-editor .md-editor-preview,
+.markdown-preview .md-editor-preview {
   color: var(--muted-foreground) !important;
   word-break: normal !important;
   overflow-wrap: break-word !important;
 }
 
-.markdown-preview .md-editor-preview h1,
-.markdown-preview .md-editor-preview h2,
-.markdown-preview .md-editor-preview h3,
-.markdown-preview .md-editor-preview h4,
-.markdown-preview .md-editor-preview h5,
-.markdown-preview .md-editor-preview h6,
 .md-editor .md-editor-preview h1,
 .md-editor .md-editor-preview h2,
 .md-editor .md-editor-preview h3,
@@ -169,10 +194,6 @@
   border-color: var(--border) !important;
 }
 
-.markdown-preview .md-editor-preview p,
-.markdown-preview .md-editor-preview li,
-.markdown-preview .md-editor-preview td,
-.markdown-preview .md-editor-preview th,
 .md-editor .md-editor-preview p,
 .md-editor .md-editor-preview li,
 .md-editor .md-editor-preview td,
@@ -180,73 +201,40 @@
   color: var(--muted-foreground) !important;
 }
 
-.markdown-preview .md-editor-preview a,
 .md-editor .md-editor-preview a {
   color: var(--primary) !important;
 }
 
-.markdown-preview .md-editor-preview code,
 .md-editor .md-editor-preview code {
   background-color: var(--muted) !important;
   color: var(--foreground) !important;
 }
 
-.markdown-preview .md-editor-preview pre,
 .md-editor .md-editor-preview pre {
   background-color: var(--muted) !important;
 }
 
-.markdown-preview .md-editor-preview blockquote,
 .md-editor .md-editor-preview blockquote {
-  border-color: var(--border) !important;
+  border-color: var(--primary) !important;
   color: var(--muted-foreground) !important;
+  background-color: var(--muted) !important;
 }
 
-.markdown-preview .md-editor-preview table,
-.md-editor .md-editor-preview table {
-  border-color: var(--border) !important;
-}
-
-.markdown-preview .md-editor-preview table th,
-.markdown-preview .md-editor-preview table td,
 .md-editor .md-editor-preview table th,
 .md-editor .md-editor-preview table td {
   border-color: var(--border) !important;
 }
 
-.markdown-preview .md-editor-preview hr,
 .md-editor .md-editor-preview hr {
   border-color: var(--border) !important;
 }
 
-.markdown-preview .default-theme,
 .md-editor .default-theme {
   background-color: transparent !important;
 }
 
-/* Editor toolbar and input area */
-.md-editor .md-editor-toolbar {
-  background-color: var(--muted) !important;
-  border-color: var(--border) !important;
-}
-
-.md-editor .md-editor-toolbar-wrapper {
-  border-color: var(--border) !important;
-}
-
-.md-editor .md-editor-toolbar svg {
-  fill: var(--muted-foreground) !important;
-}
-
-.md-editor .md-editor-toolbar-item:hover {
-  background-color: var(--accent) !important;
-}
-
+/* Editor input area */
 .md-editor .md-editor-input-wrapper {
-  background-color: transparent !important;
-}
-
-.md-editor .md-editor-input-wrapper .inputWrapper {
   background-color: transparent !important;
 }
 
@@ -275,7 +263,8 @@
   background-color: var(--accent) !important;
 }
 
-.md-editor-footer {
+/* Footer */
+.md-editor .md-editor-footer {
   border-color: var(--border) !important;
   background-color: var(--muted) !important;
   color: var(--muted-foreground) !important;
