@@ -205,8 +205,6 @@ async function handleMarketplaceRegister() {
               </div>
             </div>
 
-            <NuxtTurnstile v-if="activeTab === 'sync'" ref="turnstileRef" v-model="turnstileToken" />
-
             <p v-if="sync.error" class="text-sm text-destructive">
               {{ sync.error }}
             </p>
@@ -287,8 +285,6 @@ async function handleMarketplaceRegister() {
               </div>
             </div>
 
-            <NuxtTurnstile v-if="activeTab === 'marketplace'" ref="turnstileRef" v-model="turnstileToken" />
-
             <p v-if="marketplace.error" class="text-sm text-destructive">
               {{ marketplace.error }}
             </p>
@@ -307,6 +303,16 @@ async function handleMarketplaceRegister() {
           </div>
         </TabsContent>
       </Tabs>
+
+      <!-- Single Turnstile widget shared by both forms -->
+      <ClientOnly>
+        <div class="mt-4 flex justify-center">
+          <NuxtTurnstile
+            ref="turnstileRef"
+            v-model="turnstileToken"
+          />
+        </div>
+      </ClientOnly>
     </CardContent>
   </Card>
 </template>
