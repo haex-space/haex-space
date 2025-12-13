@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ArrowLeft, Download, Star, Calendar, Pencil, Puzzle, Loader2, Package, Tag } from 'lucide-vue-next'
+import { ArrowLeft, Download, Star, Calendar, Pencil, Puzzle, Loader2, Package, Tag, MessageSquare } from 'lucide-vue-next'
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
-import { useMarketplaceStore, type ExtensionDetail, type PublisherExtension } from '~/stores/marketplace'
+import { useMarketplaceStore, type ExtensionDetail, type PublisherExtension, type ExtensionReview } from '~/stores/marketplace'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -34,6 +34,55 @@ const isOwner = computed(() => {
   const ext = extension.value as ExtensionDetail
   return ext.publisher?.slug === store.publisher.slug
 })
+
+// Reviews state
+const reviews = ref<ExtensionReview[]>([])
+const myReview = ref<ExtensionReview | null>(null)
+const loadingReviews = ref(false)
+const showReviewForm = ref(false)
+
+// Load reviews
+async function loadReviews() {
+  if (!extension.value) return
+
+  loadingReviews.value = true
+  try {
+    const response = await store.listReviews(extensionSlug.value)
+    reviews.value = response.reviews
+
+    // Load user's own review if logged in
+    if (store.user) {
+      myReview.value = await store.getMyReview(extensionSlug.value)
+    }
+  } catch (e) {
+    console.error('Failed to load reviews:', e)
+  } finally {
+    loadingReviews.value = false
+  }
+}
+
+// Handle review submission
+function handleReviewSubmitted(review: ExtensionReview) {
+  myReview.value = review
+  showReviewForm.value = false
+  // Refresh reviews list and extension data
+  loadReviews()
+  // Refresh extension to get updated rating
+  store.fetchExtension(extensionSlug.value).then(ext => {
+    extension.value = ext
+  })
+}
+
+// Handle review deletion
+function handleReviewDeleted() {
+  myReview.value = null
+  showReviewForm.value = false
+  loadReviews()
+  // Refresh extension to get updated rating
+  store.fetchExtension(extensionSlug.value).then(ext => {
+    extension.value = ext
+  })
+}
 
 // Load extension and publisher info
 onMounted(async () => {
@@ -75,6 +124,9 @@ onMounted(async () => {
       const ext = await store.fetchExtension(extensionSlug.value)
       extension.value = ext
     }
+
+    // Load reviews after extension is loaded
+    await loadReviews()
   } catch {
     notFound.value = true
   } finally {
@@ -166,6 +218,79 @@ useSeoMeta({
                   class="markdown-preview"
                 />
               </ClientOnly>
+            </CardContent>
+          </Card>
+
+          <!-- Reviews Section -->
+          <Card>
+            <CardHeader>
+              <div class="flex items-center justify-between">
+                <CardTitle class="flex items-center gap-2">
+                  <MessageSquare class="h-5 w-5" />
+                  {{ t('marketplace.reviews.title') }}
+                  <span v-if="extension.reviewCount > 0" class="text-muted-foreground font-normal text-base">
+                    ({{ extension.reviewCount }})
+                  </span>
+                </CardTitle>
+                <!-- Write review button (only for logged-in users who haven't reviewed yet and don't own the extension) -->
+                <Button
+                  v-if="store.user && !myReview && !isOwner"
+                  size="sm"
+                  @click="showReviewForm = !showReviewForm"
+                >
+                  {{ t('marketplace.reviews.writeReview') }}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent class="space-y-6">
+              <!-- Login prompt for non-logged-in users -->
+              <div v-if="!store.user" class="text-center py-4 text-muted-foreground">
+                <p>{{ t('marketplace.reviews.loginToReview') }}</p>
+                <NuxtLinkLocale to="/auth/login?tab=marketplace" class="text-primary hover:underline">
+                  {{ t('marketplace.reviews.loginLink') }}
+                </NuxtLinkLocale>
+              </div>
+
+              <!-- Owner notice -->
+              <p v-else-if="isOwner" class="text-sm text-muted-foreground">
+                {{ t('marketplace.reviews.ownerNotice') }}
+              </p>
+
+              <!-- Review form (for new review) -->
+              <div v-else-if="showReviewForm && !myReview" class="border-b border-border pb-6">
+                <h4 class="font-medium mb-4">{{ t('marketplace.reviews.writeReview') }}</h4>
+                <MarketplaceReviewForm
+                  :extension-slug="extensionSlug"
+                  @submitted="handleReviewSubmitted"
+                  @deleted="handleReviewDeleted"
+                />
+              </div>
+
+              <!-- User's existing review (editable) -->
+              <div v-if="myReview" class="border-b border-border pb-6">
+                <h4 class="font-medium mb-4">{{ t('marketplace.reviews.yourReview') }}</h4>
+                <MarketplaceReviewForm
+                  :extension-slug="extensionSlug"
+                  :existing-review="myReview"
+                  @submitted="handleReviewSubmitted"
+                  @deleted="handleReviewDeleted"
+                />
+              </div>
+
+              <!-- Loading state -->
+              <div v-if="loadingReviews" class="flex justify-center py-4">
+                <Loader2 class="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+
+              <!-- Reviews list -->
+              <div v-else-if="reviews.length > 0">
+                <MarketplaceReviewList :reviews="reviews.filter(r => r.id !== myReview?.id)" />
+              </div>
+
+              <!-- No reviews yet -->
+              <p v-else-if="!myReview" class="text-center py-4 text-muted-foreground">
+                {{ t('marketplace.reviews.noReviews') }}
+              </p>
             </CardContent>
           </Card>
         </div>

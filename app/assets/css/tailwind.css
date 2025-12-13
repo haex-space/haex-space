@@ -131,3 +131,152 @@
   color: var(--shiki-dark);
   background-color: var(--shiki-dark-bg);
 }
+
+/* md-editor-v3 theme customization */
+.markdown-preview.md-editor,
+.md-editor {
+  --md-bk-color: transparent !important;
+  --md-theme-bg-color: transparent !important;
+  background-color: transparent !important;
+}
+
+.markdown-preview .md-editor-preview-wrapper,
+.md-editor .md-editor-preview-wrapper {
+  background-color: transparent !important;
+}
+
+.markdown-preview .md-editor-preview,
+.md-editor .md-editor-preview {
+  background-color: transparent !important;
+  color: var(--muted-foreground) !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+}
+
+.markdown-preview .md-editor-preview h1,
+.markdown-preview .md-editor-preview h2,
+.markdown-preview .md-editor-preview h3,
+.markdown-preview .md-editor-preview h4,
+.markdown-preview .md-editor-preview h5,
+.markdown-preview .md-editor-preview h6,
+.md-editor .md-editor-preview h1,
+.md-editor .md-editor-preview h2,
+.md-editor .md-editor-preview h3,
+.md-editor .md-editor-preview h4,
+.md-editor .md-editor-preview h5,
+.md-editor .md-editor-preview h6 {
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.markdown-preview .md-editor-preview p,
+.markdown-preview .md-editor-preview li,
+.markdown-preview .md-editor-preview td,
+.markdown-preview .md-editor-preview th,
+.md-editor .md-editor-preview p,
+.md-editor .md-editor-preview li,
+.md-editor .md-editor-preview td,
+.md-editor .md-editor-preview th {
+  color: var(--muted-foreground) !important;
+}
+
+.markdown-preview .md-editor-preview a,
+.md-editor .md-editor-preview a {
+  color: var(--primary) !important;
+}
+
+.markdown-preview .md-editor-preview code,
+.md-editor .md-editor-preview code {
+  background-color: var(--muted) !important;
+  color: var(--foreground) !important;
+}
+
+.markdown-preview .md-editor-preview pre,
+.md-editor .md-editor-preview pre {
+  background-color: var(--muted) !important;
+}
+
+.markdown-preview .md-editor-preview blockquote,
+.md-editor .md-editor-preview blockquote {
+  border-color: var(--border) !important;
+  color: var(--muted-foreground) !important;
+}
+
+.markdown-preview .md-editor-preview table,
+.md-editor .md-editor-preview table {
+  border-color: var(--border) !important;
+}
+
+.markdown-preview .md-editor-preview table th,
+.markdown-preview .md-editor-preview table td,
+.md-editor .md-editor-preview table th,
+.md-editor .md-editor-preview table td {
+  border-color: var(--border) !important;
+}
+
+.markdown-preview .md-editor-preview hr,
+.md-editor .md-editor-preview hr {
+  border-color: var(--border) !important;
+}
+
+.markdown-preview .default-theme,
+.md-editor .default-theme {
+  background-color: transparent !important;
+}
+
+/* Editor toolbar and input area */
+.md-editor .md-editor-toolbar {
+  background-color: var(--muted) !important;
+  border-color: var(--border) !important;
+}
+
+.md-editor .md-editor-toolbar-wrapper {
+  border-color: var(--border) !important;
+}
+
+.md-editor .md-editor-toolbar svg {
+  fill: var(--muted-foreground) !important;
+}
+
+.md-editor .md-editor-toolbar-item:hover {
+  background-color: var(--accent) !important;
+}
+
+.md-editor .md-editor-input-wrapper {
+  background-color: transparent !important;
+}
+
+.md-editor .md-editor-input-wrapper .inputWrapper {
+  background-color: transparent !important;
+}
+
+.md-editor .cm-editor {
+  background-color: transparent !important;
+}
+
+.md-editor .cm-gutters {
+  background-color: var(--muted) !important;
+  border-color: var(--border) !important;
+}
+
+.md-editor .cm-content {
+  color: var(--foreground) !important;
+}
+
+.md-editor .cm-cursor {
+  border-color: var(--foreground) !important;
+}
+
+.md-editor .cm-activeLine {
+  background-color: var(--accent) !important;
+}
+
+.md-editor .cm-selectionBackground {
+  background-color: var(--accent) !important;
+}
+
+.md-editor-footer {
+  border-color: var(--border) !important;
+  background-color: var(--muted) !important;
+  color: var(--muted-foreground) !important;
+}

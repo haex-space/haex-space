@@ -6,11 +6,13 @@ import {
   type CategoryWithCount,
   type ExtensionListItem,
   type ExtensionDetail,
+  type ExtensionReview,
   type ListExtensionsParams,
+  type ListReviewsParams,
 } from '@haex-space/marketplace-sdk'
 
 // Re-export SDK types for convenience
-export type { CategoryWithCount, ExtensionListItem, ExtensionDetail, ListExtensionsParams }
+export type { CategoryWithCount, ExtensionListItem, ExtensionDetail, ExtensionReview, ListExtensionsParams, ListReviewsParams }
 
 // Types for publisher-specific functionality (not in SDK)
 export interface Publisher {
@@ -413,6 +415,43 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return response.versions
   }
 
+  // Reviews (using SDK for listing, API for creating/updating)
+  async function listReviews(slug: string, params?: ListReviewsParams) {
+    const response = await getMarketplaceClient().listReviews(slug, params)
+    return response
+  }
+
+  async function getMyReview(slug: string) {
+    try {
+      const data = await fetchApi<{ review: ExtensionReview | null }>(`/extensions/${slug}/reviews/me`)
+      return data.review
+    } catch {
+      return null
+    }
+  }
+
+  async function createReview(slug: string, data: { rating: number; title?: string; content?: string }) {
+    const result = await fetchApi<{ review: ExtensionReview }>(`/extensions/${slug}/reviews`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    return result.review
+  }
+
+  async function updateReview(slug: string, data: { rating?: number; title?: string; content?: string }) {
+    const result = await fetchApi<{ review: ExtensionReview }>(`/extensions/${slug}/reviews/me`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    })
+    return result.review
+  }
+
+  async function deleteReview(slug: string) {
+    await fetchApi(`/extensions/${slug}/reviews/me`, {
+      method: 'DELETE'
+    })
+  }
+
   return {
     // State
     client,
@@ -454,5 +493,12 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     fetchExtension,
     getDownloadUrl,
     listVersions,
+
+    // Reviews
+    listReviews,
+    getMyReview,
+    createReview,
+    updateReview,
+    deleteReview,
   }
 })

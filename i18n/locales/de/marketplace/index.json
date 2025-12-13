@@ -22,6 +22,29 @@
       "downloads": "Downloads",
       "tags": "Tags",
       "edit": "Bearbeiten"
+    },
+    "reviews": {
+      "title": "Bewertungen",
+      "writeReview": "Bewertung schreiben",
+      "yourReview": "Deine Bewertung",
+      "noReviews": "Noch keine Bewertungen. Sei der Erste, der diese Extension bewertet!",
+      "loginToReview": "Melde dich an, um eine Bewertung abzugeben.",
+      "loginLink": "Anmelden",
+      "ownerNotice": "Du kannst deine eigene Extension nicht bewerten.",
+      "rating": "Bewertung",
+      "reviewTitle": "Titel (optional)",
+      "titlePlaceholder": "Fasse deine Erfahrung zusammen",
+      "content": "Bewertung (optional)",
+      "contentPlaceholder": "Teile deine Gedanken zu dieser Extension...",
+      "submit": "Bewertung abgeben",
+      "update": "Bewertung aktualisieren",
+      "delete": "Löschen",
+      "confirmDelete": "Bist du sicher, dass du deine Bewertung löschen möchtest?",
+      "errors": {
+        "ratingRequired": "Bitte wähle eine Bewertung zwischen 1 und 5 Sternen.",
+        "submitFailed": "Bewertung konnte nicht gespeichert werden. Bitte versuche es erneut.",
+        "deleteFailed": "Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
+      }
     }
   }
 }

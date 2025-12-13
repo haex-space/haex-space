@@ -22,6 +22,29 @@
       "downloads": "Downloads",
       "tags": "Tags",
       "edit": "Edit"
+    },
+    "reviews": {
+      "title": "Reviews",
+      "writeReview": "Write a Review",
+      "yourReview": "Your Review",
+      "noReviews": "No reviews yet. Be the first to review this extension!",
+      "loginToReview": "Sign in to leave a review.",
+      "loginLink": "Sign in",
+      "ownerNotice": "You cannot review your own extension.",
+      "rating": "Rating",
+      "reviewTitle": "Title (optional)",
+      "titlePlaceholder": "Summarize your experience",
+      "content": "Review (optional)",
+      "contentPlaceholder": "Share your thoughts about this extension...",
+      "submit": "Submit Review",
+      "update": "Update Review",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure you want to delete your review?",
+      "errors": {
+        "ratingRequired": "Please select a rating between 1 and 5 stars.",
+        "submitFailed": "Failed to submit review. Please try again.",
+        "deleteFailed": "Failed to delete review. Please try again."
+      }
     }
   }
 }
