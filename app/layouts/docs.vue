@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookOpen, Puzzle, Rocket, Settings, Shield, Database, Code, ExternalLink, ChevronRight, Menu, X } from 'lucide-vue-next'
+import { BookOpen, Puzzle, Rocket, Settings, Shield, Database, Code, ExternalLink, ChevronRight, Menu, X, ChevronDown } from 'lucide-vue-next'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -135,12 +135,26 @@ function scrollToSection(id: string) {
 
         <div class="flex items-center gap-4">
           <div class="hidden md:flex items-center gap-6">
-            <NuxtLinkLocale
-              to="/download"
-              class="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {{ t('common.download') }}
-            </NuxtLinkLocale>
+            <DropdownMenu>
+              <DropdownMenuTrigger class="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                {{ t('common.download') }}
+                <ChevronDown class="h-3 w-3" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem as-child>
+                  <NuxtLinkLocale to="/download" class="flex flex-col items-start cursor-pointer">
+                    <span class="font-medium">{{ t('common.downloadVault') }}</span>
+                    <span class="text-xs text-muted-foreground">{{ t('common.downloadVaultDesc') }}</span>
+                  </NuxtLinkLocale>
+                </DropdownMenuItem>
+                <DropdownMenuItem as-child>
+                  <NuxtLinkLocale to="/download/haex-pass" class="flex flex-col items-start cursor-pointer">
+                    <span class="font-medium">{{ t('common.downloadPass') }}</span>
+                    <span class="text-xs text-muted-foreground">{{ t('common.downloadPassDesc') }}</span>
+                  </NuxtLinkLocale>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <NuxtLinkLocale
               to="/marketplace"
               class="text-sm text-muted-foreground hover:text-foreground transition-colors"

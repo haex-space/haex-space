@@ -1,0 +1,47 @@
+{
+  "downloadPass": {
+    "badge": "Browser-Erweiterung",
+    "title": "haex-pass herunterladen",
+    "subtitle": "Sichere Passwortverwaltung für deinen Browser. Nahtlos integriert mit haex-vault.",
+    "currentVersion": "Aktuelle Version",
+    "allReleases": "Alle Releases",
+    "browsers": "Browser",
+    "firefox": {
+      "description": "Offizielle Firefox-Erweiterung mit nativer Unterstützung.",
+      "addon": "Firefox Add-on (.xpi)"
+    },
+    "chrome": {
+      "description": "Für Chrome, Chromium, Edge und andere Chromium-basierte Browser.",
+      "extension": "Chrome-Erweiterung (.zip)"
+    },
+    "installation": {
+      "title": "Installation",
+      "firefox": {
+        "step1": "Lade die .xpi-Datei herunter",
+        "step2": "Firefox fragt automatisch, ob du die Erweiterung installieren möchtest",
+        "step3": "Klicke auf \"Hinzufügen\" um die Installation abzuschließen"
+      },
+      "chrome": {
+        "step1": "Lade die .zip-Datei herunter und entpacke sie",
+        "step2": "Öffne chrome://extensions in deinem Browser",
+        "step3": "Aktiviere den \"Entwicklermodus\" oben rechts",
+        "step4": "Klicke auf \"Entpackte Erweiterung laden\" und wähle den entpackten Ordner"
+      }
+    },
+    "whyHaexPass": "Warum haex-pass?",
+    "features": {
+      "secure": {
+        "title": "Sicher",
+        "description": "Ende-zu-Ende-verschlüsselt. Deine Passwörter verlassen niemals unverschlüsselt dein Gerät."
+      },
+      "autofill": {
+        "title": "Auto-Fill",
+        "description": "Automatisches Ausfüllen von Anmeldedaten auf Webseiten. Schnell und bequem."
+      },
+      "integration": {
+        "title": "haex-vault Integration",
+        "description": "Synchronisiere deine Passwörter nahtlos mit haex-vault über alle deine Geräte."
+      }
+    }
+  }
+}

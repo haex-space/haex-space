@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Languages, Moon, Sun, Monitor, Check, LogOut, User } from 'lucide-vue-next'
+import { Languages, Moon, Sun, Monitor, Check, LogOut, User, ChevronDown } from 'lucide-vue-next'
 import { useVaultSyncStore } from '~/stores/vaultSync'
 
 const { t, locale, locales, setLocale } = useI18n()
@@ -44,13 +44,26 @@ async function handleLogout() {
             <img src="/logo.png" alt="haex.space" class="h-8 w-auto" />
           </NuxtLinkLocale>
           <div class="hidden md:flex items-center gap-6">
-            <NuxtLinkLocale
-              to="/download"
-              class="text-muted-foreground hover:text-foreground transition-colors"
-              active-class="!text-foreground font-medium"
-            >
-              {{ t('common.download') }}
-            </NuxtLinkLocale>
+            <DropdownMenu>
+              <DropdownMenuTrigger class="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                {{ t('common.download') }}
+                <ChevronDown class="h-3 w-3" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem as-child>
+                  <NuxtLinkLocale to="/download" class="flex flex-col items-start cursor-pointer">
+                    <span class="font-medium">{{ t('common.downloadVault') }}</span>
+                    <span class="text-xs text-muted-foreground">{{ t('common.downloadVaultDesc') }}</span>
+                  </NuxtLinkLocale>
+                </DropdownMenuItem>
+                <DropdownMenuItem as-child>
+                  <NuxtLinkLocale to="/download/haex-pass" class="flex flex-col items-start cursor-pointer">
+                    <span class="font-medium">{{ t('common.downloadPass') }}</span>
+                    <span class="text-xs text-muted-foreground">{{ t('common.downloadPassDesc') }}</span>
+                  </NuxtLinkLocale>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <NuxtLinkLocale
               to="/marketplace"
               class="text-muted-foreground hover:text-foreground transition-colors"
