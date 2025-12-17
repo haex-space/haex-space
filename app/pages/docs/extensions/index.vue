@@ -503,7 +503,7 @@ const paths = {
       <!-- Next Steps -->
       <section class="bg-muted/50 rounded-xl p-8">
         <h2 class="text-xl font-bold mb-4">{{ t('docs.nextSteps.title') }}</h2>
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
           <a
             href="https://github.com/haex-space/vault-sdk"
             target="_blank"
@@ -531,6 +531,52 @@ const paths = {
             </div>
             <ChevronRight class="w-4 h-4 text-muted-foreground ml-auto" />
           </NuxtLinkLocale>
+        </div>
+
+        <!-- Example Projects -->
+        <h3 class="font-semibold mb-3">{{ t('docs.nextSteps.examples.title') }}</h3>
+        <p class="text-sm text-muted-foreground mb-4">{{ t('docs.nextSteps.examples.description') }}</p>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <a
+            href="https://github.com/haex-space/haex-demo-nuxt"
+            target="_blank"
+            class="flex items-center gap-2 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-sm"
+          >
+            <Icon name="simple-icons:nuxtdotjs" class="w-4 h-4 text-[#00DC82]" />
+            <span>{{ t('docs.nextSteps.examples.nuxt') }}</span>
+          </a>
+          <a
+            href="https://github.com/haex-space/haex-demo-vite"
+            target="_blank"
+            class="flex items-center gap-2 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-sm"
+          >
+            <Icon name="simple-icons:vite" class="w-4 h-4 text-[#646CFF]" />
+            <span>{{ t('docs.nextSteps.examples.vite') }}</span>
+          </a>
+          <a
+            href="https://github.com/haex-space/haex-demo-react"
+            target="_blank"
+            class="flex items-center gap-2 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-sm"
+          >
+            <Icon name="simple-icons:react" class="w-4 h-4 text-[#61DAFB]" />
+            <span>{{ t('docs.nextSteps.examples.react') }}</span>
+          </a>
+          <a
+            href="https://github.com/haex-space/haex-demo-svelte"
+            target="_blank"
+            class="flex items-center gap-2 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-sm"
+          >
+            <Icon name="simple-icons:svelte" class="w-4 h-4 text-[#FF3E00]" />
+            <span>{{ t('docs.nextSteps.examples.svelte') }}</span>
+          </a>
+          <a
+            href="https://github.com/haex-space/haex-demo-permissions"
+            target="_blank"
+            class="flex items-center gap-2 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-sm"
+          >
+            <Shield class="w-4 h-4 text-primary" />
+            <span>{{ t('docs.nextSteps.examples.permissions') }}</span>
+          </a>
         </div>
       </section>
   </div>

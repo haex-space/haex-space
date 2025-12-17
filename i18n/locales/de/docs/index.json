@@ -120,6 +120,15 @@
       "marketplace": {
         "title": "Extensions durchsuchen",
         "description": "Sieh, was andere zur Inspiration gebaut haben"
+      },
+      "examples": {
+        "title": "Beispielprojekte",
+        "description": "Fertige Starter-Templates für verschiedene Frameworks",
+        "nuxt": "Nuxt Starter",
+        "vite": "Vite + Vue Starter",
+        "react": "React Starter",
+        "svelte": "Svelte Starter",
+        "permissions": "Permissions Demo"
       }
     }
   }
