@@ -40,11 +40,21 @@ const markdownContent = computed(() => {
 })
 
 // Extract raw code for clipboard (without markdown backticks)
+// Supports multiple code blocks - combines all of them
 const rawCode = computed(() => {
   const content = markdownContent.value
   if (!content) return props.code || ''
-  const match = content.match(/^```\w*\n([\s\S]*?)\n```$/m)
-  return match?.[1]?.trim() ?? content.trim()
+
+  // Match all code blocks and extract their content
+  const codeBlockRegex = /```\w*\n([\s\S]*?)\n```/g
+  const matches = [...content.matchAll(codeBlockRegex)]
+
+  if (matches.length === 0) {
+    return content.trim()
+  }
+
+  // Combine all code blocks with newlines
+  return matches.map(match => match[1].trim()).join('\n\n')
 })
 
 function handleCopy() {
