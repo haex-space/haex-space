@@ -18,9 +18,9 @@ tableOfContents.value = [
 ]
 
 const code = {
-  basicUsage: `import { useHaexClient } from '@haex-space/vault-sdk/vue'
+  basicUsage: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const client = useHaexClient()
+const { client } = useHaexVaultSdk()
 
 // Store a value
 await client.storage.set('username', 'john_doe')
@@ -90,7 +90,7 @@ if (storedSettings) {
 }`,
 
   exampleSettings: `// settings.ts - A simple settings manager
-import { useHaexClient } from '@haex-space/vault-sdk/vue'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
 interface AppSettings {
   theme: 'light' | 'dark' | 'system'
@@ -107,7 +107,7 @@ const defaultSettings: AppSettings = {
 }
 
 export function useSettings() {
-  const client = useHaexClient()
+  const { client } = useHaexVaultSdk()
   const settings = ref<AppSettings>(defaultSettings)
 
   async function loadSettings() {

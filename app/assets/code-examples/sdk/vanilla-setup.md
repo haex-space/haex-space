@@ -1,15 +1,28 @@
 ```typescript
-import { HaexClient } from '@haex-space/vault-sdk'
+import { createHaexVaultSdk } from '@haex-space/vault-sdk'
+import manifest from '../haextension/manifest.json'
 
-const client = new HaexClient()
+const client = createHaexVaultSdk({ manifest, debug: true })
 
-// Initialize the client
-await client.initialize()
-
-// Setup database tables
+// Register setup hook for database initialization
 client.onSetup(async () => {
-  await client.execute('CREATE TABLE IF NOT EXISTS ...')
+  const tableName = client.getTableName('users')
+  await client.execute(`CREATE TABLE IF NOT EXISTS ${tableName} (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL
+  )`)
 })
 
+// Wait for SDK and setup to complete
 await client.setupComplete()
+
+// Subscribe to context changes
+client.subscribe(() => {
+  const ctx = client.context
+  if (ctx) {
+    console.log('Theme:', ctx.theme)       // 'light' | 'dark'
+    console.log('Locale:', ctx.locale)     // 'en', 'de', etc.
+    console.log('Platform:', ctx.platform) // 'linux', 'windows', 'macos', etc.
+  }
+})
 ```

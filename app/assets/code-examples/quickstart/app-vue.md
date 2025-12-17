@@ -1,12 +1,14 @@
 ```vue
 <!-- src/App.vue -->
 <script setup lang="ts">
-import { useHaexClient } from '@haex-space/vault-sdk/vue'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const client = useHaexClient()
+const { client, context } = useHaexVaultSdk()
 
-// Access context (theme, locale, platform)
-const theme = computed(() => client.context.value?.theme ?? 'system')
+// Access context (reactive refs)
+const theme = computed(() => context.value?.theme)       // 'light' | 'dark'
+const locale = computed(() => context.value?.locale)     // 'en', 'de', etc.
+const platform = computed(() => context.value?.platform) // 'linux', 'windows', 'macos', 'android', 'ios'
 
 // Example: Store data
 async function saveNote() {
@@ -23,7 +25,7 @@ async function loadNote() {
 <template>
   <div class="container">
     <h1>My First Extension</h1>
-    <p>Current theme: {{ theme }}</p>
+    <p>Theme: {{ theme }} | Locale: {{ locale }} | Platform: {{ platform }}</p>
     <button @click="saveNote">Save Note</button>
     <button @click="loadNote">Load Note</button>
   </div>

@@ -1,11 +1,17 @@
 ```tsx
-import { useHaexClient } from '@haex-space/vault-sdk/react'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/react'
 
 function Component() {
-  const client = useHaexClient()
+  const { client, context, getTableName } = useHaexVaultSdk()
+
+  // Access context - automatically updates
+  const theme = context?.theme     // 'light' | 'dark'
+  const locale = context?.locale   // 'en', 'de', etc.
+  const platform = context?.platform // 'linux', 'windows', 'macos', 'android', 'ios', etc.
 
   const loadData = async () => {
-    const users = await client.query('SELECT * FROM users')
+    const tableName = getTableName('users')
+    const users = await client.query(`SELECT * FROM ${tableName}`)
     console.log(users)
   }
 

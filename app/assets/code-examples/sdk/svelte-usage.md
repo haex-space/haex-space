@@ -1,11 +1,15 @@
 ```svelte
-<script>
-  import { getHaexClient } from '@haex-space/vault-sdk/svelte'
+<script lang="ts">
+  import { haexVaultSdk, context } from '@haex-space/vault-sdk/svelte'
 
-  const client = getHaexClient()
+  // Access context via Svelte store - automatically reactive
+  $: theme = $context?.theme       // 'light' | 'dark'
+  $: locale = $context?.locale     // 'en', 'de', etc.
+  $: platform = $context?.platform // 'linux', 'windows', 'macos', 'android', 'ios', etc.
 
   async function loadData() {
-    const users = await client.query('SELECT * FROM users')
+    const tableName = haexVaultSdk.getTableName('users')
+    const users = await haexVaultSdk.client.query(`SELECT * FROM ${tableName}`)
     console.log(users)
   }
 </script>

@@ -1,12 +1,19 @@
 ```tsx
 // App.tsx
-import { HaexProvider } from '@haex-space/vault-sdk/react'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/react'
+import manifest from '../haextension/manifest.json'
 
 function App() {
-  return (
-    <HaexProvider>
-      <YourApp />
-    </HaexProvider>
-  )
+  const { client, context, isSetupComplete, getTableName } = useHaexVaultSdk({
+    manifest,
+    debug: import.meta.env.DEV
+  })
+
+  // Show loading until SDK is ready
+  if (!isSetupComplete) {
+    return <div>Initializing...</div>
+  }
+
+  return <YourApp />
 }
 ```

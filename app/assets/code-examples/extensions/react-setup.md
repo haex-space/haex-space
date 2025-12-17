@@ -1,5 +1,5 @@
 ```tsx
-import { useHaexHub } from '@haex-space/vault-sdk/react'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/react'
 import manifest from '../haextension/manifest.json'
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     db,
     storage,
     getTableName
-  } = useHaexHub({ manifest, debug: true })
+  } = useHaexVaultSdk({ manifest, debug: true })
 
   if (!isSetupComplete) {
     return <div>Loading...</div>

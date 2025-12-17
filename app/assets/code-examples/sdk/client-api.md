@@ -1,16 +1,21 @@
 ```typescript
-const client = useHaexClient()
+const { client, extensionInfo, context, getTableName } = useHaexVaultSdk()
 
-// Extension info
-client.extensionInfo        // { publicKey, name, version }
-client.getTableName('users') // Prefixed table name
+// Extension info (reactive in Vue/React/Svelte)
+extensionInfo          // { publicKey, name, version }
+getTableName('users')  // Prefixed table name
+
+// Context (reactive)
+context.theme          // 'light' | 'dark'
+context.locale         // 'en', 'de', etc.
+context.platform       // 'linux', 'windows', 'macos', 'android', 'ios'
 
 // Database
 await client.query(sql, params)
 await client.execute(sql, params)
-await client.insert(table, data)
-await client.update(table, data, where, whereParams)
-await client.delete(table, where, whereParams)
+await client.database.insert(table, data)
+await client.database.update(table, data, where, whereParams)
+await client.database.delete(table, where, whereParams)
 
 // Storage
 await client.storage.get(key)
@@ -26,7 +31,7 @@ await client.web.fetchAsync(url, options)
 await client.web.openAsync(url)
 
 // Permissions
-await client.checkDatabaseAsync(table, operation)
-await client.checkFilesystemAsync(path, operation)
-await client.checkWebAsync(url)
+await client.permissions.checkDatabaseAsync(table, operation)
+await client.permissions.checkFilesystemAsync(path, operation)
+await client.permissions.checkWebAsync(url)
 ```

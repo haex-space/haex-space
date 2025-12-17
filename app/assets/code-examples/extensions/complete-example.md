@@ -1,7 +1,7 @@
 ```vue
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useHaexHub } from '@haex-space/vault-sdk/vue'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 import manifest from '../haextension/manifest.json'
 
 interface Password {
@@ -13,7 +13,7 @@ interface Password {
   created_at: string
 }
 
-const { client, isSetupComplete, context, getTableName, storage } = useHaexHub({
+const { client, isSetupComplete, context, getTableName, storage } = useHaexVaultSdk({
   manifest,
   debug: import.meta.env.DEV
 })

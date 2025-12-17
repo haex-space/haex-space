@@ -47,9 +47,9 @@ const code = {
 // Access all tables of a specific extension (use sparingly)
 { "target": "MCowBQYDK2Vw...__password-manager__*", "operation": "read" }`,
 
-  databaseAccess: `import { useHaexVault } from '@haex-space/vault-sdk/vue'
+  databaseAccess: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const { client } = useHaexVault({ manifest })
+const { client } = useHaexVaultSdk()
 
 // Access another extension's table using getDependencyTableName
 const depTable = client.getDependencyTableName(
@@ -79,9 +79,9 @@ const credentials = await client.query(\`SELECT * FROM \${depTable}\`)`,
 // Multiple subdomains
 { "target": "https://*.example.com/api/*" }`,
 
-  checkPermission: `import { useHaexClient } from '@haex-space/vault-sdk/vue'
+  checkPermission: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const client = useHaexClient()
+const { client } = useHaexVaultSdk()
 
 // Check database permission
 const canReadUsers = await client.checkDatabaseAsync('users', 'read')
@@ -100,9 +100,9 @@ if (canWriteUsers) {
   console.warn('No write permission for users table')
 }`,
 
-  requestPermission: `import { useHaexClient } from '@haex-space/vault-sdk/vue'
+  requestPermission: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const client = useHaexClient()
+const { client } = useHaexVaultSdk()
 
 // Request permission with reason
 const response = await client.requestDatabasePermission(

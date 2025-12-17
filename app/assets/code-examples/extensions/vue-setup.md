@@ -1,17 +1,17 @@
 ```vue
 <script setup lang="ts">
-import { useHaexHub } from '@haex-space/vault-sdk/vue'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 import manifest from '../haextension/manifest.json'
 
 const {
-  client,           // HaexVaultClient instance
+  client,           // HaexVaultSdk instance
   extensionInfo,    // Ref<ExtensionInfo | null>
   context,          // Ref<ApplicationContext | null>
   isSetupComplete,  // Ref<boolean>
   db,               // Drizzle ORM instance
   storage,          // StorageAPI
   getTableName      // (name: string) => string
-} = useHaexHub({ manifest, debug: true })
+} = useHaexVaultSdk({ manifest, debug: true })
 
 // Wait for initialization
 onMounted(async () => {

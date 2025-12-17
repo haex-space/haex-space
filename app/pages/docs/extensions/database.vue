@@ -20,12 +20,12 @@ tableOfContents.value = [
 ]
 
 const code = {
-  tableNaming: `import { useHaexClient } from '@haex-space/vault-sdk/vue'
+  tableNaming: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const client = useHaexClient()
+const { client, getTableName } = useHaexVaultSdk()
 
 // Get the full prefixed table name
-const tableName = client.getTableName('users')
+const tableName = getTableName('users')
 // Returns: "a1b2c3d4__my-extension__users"
 
 // Use in SQL queries
@@ -52,9 +52,9 @@ client.onSetup(async () => {
 // Don't forget to call setupComplete()
 await client.setupComplete()`,
 
-  migrations: `import { useHaexClient } from '@haex-space/vault-sdk/vue'
+  migrations: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const client = useHaexClient()
+const { client } = useHaexVaultSdk()
 
 client.onSetup(async () => {
   const tableName = client.getTableName('passwords')
@@ -166,10 +166,10 @@ await client.execute(\`
 // Important: Do NOT create columns starting with 'haex_'
 // They will be overwritten by the sync system`,
 
-  drizzleSetup: `import { useHaexClient } from '@haex-space/vault-sdk/vue'
+  drizzleSetup: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
 
-const client = useHaexClient()
+const { client } = useHaexVaultSdk()
 
 // Define your schema
 const users = sqliteTable('users', {

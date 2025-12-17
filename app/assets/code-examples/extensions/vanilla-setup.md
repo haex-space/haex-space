@@ -1,8 +1,8 @@
 ```typescript
-import { createHaexVaultClient } from '@haex-space/vault-sdk'
+import { createHaexVaultSdk } from '@haex-space/vault-sdk'
 import manifest from '../haextension/manifest.json'
 
-const client = createHaexVaultClient({ manifest, debug: true })
+const client = createHaexVaultSdk({ manifest, debug: true })
 
 // Wait for initialization
 await client.ready()

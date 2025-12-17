@@ -1,7 +1,7 @@
 ```typescript
-import { useHaexClient } from '@haex-space/vault-sdk/vue'
+import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
-const client = useHaexClient()
+const { client } = useHaexVaultSdk()
 
 // Fetch data from an API
 const response = await client.web.fetchAsync('https://api.example.com/data')

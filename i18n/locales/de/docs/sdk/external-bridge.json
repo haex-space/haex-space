@@ -1,0 +1,68 @@
+{
+  "docs": {
+    "sdkExternalBridge": {
+      "title": "External Bridge",
+      "subtitle": "Empfange Anfragen von Browser-Erweiterungen, CLI-Tools und anderen externen Clients.",
+      "toc": {
+        "overview": "Überblick",
+        "howItWorks": "Funktionsweise",
+        "handlingRequests": "Anfragen verarbeiten",
+        "connectionStates": "Verbindungsstatus",
+        "authorization": "Autorisierung",
+        "types": "Typen"
+      },
+      "sections": {
+        "overview": {
+          "title": "Überblick",
+          "intro": "Die External Bridge ermöglicht es externen Clients, über eine sichere WebSocket-Verbindung mit deiner HaexVault-Erweiterung zu kommunizieren. Dies ermöglicht leistungsstarke Integrationen wie Browser-Erweiterungen für Passwort-Autofill, CLI-Tools für Automatisierung oder serverseitige Anwendungen.",
+          "useCases": {
+            "browser": "Browser-Erweiterungen",
+            "browserDesc": "Passwörter automatisch ausfüllen, Lesezeichen synchronisieren oder sichere Notizen direkt im Browser abrufen.",
+            "cli": "CLI-Tools",
+            "cliDesc": "Workflows automatisieren, Secrets verwalten oder in Skripte und CI/CD-Pipelines integrieren.",
+            "server": "Server-Anwendungen",
+            "serverDesc": "Backend-Services entwickeln, die sicher auf die Daten deiner Erweiterung zugreifen."
+          },
+          "note": "Externe Clients müssen vom Benutzer autorisiert werden, bevor sie Anfragen senden können. Die gesamte Kommunikation ist Ende-zu-Ende verschlüsselt."
+        },
+        "howItWorks": {
+          "title": "Funktionsweise",
+          "intro": "Die External Bridge verwendet ein WebSocket-basiertes Protokoll mit Public-Key-Authentifizierung:",
+          "steps": {
+            "connect": "Externer Client verbindet sich mit HaexVaults WebSocket-Server",
+            "handshake": "Client sendet Handshake mit Public Key, Name und gewünschten Erweiterungen",
+            "approval": "HaexVault zeigt Autorisierungsdialog - Benutzer kann Einmal erlauben, Immer erlauben oder Blockieren",
+            "request": "Autorisierte Clients können Anfragen an eine bestimmte Erweiterung senden",
+            "autostart": "Wenn die Erweiterung nicht läuft, startet HaexVault sie automatisch (minimiert) um die Anfrage zu bearbeiten",
+            "response": "Erweiterung verarbeitet die Anfrage und sendet Antwort zurück an den Client"
+          }
+        },
+        "handlingRequests": {
+          "title": "Anfragen verarbeiten",
+          "intro": "Deine Erweiterung empfängt externe Anfragen über Events. Du kannst entweder alle Anfragen abhören oder Handler für bestimmte Actions registrieren.",
+          "eventListener": "Event Listener (alle Anfragen verarbeiten)",
+          "registerHandler": "Handler registrieren (pro Action)"
+        },
+        "connectionStates": {
+          "title": "Verbindungsstatus",
+          "intro": "Externe Clients durchlaufen mehrere Verbindungszustände. Diese werden hauptsächlich von Client-Implementierungen (Browser-Erweiterungen) verwendet, aber das Verständnis hilft beim Debugging."
+        },
+        "authorization": {
+          "title": "Autorisierung",
+          "intro": "Benutzer haben volle Kontrolle darüber, welche externen Clients auf ihre Erweiterungen zugreifen können:",
+          "allowOnce": "Einmal erlauben",
+          "allowOnceDesc": "Gewährt temporären Zugriff für die aktuelle Sitzung. Autorisierung wird gelöscht wenn HaexVault neu startet.",
+          "allowAlways": "Immer erlauben",
+          "allowAlwaysDesc": "Autorisiert den Client dauerhaft. Wird in der Datenbank gespeichert und bleibt über Neustarts hinweg bestehen.",
+          "block": "Blockieren",
+          "blockDesc": "Blockiert den Client dauerhaft. Der Client kann keine Autorisierung mehr anfordern bis er in den Einstellungen entsperrt wird.",
+          "warning": "Blockierte Clients können in den HaexVault-Einstellungen entsperrt werden. Informiere Benutzer immer, wenn ihre Verbindung blockiert wurde."
+        },
+        "types": {
+          "title": "Typ-Definitionen",
+          "intro": "TypeScript-Interfaces für External Bridge Kommunikation:"
+        }
+      }
+    }
+  }
+}

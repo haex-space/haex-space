@@ -1,0 +1,68 @@
+{
+  "docs": {
+    "sdkExternalBridge": {
+      "title": "External Bridge",
+      "subtitle": "Receive requests from browser extensions, CLI tools, and other external clients.",
+      "toc": {
+        "overview": "Overview",
+        "howItWorks": "How it Works",
+        "handlingRequests": "Handling Requests",
+        "connectionStates": "Connection States",
+        "authorization": "Authorization",
+        "types": "Types"
+      },
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "intro": "The External Bridge allows external clients to communicate with your HaexVault extension via a secure WebSocket connection. This enables powerful integrations like browser extensions for password autofill, CLI tools for automation, or server-side applications.",
+          "useCases": {
+            "browser": "Browser Extensions",
+            "browserDesc": "Autofill passwords, sync bookmarks, or access secure notes directly from your browser.",
+            "cli": "CLI Tools",
+            "cliDesc": "Automate workflows, manage secrets, or integrate with scripts and CI/CD pipelines.",
+            "server": "Server Applications",
+            "serverDesc": "Build backend services that securely access your extension's data."
+          },
+          "note": "External clients must be authorized by the user before they can send requests. All communication is encrypted end-to-end."
+        },
+        "howItWorks": {
+          "title": "How it Works",
+          "intro": "The External Bridge uses a WebSocket-based protocol with public key authentication:",
+          "steps": {
+            "connect": "External client connects to HaexVault's WebSocket server",
+            "handshake": "Client sends handshake with public key, name, and requested extensions",
+            "approval": "HaexVault shows authorization dialog - user can Allow Once, Allow Always, or Block",
+            "request": "Authorized clients can send requests targeting a specific extension",
+            "autostart": "If the extension is not running, HaexVault auto-starts it (minimized) to handle the request",
+            "response": "Extension processes the request and sends response back to the client"
+          }
+        },
+        "handlingRequests": {
+          "title": "Handling Requests",
+          "intro": "Your extension receives external requests through events. You can either listen to all requests or register handlers for specific actions.",
+          "eventListener": "Event Listener (handle all requests)",
+          "registerHandler": "Register Handler (per action)"
+        },
+        "connectionStates": {
+          "title": "Connection States",
+          "intro": "External clients go through several connection states. These are primarily used by client implementations (browser extensions), but understanding them helps when debugging."
+        },
+        "authorization": {
+          "title": "Authorization",
+          "intro": "Users have full control over which external clients can access their extensions:",
+          "allowOnce": "Allow Once",
+          "allowOnceDesc": "Grants temporary access for the current session. Authorization is cleared when HaexVault restarts.",
+          "allowAlways": "Allow Always",
+          "allowAlwaysDesc": "Permanently authorizes the client. Stored in the database and persists across restarts.",
+          "block": "Block",
+          "blockDesc": "Permanently blocks the client. The client cannot request authorization again until unblocked in settings.",
+          "warning": "Blocked clients can be unblocked in HaexVault's settings. Always inform users if their connection was blocked."
+        },
+        "types": {
+          "title": "Type Definitions",
+          "intro": "TypeScript interfaces for External Bridge communication:"
+        }
+      }
+    }
+  }
+}

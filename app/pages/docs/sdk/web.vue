@@ -109,8 +109,8 @@ tableOfContents.value = [
         <span>&larr;</span>
         <span>{{ t('docs.nav.sdkFilesystem') }}</span>
       </NuxtLinkLocale>
-      <NuxtLinkLocale to="/docs" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
-        <span>{{ t('docs.nav.introduction') }}</span>
+      <NuxtLinkLocale to="/docs/sdk/external-bridge" class="group flex items-center gap-2 text-muted-foreground hover:text-foreground">
+        <span>{{ t('docs.nav.sdkExternalBridge') }}</span>
         <span>&rarr;</span>
       </NuxtLinkLocale>
     </div>

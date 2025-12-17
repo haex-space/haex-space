@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookOpen, Puzzle, Rocket, Settings, Shield, Database, Code, ExternalLink, ChevronRight, Menu, X, ChevronDown } from 'lucide-vue-next'
+import { BookOpen, Puzzle, Rocket, Settings, Shield, Database, Code, ExternalLink, ChevronRight, Menu, X, ChevronDown, Plug } from 'lucide-vue-next'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -80,6 +80,7 @@ const docsNavigation = computed(() => [
       { title: t('docs.nav.sdkStorage'), href: '/docs/sdk/storage', icon: Settings },
       { title: t('docs.nav.sdkFilesystem'), href: '/docs/sdk/filesystem', icon: Code },
       { title: t('docs.nav.sdkWeb'), href: '/docs/sdk/web', icon: ExternalLink },
+      { title: t('docs.nav.sdkExternalBridge'), href: '/docs/sdk/external-bridge', icon: Plug },
     ]
   }
 ])
