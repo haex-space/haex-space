@@ -29,6 +29,7 @@
       "overview": "Overview",
       "prerequisites": "Prerequisites",
       "quickstart": "Quick Start",
+      "loadDevExtension": "Load Dev Extension",
       "projectStructure": "Project Structure",
       "manifest": "Manifest",
       "sdkSetup": "SDK Setup",

@@ -18,6 +18,7 @@ tableOfContents.value = [
   { id: 'overview', title: t('docs.toc.overview'), level: 2 },
   { id: 'prerequisites', title: t('docs.toc.prerequisites'), level: 2 },
   { id: 'quickstart', title: t('docs.toc.quickstart'), level: 2 },
+  { id: 'load-dev-extension', title: t('docs.toc.loadDevExtension'), level: 2 },
   { id: 'project-structure', title: t('docs.toc.projectStructure'), level: 2 },
   { id: 'manifest', title: t('docs.toc.manifest'), level: 2 },
   { id: 'sdk-setup', title: t('docs.toc.sdkSetup'), level: 2 },
@@ -215,6 +216,76 @@ const paths = {
             </p>
           </DocsStep>
         </div>
+      </DocsSection>
+
+      <!-- Load Dev Extension -->
+      <DocsSection id="load-dev-extension" :title="t('docs.sections.loadDevExtension.title')" :icon="Code">
+        <p class="text-muted-foreground mb-6">
+          {{ t('docs.sections.loadDevExtension.intro') }}
+        </p>
+
+        <!-- Screenshot -->
+        <Card class="mb-8 overflow-hidden">
+          <img
+            src="/images/docs/dev-extension-settings.png"
+            :alt="t('docs.sections.loadDevExtension.screenshotAlt')"
+            class="w-full"
+          />
+        </Card>
+
+        <div class="space-y-6">
+          <DocsStep :number="1" :title="t('docs.sections.loadDevExtension.step1.title')">
+            <p class="text-muted-foreground mb-3">
+              {{ t('docs.sections.loadDevExtension.step1.description') }}
+            </p>
+          </DocsStep>
+
+          <DocsStep :number="2" :title="t('docs.sections.loadDevExtension.step2.title')">
+            <p class="text-muted-foreground mb-3">
+              {{ t('docs.sections.loadDevExtension.step2.description') }}
+            </p>
+            <Card class="mb-4">
+              <CardContent class="pt-6">
+                <pre class="text-sm leading-relaxed"><code>/path/to/your/extension</code></pre>
+              </CardContent>
+            </Card>
+            <p class="text-sm text-muted-foreground">
+              {{ t('docs.sections.loadDevExtension.step2.hint') }}
+            </p>
+          </DocsStep>
+
+          <DocsStep :number="3" :title="t('docs.sections.loadDevExtension.step3.title')">
+            <p class="text-muted-foreground">
+              {{ t('docs.sections.loadDevExtension.step3.description') }}
+            </p>
+          </DocsStep>
+        </div>
+
+        <DocsAlert type="info" :title="t('docs.sections.loadDevExtension.hotReload.title')" class="mt-6">
+          {{ t('docs.sections.loadDevExtension.hotReload.description') }}
+        </DocsAlert>
+
+        <DocsAlert type="warning" :title="t('docs.sections.loadDevExtension.localOnly.title')" class="mt-4">
+          {{ t('docs.sections.loadDevExtension.localOnly.description') }}
+        </DocsAlert>
+
+        <h3 class="font-semibold mt-8 mb-3">{{ t('docs.sections.loadDevExtension.config.title') }}</h3>
+        <p class="text-muted-foreground mb-4">
+          {{ t('docs.sections.loadDevExtension.config.description') }}
+        </p>
+        <Card>
+          <CardContent class="pt-6">
+            <pre class="text-sm leading-relaxed"><code>{
+  "dev": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "build": {
+    "distDir": "dist"
+  }
+}</code></pre>
+          </CardContent>
+        </Card>
       </DocsSection>
 
       <!-- Project Structure -->

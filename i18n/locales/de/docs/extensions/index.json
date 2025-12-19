@@ -56,6 +56,36 @@
           "description": "Starte den Vite-Entwicklungsserver und lade deine Extension in haex-vault für Live-Entwicklung."
         }
       },
+      "loadDevExtension": {
+        "title": "Dev Extension in haex-vault laden",
+        "intro": "Um deine Extension während der Entwicklung zu testen, kannst du sie im Entwicklermodus in haex-vault laden. Dies ermöglicht Live-Entwicklung mit Hot-Reload.",
+        "screenshotAlt": "haex-vault Entwicklereinstellungen mit dem Bereich zum Hinzufügen von Dev-Extensions",
+        "step1": {
+          "title": "Entwicklereinstellungen öffnen",
+          "description": "Öffne haex-vault und gehe zu Einstellungen → Entwickler. Hier findest du den Bereich zum Hinzufügen von Dev-Extensions."
+        },
+        "step2": {
+          "title": "Extension-Pfad eingeben",
+          "description": "Gib den Pfad zu deinem Extension-Projekt ein oder klicke auf \"Durchsuchen\", um das Verzeichnis auszuwählen.",
+          "hint": "Der Pfad sollte auf das Hauptverzeichnis deiner Extension zeigen – das Verzeichnis, das den haextension/-Ordner und die haextension.config.json enthält."
+        },
+        "step3": {
+          "title": "Extension laden",
+          "description": "Klicke auf \"Extension laden\". Die Extension wird im Entwicklermodus geladen und erscheint im Launcher mit einem DEV-Badge. Änderungen an deinem Code werden durch Hot-Reload automatisch übernommen."
+        },
+        "hotReload": {
+          "title": "Hot-Reload",
+          "description": "Im Entwicklermodus werden Änderungen an deinem Code automatisch übernommen, ohne dass du die Extension neu laden musst. Starte einfach deinen Vite Dev-Server und die Änderungen werden live in haex-vault angezeigt."
+        },
+        "localOnly": {
+          "title": "Lokale Daten",
+          "description": "Dev-Extensions speichern ihre Daten nur lokal und werden nicht synchronisiert. Dies ist beabsichtigt, um Konflikte während der Entwicklung zu vermeiden. Für Produktionsdaten musst du die Extension signieren und installieren."
+        },
+        "config": {
+          "title": "haextension.config.json",
+          "description": "Die Konfigurationsdatei im Hauptverzeichnis deiner Extension definiert die Entwicklungs- und Build-Einstellungen. Stelle sicher, dass der Port mit deinem Vite Dev-Server übereinstimmt."
+        }
+      },
       "projectStructure": {
         "title": "Projektstruktur",
         "intro": "Nach der Initialisierung hat dein Projekt folgende Struktur:",
