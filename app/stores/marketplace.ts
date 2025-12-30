@@ -9,10 +9,14 @@ import {
   type ExtensionReview,
   type ListExtensionsParams,
   type ListReviewsParams,
+  type ApiKey,
+  type CreatedApiKey,
+  type ListApiKeysResponse,
+  type CreateApiKeyResponse,
 } from '@haex-space/marketplace-sdk'
 
 // Re-export SDK types for convenience
-export type { CategoryWithCount, ExtensionListItem, ExtensionDetail, ExtensionReview, ListExtensionsParams, ListReviewsParams }
+export type { CategoryWithCount, ExtensionListItem, ExtensionDetail, ExtensionReview, ListExtensionsParams, ListReviewsParams, ApiKey, CreatedApiKey }
 
 // Types for publisher-specific functionality (not in SDK)
 export interface Publisher {
@@ -452,6 +456,26 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     })
   }
 
+  // API Keys
+  async function fetchApiKeys() {
+    const data = await fetchApi<ListApiKeysResponse>('/publishers/me/api-keys')
+    return data.apiKeys
+  }
+
+  async function createApiKey(name: string, expiresInDays = 90) {
+    const result = await fetchApi<CreateApiKeyResponse>('/publishers/me/api-keys', {
+      method: 'POST',
+      body: JSON.stringify({ name, expiresInDays })
+    })
+    return result
+  }
+
+  async function deleteApiKey(keyId: string) {
+    await fetchApi(`/publishers/me/api-keys/${keyId}`, {
+      method: 'DELETE'
+    })
+  }
+
   return {
     // State
     client,
@@ -500,5 +524,10 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     createReview,
     updateReview,
     deleteReview,
+
+    // API Keys
+    fetchApiKeys,
+    createApiKey,
+    deleteApiKey,
   }
 })

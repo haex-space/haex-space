@@ -35,6 +35,27 @@
         "dangerZone": "Gefahrenzone",
         "deleteAccount": "Konto löschen",
         "deleteWarning": "Sobald du dein Konto löschst, gibt es kein Zurück. Bitte sei dir sicher."
+      },
+      "apiKeys": {
+        "title": "API-Schlüssel",
+        "description": "Verwende API-Schlüssel zur Authentifizierung von CLI-Tools und CI/CD-Pipelines.",
+        "create": "Neuer Schlüssel",
+        "createTitle": "API-Schlüssel erstellen",
+        "createDescription": "Mit API-Schlüsseln kannst du Extensions über die Kommandozeile oder CI/CD-Pipelines hochladen.",
+        "name": "Schlüsselname",
+        "namePlaceholder": "z.B. GitHub Actions, Lokale Entwicklung",
+        "expiry": "Gültigkeit",
+        "days": "Tage",
+        "createButton": "Schlüssel erstellen",
+        "cancel": "Abbrechen",
+        "yourKey": "Dein API-Schlüssel",
+        "keyWarning": "Kopiere diesen Schlüssel jetzt. Du wirst ihn nicht wieder sehen können!",
+        "done": "Fertig",
+        "empty": "Noch keine API-Schlüssel",
+        "emptyHint": "Erstelle einen API-Schlüssel, um Extensions über die Kommandozeile hochzuladen.",
+        "expired": "Abgelaufen",
+        "expires": "Läuft ab",
+        "lastUsed": "Zuletzt verwendet"
       }
     }
   }

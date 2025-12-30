@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { User, Globe, Mail, FileText, Loader2, CheckCircle, AlertCircle } from 'lucide-vue-next'
-import { useMarketplaceStore } from '~/stores/marketplace'
+import { User, Globe, Mail, FileText, Loader2, CheckCircle, AlertCircle, Key, Trash2, Copy, Plus } from 'lucide-vue-next'
+import { useMarketplaceStore, type ApiKey } from '~/stores/marketplace'
 
 definePageMeta({
   layout: false, // Layout handled by parent developer.vue
@@ -29,6 +29,78 @@ const form = reactive({
 const saving = ref(false)
 const saveSuccess = ref(false)
 const saveError = ref('')
+
+// API Keys state
+const apiKeys = ref<ApiKey[]>([])
+const apiKeysLoading = ref(false)
+const apiKeysError = ref('')
+const showCreateKeyDialog = ref(false)
+const newKeyName = ref('')
+const newKeyExpiry = ref(90)
+const creatingKey = ref(false)
+const createdKey = ref<string | null>(null)
+const deletingKeyId = ref<string | null>(null)
+
+// Load API keys when publisher is available
+watch(() => store.hasPublisher, async (hasPublisher) => {
+  if (hasPublisher) {
+    await loadApiKeys()
+  }
+}, { immediate: true })
+
+async function loadApiKeys() {
+  apiKeysLoading.value = true
+  apiKeysError.value = ''
+  try {
+    apiKeys.value = await store.fetchApiKeys()
+  } catch (error) {
+    apiKeysError.value = error instanceof Error ? error.message : 'Failed to load API keys'
+  } finally {
+    apiKeysLoading.value = false
+  }
+}
+
+async function handleCreateKey() {
+  if (!newKeyName.value.trim()) return
+
+  creatingKey.value = true
+  try {
+    const result = await store.createApiKey(newKeyName.value.trim(), newKeyExpiry.value)
+    createdKey.value = result.apiKey.key
+    await loadApiKeys()
+    newKeyName.value = ''
+    newKeyExpiry.value = 90
+  } catch (error) {
+    apiKeysError.value = error instanceof Error ? error.message : 'Failed to create API key'
+  } finally {
+    creatingKey.value = false
+  }
+}
+
+async function handleDeleteKey(keyId: string) {
+  deletingKeyId.value = keyId
+  try {
+    await store.deleteApiKey(keyId)
+    apiKeys.value = apiKeys.value.filter((k: ApiKey) => k.id !== keyId)
+  } catch (error) {
+    apiKeysError.value = error instanceof Error ? error.message : 'Failed to delete API key'
+  } finally {
+    deletingKeyId.value = null
+  }
+}
+
+function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text)
+}
+
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString()
+}
+
+function closeCreatedKeyDialog() {
+  createdKey.value = null
+  showCreateKeyDialog.value = false
+}
 
 // Initialize form when publisher data loads
 watch(() => store.publisher, (publisher) => {
@@ -229,6 +301,150 @@ async function handleSubmit() {
           </form>
         </CardContent>
       </Card>
+
+      <!-- API Keys -->
+      <Card v-if="store.hasPublisher">
+        <CardHeader>
+          <div class="flex items-center justify-between">
+            <div>
+              <CardTitle class="flex items-center gap-2">
+                <Key class="h-5 w-5" />
+                {{ t('developer.settings.apiKeys.title') }}
+              </CardTitle>
+              <CardDescription>
+                {{ t('developer.settings.apiKeys.description') }}
+              </CardDescription>
+            </div>
+            <Button size="sm" @click="showCreateKeyDialog = true">
+              <Plus class="h-4 w-4 mr-2" />
+              {{ t('developer.settings.apiKeys.create') }}
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <!-- Loading -->
+          <div v-if="apiKeysLoading" class="flex items-center justify-center py-8">
+            <Loader2 class="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+
+          <!-- Error -->
+          <div v-else-if="apiKeysError" class="flex items-center gap-2 text-sm text-destructive py-4">
+            <AlertCircle class="h-4 w-4" />
+            {{ apiKeysError }}
+          </div>
+
+          <!-- Empty state -->
+          <div v-else-if="apiKeys.length === 0" class="text-center py-8 text-muted-foreground">
+            <Key class="h-12 w-12 mx-auto mb-4 opacity-50" />
+            <p>{{ t('developer.settings.apiKeys.empty') }}</p>
+            <p class="text-sm mt-1">{{ t('developer.settings.apiKeys.emptyHint') }}</p>
+          </div>
+
+          <!-- API Keys list -->
+          <div v-else class="space-y-3">
+            <div
+              v-for="key in apiKeys"
+              :key="key.id"
+              class="flex items-center justify-between p-3 rounded-lg border"
+              :class="{ 'border-destructive/50 bg-destructive/5': key.expired }"
+            >
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-medium">{{ key.name }}</span>
+                  <Badge v-if="key.expired" variant="destructive">
+                    {{ t('developer.settings.apiKeys.expired') }}
+                  </Badge>
+                </div>
+                <div class="text-sm text-muted-foreground space-x-4">
+                  <span>{{ key.keyPrefix }}...</span>
+                  <span>{{ t('developer.settings.apiKeys.expires') }}: {{ formatDate(key.expiresAt) }}</span>
+                  <span v-if="key.lastUsedAt">
+                    {{ t('developer.settings.apiKeys.lastUsed') }}: {{ formatDate(key.lastUsedAt) }}
+                  </span>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                @click="handleDeleteKey(key.id)"
+                :disabled="deletingKeyId === key.id"
+              >
+                <Loader2 v-if="deletingKeyId === key.id" class="h-4 w-4 animate-spin" />
+                <Trash2 v-else class="h-4 w-4 text-destructive" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Create API Key Dialog -->
+      <Dialog v-model:open="showCreateKeyDialog">
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{{ t('developer.settings.apiKeys.createTitle') }}</DialogTitle>
+            <DialogDescription>
+              {{ t('developer.settings.apiKeys.createDescription') }}
+            </DialogDescription>
+          </DialogHeader>
+
+          <!-- Show created key -->
+          <div v-if="createdKey" class="space-y-4">
+            <div class="p-4 rounded-lg bg-muted">
+              <p class="text-sm font-medium mb-2">{{ t('developer.settings.apiKeys.yourKey') }}</p>
+              <div class="flex items-center gap-2">
+                <code class="flex-1 text-sm bg-background p-2 rounded border break-all">{{ createdKey }}</code>
+                <Button size="icon" variant="outline" @click="copyToClipboard(createdKey!)">
+                  <Copy class="h-4 w-4" />
+                </Button>
+              </div>
+              <p class="text-sm text-destructive mt-2">
+                {{ t('developer.settings.apiKeys.keyWarning') }}
+              </p>
+            </div>
+            <DialogFooter>
+              <Button @click="closeCreatedKeyDialog">
+                {{ t('developer.settings.apiKeys.done') }}
+              </Button>
+            </DialogFooter>
+          </div>
+
+          <!-- Create form -->
+          <form v-else @submit.prevent="handleCreateKey" class="space-y-4">
+            <div class="space-y-2">
+              <Label for="keyName">{{ t('developer.settings.apiKeys.name') }}</Label>
+              <Input
+                id="keyName"
+                v-model="newKeyName"
+                :placeholder="t('developer.settings.apiKeys.namePlaceholder')"
+                required
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="keyExpiry">{{ t('developer.settings.apiKeys.expiry') }}</Label>
+              <Select v-model="newKeyExpiry">
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem :value="30">30 {{ t('developer.settings.apiKeys.days') }}</SelectItem>
+                  <SelectItem :value="90">90 {{ t('developer.settings.apiKeys.days') }}</SelectItem>
+                  <SelectItem :value="180">180 {{ t('developer.settings.apiKeys.days') }}</SelectItem>
+                  <SelectItem :value="365">365 {{ t('developer.settings.apiKeys.days') }}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" @click="showCreateKeyDialog = false">
+                {{ t('developer.settings.apiKeys.cancel') }}
+              </Button>
+              <Button type="submit" :disabled="creatingKey || !newKeyName.trim()">
+                <Loader2 v-if="creatingKey" class="h-4 w-4 mr-2 animate-spin" />
+                {{ t('developer.settings.apiKeys.createButton') }}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <!-- Account Settings -->
       <Card>

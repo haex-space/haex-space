@@ -35,6 +35,27 @@
         "dangerZone": "Danger Zone",
         "deleteAccount": "Delete Account",
         "deleteWarning": "Once you delete your account, there is no going back. Please be certain."
+      },
+      "apiKeys": {
+        "title": "API Keys",
+        "description": "Use API keys to authenticate CLI tools and CI/CD pipelines.",
+        "create": "New Key",
+        "createTitle": "Create API Key",
+        "createDescription": "API keys allow you to upload extensions from the command line or CI/CD pipelines.",
+        "name": "Key Name",
+        "namePlaceholder": "e.g., GitHub Actions, Local Dev",
+        "expiry": "Expiration",
+        "days": "days",
+        "createButton": "Create Key",
+        "cancel": "Cancel",
+        "yourKey": "Your API Key",
+        "keyWarning": "Make sure to copy this key now. You won't be able to see it again!",
+        "done": "Done",
+        "empty": "No API keys yet",
+        "emptyHint": "Create an API key to upload extensions from the command line.",
+        "expired": "Expired",
+        "expires": "Expires",
+        "lastUsed": "Last used"
       }
     }
   }
