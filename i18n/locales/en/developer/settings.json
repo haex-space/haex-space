@@ -55,7 +55,10 @@
         "emptyHint": "Create an API key to upload extensions from the command line.",
         "expired": "Expired",
         "expires": "Expires",
-        "lastUsed": "Last used"
+        "lastUsed": "Last used",
+        "deleteTitle": "Delete API Key",
+        "deleteDescription": "Are you sure you want to delete the key \"{name}\"? This action cannot be undone.",
+        "deleteConfirm": "Delete"
       }
     }
   }

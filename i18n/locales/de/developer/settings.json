@@ -55,7 +55,10 @@
         "emptyHint": "Erstelle einen API-Schlüssel, um Extensions über die Kommandozeile hochzuladen.",
         "expired": "Abgelaufen",
         "expires": "Läuft ab",
-        "lastUsed": "Zuletzt verwendet"
+        "lastUsed": "Zuletzt verwendet",
+        "deleteTitle": "API-Schlüssel löschen",
+        "deleteDescription": "Bist du sicher, dass du den Schlüssel \"{name}\" löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "deleteConfirm": "Löschen"
       }
     }
   }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { User, Globe, Mail, FileText, Loader2, CheckCircle, AlertCircle, Key, Trash2, Copy, Plus } from 'lucide-vue-next'
+import { User, Globe, Mail, FileText, Loader2, CheckCircle, AlertCircle, Key, Trash2, Copy, Plus, Check } from 'lucide-vue-next'
+import { useClipboard } from '@vueuse/core'
 import { useMarketplaceStore, type ApiKey } from '~/stores/marketplace'
 
 definePageMeta({
@@ -40,6 +41,8 @@ const newKeyExpiry = ref(90)
 const creatingKey = ref(false)
 const createdKey = ref<string | null>(null)
 const deletingKeyId = ref<string | null>(null)
+const showDeleteKeyDialog = ref(false)
+const keyToDelete = ref<ApiKey | null>(null)
 
 // Load API keys when publisher is available
 watch(() => store.hasPublisher, async (hasPublisher) => {
@@ -77,11 +80,21 @@ async function handleCreateKey() {
   }
 }
 
-async function handleDeleteKey(keyId: string) {
+function confirmDeleteKey(key: ApiKey) {
+  keyToDelete.value = key
+  showDeleteKeyDialog.value = true
+}
+
+async function handleDeleteKey() {
+  if (!keyToDelete.value) return
+
+  const keyId = keyToDelete.value.id
   deletingKeyId.value = keyId
   try {
     await store.deleteApiKey(keyId)
     apiKeys.value = apiKeys.value.filter((k: ApiKey) => k.id !== keyId)
+    showDeleteKeyDialog.value = false
+    keyToDelete.value = null
   } catch (error) {
     apiKeysError.value = error instanceof Error ? error.message : 'Failed to delete API key'
   } finally {
@@ -89,9 +102,8 @@ async function handleDeleteKey(keyId: string) {
   }
 }
 
-function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text)
-}
+// Clipboard with visual feedback
+const { copy, copied } = useClipboard({ copiedDuring: 2000 })
 
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString()
@@ -366,16 +378,35 @@ async function handleSubmit() {
               <Button
                 variant="ghost"
                 size="icon"
-                @click="handleDeleteKey(key.id)"
-                :disabled="deletingKeyId === key.id"
+                @click="confirmDeleteKey(key)"
               >
-                <Loader2 v-if="deletingKeyId === key.id" class="h-4 w-4 animate-spin" />
-                <Trash2 v-else class="h-4 w-4 text-destructive" />
+                <Trash2 class="h-4 w-4 text-destructive" />
               </Button>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <!-- Delete API Key Confirmation Dialog -->
+      <Dialog v-model:open="showDeleteKeyDialog">
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{{ t('developer.settings.apiKeys.deleteTitle') }}</DialogTitle>
+            <DialogDescription>
+              {{ t('developer.settings.apiKeys.deleteDescription', { name: keyToDelete?.name }) }}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" variant="outline" @click="showDeleteKeyDialog = false" :disabled="deletingKeyId !== null">
+              {{ t('developer.settings.apiKeys.cancel') }}
+            </Button>
+            <Button type="button" variant="destructive" @click="handleDeleteKey" :disabled="deletingKeyId !== null">
+              <Loader2 v-if="deletingKeyId !== null" class="h-4 w-4 mr-2 animate-spin" />
+              {{ t('developer.settings.apiKeys.deleteConfirm') }}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <!-- Create API Key Dialog -->
       <Dialog v-model:open="showCreateKeyDialog">
@@ -393,8 +424,9 @@ async function handleSubmit() {
               <p class="text-sm font-medium mb-2">{{ t('developer.settings.apiKeys.yourKey') }}</p>
               <div class="flex items-center gap-2">
                 <code class="flex-1 text-sm bg-background p-2 rounded border break-all">{{ createdKey }}</code>
-                <Button size="icon" variant="outline" @click="copyToClipboard(createdKey!)">
-                  <Copy class="h-4 w-4" />
+                <Button size="icon" variant="outline" @click="copy(createdKey!)">
+                  <Check v-if="copied" class="h-4 w-4 text-green-500" />
+                  <Copy v-else class="h-4 w-4" />
                 </Button>
               </div>
               <p class="text-sm text-destructive mt-2">
