@@ -21,6 +21,10 @@ import docsSdkStorage from './en/docs/sdk/storage.json'
 import docsSdkFilesystem from './en/docs/sdk/filesystem.json'
 import docsSdkWeb from './en/docs/sdk/web.json'
 import docsSdkExternalBridge from './en/docs/sdk/external-bridge.json'
+import docsArchitectureIndex from './en/docs/architecture/index.json'
+import docsArchitectureSync from './en/docs/architecture/sync.json'
+import docsArchitectureExtensions from './en/docs/architecture/extensions.json'
+import docsArchitectureDatabase from './en/docs/architecture/database.json'
 import developerIndex from './en/developer/index.json'
 import developerSettings from './en/developer/settings.json'
 import developerExtensions from './en/developer/extensions.json'
@@ -74,6 +78,10 @@ export default defineI18nLocale(() => {
     docsSdkFilesystem,
     docsSdkWeb,
     docsSdkExternalBridge,
+    docsArchitectureIndex,
+    docsArchitectureSync,
+    docsArchitectureExtensions,
+    docsArchitectureDatabase,
     developerIndex,
     developerSettings,
     developerExtensions,
