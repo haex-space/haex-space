@@ -105,20 +105,19 @@
         },
         "events": {
           "title": "Sync-Events",
-          "intro": "Nach einem erfolgreichen Pull werden Events emittiert, um die Anwendung zu benachrichtigen, dass sich Daten geändert haben. Dies triggert UI-Updates und Store-Reloads.",
+          "intro": "Nach einem erfolgreichen Pull werden Events automatisch vom Sync-Orchestrator emittiert, um die Anwendung zu benachrichtigen, dass sich Daten geändert haben. Extensions müssen diese Events nicht selbst emittieren - sie müssen nur darauf lauschen und reagieren.",
+          "automatic": {
+            "title": "Automatische Event-Emission",
+            "description": "Der Sync-Orchestrator emittiert automatisch Events nach jedem erfolgreichen Pull. Extensions müssen diese Events nicht selbst emittieren - sie werden intern von haex-vault verarbeitet."
+          },
           "twoEvents": {
             "title": "Zwei Event-Typen",
             "internal": "Für interne Pinia Stores (registriert via registerStoreForTables)",
-            "extensions": "Für native WebView Extensions (via vault-sdk)"
-          },
-          "important": {
-            "title": "Beide Events erforderlich",
-            "description": "Bei der Sync-Implementierung müssen BEIDE Events emittiert werden, damit sowohl interne Stores als auch Extensions Updates erhalten."
+            "extensions": "Für Extensions via vault-sdk (verwende dies in deiner Extension)"
           },
           "usage": {
-            "title": "Verwendungsbeispiele",
-            "register": "Store für Table-Updates registrieren (im Orchestrator):",
-            "extension": "In Extension lauschen (via vault-sdk):"
+            "title": "Sync-Events in Extensions verarbeiten",
+            "intro": "Das Event-Payload enthält eine Liste aller Tabellennamen, die aktualisiert wurden. Jede Extension sollte prüfen, ob eine ihrer Tabellen in der Liste ist und entsprechend Daten neu laden."
           }
         }
       }

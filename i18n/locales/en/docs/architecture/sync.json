@@ -105,20 +105,19 @@
         },
         "events": {
           "title": "Sync Events",
-          "intro": "After a successful pull, events are emitted to notify the application that data has changed. This triggers UI updates and store reloads.",
+          "intro": "After a successful pull, events are emitted automatically by the sync orchestrator to notify the application that data has changed. Extensions don't need to emit these events - they only need to listen and react to them.",
+          "automatic": {
+            "title": "Automatic Event Emission",
+            "description": "The sync orchestrator automatically emits events after every successful pull. Extensions don't need to emit these events themselves - they are handled by haex-vault internally."
+          },
           "twoEvents": {
             "title": "Two Event Types",
             "internal": "For internal Pinia stores (registered via registerStoreForTables)",
-            "extensions": "For native WebView extensions (via vault-sdk)"
-          },
-          "important": {
-            "title": "Both Events Required",
-            "description": "When implementing sync, ensure BOTH events are emitted so that both internal stores and extensions receive updates."
+            "extensions": "For extensions via vault-sdk (use this in your extension)"
           },
           "usage": {
-            "title": "Usage Examples",
-            "register": "Register store for table updates (in orchestrator):",
-            "extension": "Listen in extension (via vault-sdk):"
+            "title": "Handling Sync Events in Extensions",
+            "intro": "The event payload includes a list of all table names that were updated. Each extension should check if any of its tables are in the list and reload data accordingly."
           }
         }
       }
