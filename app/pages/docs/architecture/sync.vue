@@ -26,115 +26,17 @@ tableOfContents.value = [
   { id: 'events', title: t('docs.sync.toc.events'), level: 2 },
 ]
 
-const code = {
-  crdtColumns: `-- All synced tables have these columns
-CREATE TABLE haex_passwords (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  username TEXT,
-  password TEXT,
-
-  -- CRDT Columns (added automatically):
-  haex_timestamp TEXT NOT NULL,      -- Max HLC across all columns
-  haex_column_hlcs TEXT NOT NULL     -- JSON object with HLC per column
-                     DEFAULT '{}',
-  haex_tombstone INTEGER NOT NULL    -- 0 = active, 1 = soft-deleted
-                     DEFAULT 0
-);`,
-
-  hlcFormat: `HLC Format: ISO 8601 timestamp + Device ID suffix
-
-"2024-01-03T10:45:32.123-A"
-         │           │     │
-    ISO 8601    milliseconds  Device ID`,
-
-  columnHlcJson: `// haex_column_hlcs JSON structure
-{
-  "id": "2024-01-03T10:45:00.000-A",
-  "title": "2024-01-03T10:45:15.500-A",
-  "username": "2024-01-03T10:45:20.100-B",
-  "password": "2024-01-03T10:45:30.200-B"
-}
-
-// haex_timestamp = max(all column HLCs)
-// = "2024-01-03T10:45:30.200-B"`,
-
-  conflictExample: `Device A: UPDATE passwords SET title = 'Gmail' WHERE id = 'abc'
-         (timestamp: 2024-01-03T10:00:00-A)
-
-Device B: UPDATE passwords SET password = 'newpass' WHERE id = 'abc'
-         (timestamp: 2024-01-03T10:00:15-B)
-
-Result after sync:
-- title = 'Gmail'     (from Device A)
-- password = 'newpass' (from Device B)
-
-Both changes are preserved!`,
-
-  pushStructure: `// Column Change Structure (sent to server)
-{
-  tableName: "haex_passwords",
-  rowPks: '{"id": "abc-123"}',
-  columnName: "password",
-  hlcTimestamp: "2024-01-03T10:45:30.200-A",
-  encryptedValue: "base64...",  // AES-256-GCM
-  nonce: "base64...",
-  batchId: "uuid",
-  batchSeq: 1,
-  batchTotal: 5
-}`,
-
-  pullLogic: `// Pull Logic (simplified)
-for (const change of serverChanges) {
-  const localRow = await getRow(change.tableName, change.rowPks)
-  const localHlc = localRow?.haex_column_hlcs[change.columnName]
-
-  if (!localHlc || change.hlcTimestamp > localHlc) {
-    // Remote wins - apply the change
-    const decryptedValue = decrypt(change.encryptedValue, vaultKey)
-    await updateColumn(change.tableName, change.rowPks,
-                       change.columnName, decryptedValue)
-    await updateColumnHlc(change.tableName, change.rowPks,
-                          change.columnName, change.hlcTimestamp)
-  }
-  // else: Local wins - keep existing value
-}`,
-
-  realtimeSubscription: `// Supabase Realtime Subscription
-const channel = supabase
-  .channel(\`sync_changes:\${vaultId}\`)
-  .on('postgres_changes', {
-    event: 'INSERT',
-    schema: 'public',
-    table: \`sync_changes_\${vaultId.replace(/-/g, '_')}\`  // Partition
-  }, (payload) => {
-    // Skip if change is from this device
-    if (payload.new.device_id === myDeviceId) return
-
-    // Trigger debounced pull (500ms)
-    triggerPull()
-  })
-  .subscribe()`,
-
-  softDelete: `-- Instead of:
-DELETE FROM haex_passwords WHERE id = 'abc-123';
-
--- Use:
-UPDATE haex_passwords SET haex_tombstone = 1 WHERE id = 'abc-123';
-
--- Query active records:
-SELECT * FROM haex_passwords WHERE haex_tombstone = 0;`,
-
-  extensionEventListener: `// Listen for sync events in your extension
-vault.on('sync:tables-updated', async (event) => {
-  const tables = event.data?.tables || []
-
-  // Check if your tables were updated
-  if (tables.some(t => t.includes('my_extension_table'))) {
-    // Reload your data
-    await reloadDataAsync()
-  }
-})`
+// Content paths for code examples
+const paths = {
+  crdtColumns: '/architecture/crdt-columns',
+  hlcFormat: '/architecture/hlc-format',
+  columnHlcJson: '/architecture/column-hlc-json',
+  conflictExample: '/architecture/conflict-example',
+  pushStructure: '/architecture/push-structure',
+  pullLogic: '/architecture/pull-logic',
+  realtimeSubscription: '/architecture/realtime-subscription',
+  softDelete: '/architecture/soft-delete',
+  syncEventListener: '/architecture/sync-event-listener',
 }
 
 const syncFlowDiagram = `┌─────────────────────────────────────────────────────────────┐
@@ -236,7 +138,7 @@ const syncFlowDiagram = `┌─────────────────�
       <h3 class="font-semibold mt-8 mb-4">{{ t('docs.sync.sections.crdtBasics.columns.title') }}</h3>
       <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.crdtBasics.columns.description') }}</p>
 
-      <DocsCodeBlock :code="code.crdtColumns" language="sql" />
+      <DocsCodeBlock :path="paths.crdtColumns" />
     </DocsSection>
 
     <!-- Hybrid Logical Clock -->
@@ -245,7 +147,7 @@ const syncFlowDiagram = `┌─────────────────�
         {{ t('docs.sync.sections.hlc.intro') }}
       </p>
 
-      <DocsCodeBlock :code="code.hlcFormat" language="text" class="mb-6" />
+      <DocsCodeBlock :path="paths.hlcFormat" class="mb-6" />
 
       <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.hlc.benefits') }}</p>
 
@@ -276,7 +178,7 @@ const syncFlowDiagram = `┌─────────────────�
           <CardTitle class="text-base">{{ t('docs.sync.sections.columnLevel.example.title') }}</CardTitle>
         </CardHeader>
         <CardContent>
-          <DocsCodeBlock :code="code.conflictExample" language="text" />
+          <DocsCodeBlock :path="paths.conflictExample" />
         </CardContent>
       </Card>
 
@@ -285,7 +187,7 @@ const syncFlowDiagram = `┌─────────────────�
       </DocsAlert>
 
       <h3 class="font-semibold mt-8 mb-4">{{ t('docs.sync.sections.columnLevel.hlcJson.title') }}</h3>
-      <DocsCodeBlock :code="code.columnHlcJson" language="json" />
+      <DocsCodeBlock :path="paths.columnHlcJson" />
     </DocsSection>
 
     <!-- Sync Flow -->
@@ -304,13 +206,13 @@ const syncFlowDiagram = `┌─────────────────�
       <h3 id="push" class="font-semibold mb-4 scroll-mt-20">{{ t('docs.sync.sections.syncFlow.push.title') }}</h3>
       <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.syncFlow.push.description') }}</p>
 
-      <DocsCodeBlock :code="code.pushStructure" language="typescript" class="mb-8" />
+      <DocsCodeBlock :path="paths.pushStructure" class="mb-8" />
 
       <!-- Pull -->
       <h3 id="pull" class="font-semibold mb-4 scroll-mt-20">{{ t('docs.sync.sections.syncFlow.pull.title') }}</h3>
       <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.syncFlow.pull.description') }}</p>
 
-      <DocsCodeBlock :code="code.pullLogic" language="typescript" />
+      <DocsCodeBlock :path="paths.pullLogic" />
     </DocsSection>
 
     <!-- Realtime -->
@@ -319,7 +221,7 @@ const syncFlowDiagram = `┌─────────────────�
         {{ t('docs.sync.sections.realtime.intro') }}
       </p>
 
-      <DocsCodeBlock :code="code.realtimeSubscription" language="typescript" class="mb-6" />
+      <DocsCodeBlock :path="paths.realtimeSubscription" class="mb-6" />
 
       <DocsAlert type="info" :title="t('docs.sync.sections.realtime.fallback.title')">
         {{ t('docs.sync.sections.realtime.fallback.description') }}
@@ -332,7 +234,7 @@ const syncFlowDiagram = `┌─────────────────�
         {{ t('docs.sync.sections.softDelete.intro') }}
       </p>
 
-      <DocsCodeBlock :code="code.softDelete" language="sql" class="mb-6" />
+      <DocsCodeBlock :path="paths.softDelete" class="mb-6" />
 
       <p class="text-muted-foreground">{{ t('docs.sync.sections.softDelete.why') }}</p>
     </DocsSection>
@@ -367,7 +269,7 @@ const syncFlowDiagram = `┌─────────────────�
 
       <h3 class="font-semibold mt-8 mb-4">{{ t('docs.sync.sections.events.usage.title') }}</h3>
       <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.events.usage.intro') }}</p>
-      <DocsCodeBlock :code="code.extensionEventListener" language="typescript" />
+      <DocsCodeBlock :path="paths.syncEventListener" />
     </DocsSection>
 
     <!-- Next Links -->

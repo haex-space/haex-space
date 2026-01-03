@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Database, Server, Table, Key, Shield, ChevronRight } from 'lucide-vue-next'
+import { Database, Server, Table, Key, ChevronRight } from 'lucide-vue-next'
 
 definePageMeta({
   layout: 'docs'
@@ -40,6 +40,17 @@ const crdtTables = [
   { name: 'haex_crdt_migrations', description: t('docs.dbSchema.crdtTables.migrations'), crdt: false },
   { name: 'haex_crdt_conflicts', description: t('docs.dbSchema.crdtTables.conflicts'), crdt: false },
 ]
+
+// Content paths for code examples
+const paths = {
+  crdtColumnsExample: '/architecture/crdt-columns-example',
+  syncBackendsSchema: '/architecture/sync-backends-schema',
+  dirtyTablesSchema: '/architecture/dirty-tables-schema',
+  extensionTableNaming: '/architecture/extension-table-naming',
+  vaultKeysSchema: '/architecture/vault-keys-schema',
+  syncChangesSchema: '/architecture/sync-changes-schema',
+  triggersExample: '/architecture/triggers-example',
+}
 </script>
 
 <template>
@@ -109,26 +120,7 @@ haex_tombstone INTEGER NOT NULL    -- {{ t('docs.dbSchema.sections.crdtColumns.t
       </Card>
 
       <h3 class="font-semibold mb-4">{{ t('docs.dbSchema.sections.crdtColumns.example.title') }}</h3>
-      <Card>
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>-- {{ t('docs.dbSchema.sections.crdtColumns.example.comment') }}
-SELECT
-  id,
-  title,
-  haex_timestamp,
-  haex_column_hlcs,
-  haex_tombstone
-FROM haex_passwords
-WHERE id = 'abc-123';
-
--- Result:
--- id: "abc-123"
--- title: "Gmail"
--- haex_timestamp: "2024-01-03T10:45:30.200-B"
--- haex_column_hlcs: '{"id":"2024-01-03T10:00:00.000-A","title":"2024-01-03T10:45:30.200-B"}'
--- haex_tombstone: 0</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.crdtColumnsExample" />
     </DocsSection>
 
     <!-- Core Tables -->
@@ -164,31 +156,7 @@ WHERE id = 'abc-123';
       </Card>
 
       <h3 class="font-semibold mt-8 mb-4">haex_sync_backends</h3>
-      <Card>
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>CREATE TABLE haex_sync_backends (
-  id TEXT PRIMARY KEY,
-  name TEXT NOT NULL,
-  server_url TEXT NOT NULL,
-  vault_id TEXT NOT NULL,
-  email TEXT NOT NULL,
-  password TEXT NOT NULL,           -- {{ t('docs.dbSchema.syncBackends.password') }}
-  sync_key TEXT NOT NULL,           -- {{ t('docs.dbSchema.syncBackends.syncKey') }}
-  vault_key_salt TEXT NOT NULL,     -- {{ t('docs.dbSchema.syncBackends.vaultKeySalt') }}
-  enabled INTEGER DEFAULT 1,
-  priority INTEGER DEFAULT 0,
-  last_push_hlc_timestamp TEXT,     -- {{ t('docs.dbSchema.syncBackends.lastPush') }}
-  last_pull_server_timestamp TEXT,  -- {{ t('docs.dbSchema.syncBackends.lastPull') }}
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-
-  -- CRDT columns
-  haex_timestamp TEXT NOT NULL,
-  haex_column_hlcs TEXT NOT NULL DEFAULT '{}',
-  haex_tombstone INTEGER NOT NULL DEFAULT 0
-);</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.syncBackendsSchema" />
     </DocsSection>
 
     <!-- CRDT Infrastructure -->
@@ -223,19 +191,7 @@ WHERE id = 'abc-123';
       </Card>
 
       <h3 class="font-semibold mb-4">haex_crdt_dirty_tables</h3>
-      <Card>
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>-- {{ t('docs.dbSchema.dirtyTables.comment') }}
-CREATE TABLE haex_crdt_dirty_tables (
-  table_name TEXT PRIMARY KEY,
-  last_modified TEXT NOT NULL
-);
-
--- {{ t('docs.dbSchema.dirtyTables.example') }}
--- table_name: "haex_passwords"
--- last_modified: "2024-01-03 10:45:30"</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.dirtyTablesSchema" />
     </DocsSection>
 
     <!-- Extension Tables -->
@@ -244,16 +200,7 @@ CREATE TABLE haex_crdt_dirty_tables (
         {{ t('docs.dbSchema.sections.extensionTables.intro') }}
       </p>
 
-      <Card class="mb-6">
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>-- {{ t('docs.dbSchema.sections.extensionTables.naming') }}
-{public_key}__{extension_name}__{table_name}
-
--- {{ t('docs.dbSchema.sections.extensionTables.example') }}
-b4401f13f65e576b__haex-pass__haex_passwords_items
-b4401f13f65e576b__haex-pass__haex_passwords_groups</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.extensionTableNaming" class="mb-6" />
 
       <DocsAlert type="info" :title="t('docs.dbSchema.sections.extensionTables.auto.title')">
         {{ t('docs.dbSchema.sections.extensionTables.auto.description') }}
@@ -267,46 +214,10 @@ b4401f13f65e576b__haex-pass__haex_passwords_groups</code></pre>
       </p>
 
       <h3 class="font-semibold mb-4">vault_keys</h3>
-      <Card class="mb-6">
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>CREATE TABLE vault_keys (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  vault_id TEXT NOT NULL,
-  encrypted_vault_key TEXT NOT NULL,   -- {{ t('docs.dbSchema.vaultKeys.encryptedKey') }}
-  encrypted_vault_name TEXT NOT NULL,  -- {{ t('docs.dbSchema.vaultKeys.encryptedName') }}
-  vault_key_salt TEXT NOT NULL,        -- {{ t('docs.dbSchema.vaultKeys.keySalt') }}
-  vault_name_salt TEXT NOT NULL,       -- {{ t('docs.dbSchema.vaultKeys.nameSalt') }}
-  vault_key_nonce TEXT NOT NULL,
-  vault_name_nonce TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT now(),
-  updated_at TIMESTAMP DEFAULT now(),
-  UNIQUE(user_id, vault_id)
-);</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.vaultKeysSchema" class="mb-6" />
 
       <h3 class="font-semibold mb-4">sync_changes ({{ t('docs.dbSchema.sections.syncServer.partitioned') }})</h3>
-      <Card class="mb-6">
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>CREATE TABLE sync_changes (
-  vault_id TEXT NOT NULL,
-  table_name TEXT NOT NULL,
-  row_pks JSONB NOT NULL,            -- {{ t('docs.dbSchema.syncChanges.rowPks') }}
-  column_name TEXT NOT NULL,
-  new_value BYTEA,                   -- {{ t('docs.dbSchema.syncChanges.newValue') }}
-  hlc_timestamp TEXT NOT NULL,
-  device_id TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT now(),
-  updated_at TIMESTAMP DEFAULT now(),
-  PRIMARY KEY (vault_id, hlc_timestamp, table_name, row_pks, column_name)
-) PARTITION BY LIST (vault_id);
-
--- {{ t('docs.dbSchema.syncChanges.partition') }}
--- sync_changes_abc123_def456_...
--- {{ t('docs.dbSchema.syncChanges.autoCreated') }}</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.syncChangesSchema" class="mb-6" />
 
       <DocsAlert type="warning" :title="t('docs.dbSchema.sections.syncServer.rls.title')">
         {{ t('docs.dbSchema.sections.syncServer.rls.description') }}
@@ -319,29 +230,7 @@ b4401f13f65e576b__haex-pass__haex_passwords_groups</code></pre>
         {{ t('docs.dbSchema.sections.triggers.intro') }}
       </p>
 
-      <Card class="mb-6">
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>-- {{ t('docs.dbSchema.sections.triggers.naming') }}
-z_dirty_{TABLE_NAME}_{insert|update}
-
--- {{ t('docs.dbSchema.sections.triggers.example') }}
-CREATE TRIGGER IF NOT EXISTS "z_dirty_haex_passwords_insert"
-AFTER INSERT ON "haex_passwords"
-FOR EACH ROW BEGIN
-  INSERT OR REPLACE INTO haex_crdt_dirty_tables
-  (table_name, last_modified)
-  VALUES ('haex_passwords', datetime('now'));
-END;
-
-CREATE TRIGGER IF NOT EXISTS "z_dirty_haex_passwords_update"
-AFTER UPDATE ON "haex_passwords"
-FOR EACH ROW BEGIN
-  INSERT OR REPLACE INTO haex_crdt_dirty_tables
-  (table_name, last_modified)
-  VALUES ('haex_passwords', datetime('now'));
-END;</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.triggersExample" class="mb-6" />
 
       <DocsAlert type="info" :title="t('docs.dbSchema.sections.triggers.auto.title')">
         {{ t('docs.dbSchema.sections.triggers.auto.description') }}

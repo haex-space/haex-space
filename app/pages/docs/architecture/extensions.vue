@@ -22,6 +22,16 @@ tableOfContents.value = [
   { id: 'dev-mode', title: t('docs.extArch.toc.devMode'), level: 2 },
   { id: 'sync-events', title: t('docs.extArch.toc.syncEvents'), level: 2 },
 ]
+
+// Content paths for code examples
+const paths = {
+  displayModeManifest: '/architecture/display-mode-manifest',
+  permissionModel: '/architecture/permission-model',
+  permissionEnforcement: '/architecture/permission-enforcement',
+  iframeCommunication: '/architecture/iframe-communication',
+  webviewCommunication: '/architecture/webview-communication',
+  extSyncEventListener: '/architecture/ext-sync-event-listener',
+}
 </script>
 
 <template>
@@ -155,15 +165,7 @@ tableOfContents.value = [
       </Card>
 
       <h3 class="font-semibold mb-4">{{ t('docs.extArch.sections.displayModes.manifest.title') }}</h3>
-      <Card>
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed"><code>// manifest.json
-{
-  "displayMode": "auto",  // "auto" | "iframe" | "webview"
-  // auto: iframe on desktop, webview on mobile
-}</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.displayModeManifest" />
     </DocsSection>
 
     <!-- Lifecycle -->
@@ -222,18 +224,7 @@ tableOfContents.value = [
         {{ t('docs.extArch.sections.permissions.intro') }}
       </p>
 
-      <Card class="mb-6">
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>// Permission Model
-{
-  resourceType: "db" | "fs" | "web" | "shell",
-  action: "read" | "write" | "create" | "delete" | "alterDrop",
-  target: "haex_passwords" | "/home/user/*" | "https://api.example.com/*",
-  constraints: { maxFileSize: "10MB" },  // optional
-  status: "granted" | "denied" | "ask"
-}</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.permissionModel" class="mb-6" />
 
       <h3 class="font-semibold mb-4">{{ t('docs.extArch.sections.permissions.types.title') }}</h3>
       <div class="grid md:grid-cols-2 gap-4 mb-6">
@@ -266,29 +257,7 @@ tableOfContents.value = [
       </div>
 
       <h3 class="font-semibold mb-4">{{ t('docs.extArch.sections.permissions.enforcement.title') }}</h3>
-      <Card>
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>// Rust - Permission Check Flow
-fn execute_sql(extension_id: &str, sql: &str) -> Result<...> {
-    let permission = permission_manager.check_permission(
-        extension_id,
-        ResourceType::Database,
-        Action::ReadWrite,
-        sql_table_name,
-        None
-    )?;
-
-    match permission.status {
-        Status::Granted => execute(sql),
-        Status::Denied => Err(PermissionDenied),
-        Status::Ask => {
-            // Show permission prompt in UI
-            // Cache decision for future
-        }
-    }
-}</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.permissionEnforcement" />
     </DocsSection>
 
     <!-- Communication -->
@@ -298,45 +267,10 @@ fn execute_sql(extension_id: &str, sql: &str) -> Result<...> {
       </p>
 
       <h3 class="font-semibold mb-4">{{ t('docs.extArch.sections.communication.iframe.title') }}</h3>
-      <Card class="mb-6">
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>// Extension → Host (via postMessage)
-window.parent.postMessage({
-  type: 'haextension:invoke',
-  id: 'request-123',
-  method: 'database',
-  action: 'select',
-  args: ['haex_passwords', { where: { id: 'abc' } }]
-}, '*')
-
-// Host → Extension (via postMessage)
-window.frames[extensionId].postMessage({
-  type: 'haextension:response',
-  id: 'request-123',
-  result: [{ id: 'abc', title: 'Gmail' }]
-}, '*')</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.iframeCommunication" class="mb-6" />
 
       <h3 class="font-semibold mb-4">{{ t('docs.extArch.sections.communication.webview.title') }}</h3>
-      <Card>
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>// WebView extensions use Tauri events directly
-import { listen, emit } from '@tauri-apps/api/event'
-
-// Extension → Host
-await emit('haextension:invoke', {
-  method: 'database',
-  action: 'select',
-  args: ['haex_passwords']
-})
-
-// Host → Extension
-await listen('haextension:response', (event) => {
-  console.log(event.payload)
-})</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.webviewCommunication" />
     </DocsSection>
 
     <!-- Dev Mode -->
@@ -375,25 +309,7 @@ await listen('haextension:response', (event) => {
         {{ t('docs.extArch.sections.syncEvents.intro') }}
       </p>
 
-      <Card class="mb-6">
-        <CardContent class="pt-6">
-          <pre class="text-sm leading-relaxed overflow-x-auto"><code>// In your extension (using vault-sdk)
-import { HAEXTENSION_EVENTS } from '@haex-space/vault-sdk'
-
-vault.on(HAEXTENSION_EVENTS.SYNC_TABLES_UPDATED, async (event) => {
-  const tables = event.data?.tables || []
-
-  // Check if our tables are affected
-  const ourTablePrefix = vault.getTableName('')
-  const hasOurTables = tables.some(t => t.startsWith(ourTablePrefix))
-
-  if (hasOurTables) {
-    // Reload data from database
-    await reloadDataAsync()
-  }
-})</code></pre>
-        </CardContent>
-      </Card>
+      <DocsCodeBlock :path="paths.extSyncEventListener" class="mb-6" />
 
       <DocsAlert type="info" :title="t('docs.extArch.sections.syncEvents.automatic.title')">
         {{ t('docs.extArch.sections.syncEvents.automatic.description') }}
