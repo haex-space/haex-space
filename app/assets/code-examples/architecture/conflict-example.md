@@ -1,4 +1,4 @@
-```text
+```
 Device A: UPDATE passwords SET title = 'Gmail' WHERE id = 'abc'
          (timestamp: 2024-01-03T10:00:00-A)
 

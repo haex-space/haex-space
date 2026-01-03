@@ -82,6 +82,8 @@ export default defineNuxtConfig({
         "svelte",
         "html",
         "css",
+        "sql",
+        "rust",
       ],
     },
   },

@@ -1,4 +1,4 @@
-```text
+```sql
 -- Extension Table Naming Convention
 {public_key}__{extension_name}__{table_name}
 
