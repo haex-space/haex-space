@@ -1,0 +1,110 @@
+{
+  "docs": {
+    "extArch": {
+      "title": "Extension System Architecture",
+      "subtitle": "Deep dive into how extensions are sandboxed, communicate with haex-vault, and integrate with the sync system.",
+      "toc": {
+        "overview": "Overview",
+        "displayModes": "Display Modes",
+        "lifecycle": "Lifecycle",
+        "permissions": "Permissions",
+        "communication": "Communication",
+        "devMode": "Development Mode",
+        "syncEvents": "Sync Events"
+      },
+      "sections": {
+        "overview": {
+          "title": "Extension Overview",
+          "intro": "Extensions are sandboxed web applications that run within haex-vault. They can access vault data through the SDK while being isolated from the host system and each other.",
+          "features": {
+            "sandbox": {
+              "title": "Sandboxed Isolation",
+              "description": "Extensions run in isolated environments with explicit permissions for each action."
+            },
+            "sdk": {
+              "title": "Unified SDK",
+              "description": "The haex-vault-sdk provides a consistent API regardless of the display mode."
+            },
+            "database": {
+              "title": "Own Database Tables",
+              "description": "Extensions can create and manage their own tables with automatic CRDT sync."
+            },
+            "sync": {
+              "title": "Automatic Sync",
+              "description": "Extension data is automatically synced across devices using the same CRDT system."
+            }
+          }
+        },
+        "displayModes": {
+          "title": "Display Modes",
+          "intro": "Extensions can run in two modes depending on the platform. The SDK abstracts away the differences.",
+          "table": {
+            "aspect": "Aspect",
+            "platform": "Platform",
+            "isolation": "Isolation",
+            "communication": "Communication",
+            "debugging": "Debugging",
+            "performance": "Performance"
+          },
+          "manifest": {
+            "title": "Configure in Manifest"
+          }
+        },
+        "lifecycle": {
+          "title": "Extension Lifecycle",
+          "intro": "Extensions go through a defined lifecycle from installation to runtime.",
+          "sync": {
+            "title": "Cross-Device Installation",
+            "description": "When you install an extension, the metadata is synced to other devices. However, the extension files must be downloaded separately on each device from the marketplace."
+          }
+        },
+        "permissions": {
+          "title": "Permission System",
+          "intro": "Extensions must declare permissions in their manifest. Users grant or deny these permissions during installation.",
+          "types": {
+            "title": "Permission Types"
+          },
+          "enforcement": {
+            "title": "Permission Enforcement"
+          }
+        },
+        "communication": {
+          "title": "Extension Communication",
+          "intro": "Extensions communicate with the host through different mechanisms depending on the display mode.",
+          "iframe": {
+            "title": "iframe Communication (Desktop)"
+          },
+          "webview": {
+            "title": "WebView Communication (Mobile)"
+          }
+        },
+        "devMode": {
+          "title": "Development Mode",
+          "intro": "During development, extensions can be loaded from a local dev server with hot reload support.",
+          "features": {
+            "hotReload": {
+              "title": "Hot Reload",
+              "description": "Changes to your extension code are reflected immediately without reinstalling."
+            },
+            "localOnly": {
+              "title": "Local-Only Data",
+              "description": "Dev extension tables are NOT synced to other devices. They use CREATE TABLE IF NOT EXISTS for idempotency."
+            }
+          },
+          "important": {
+            "title": "No CRDT Triggers",
+            "description": "Dev extension tables don't get CRDT triggers, so changes are local-only. Production extensions get full sync support."
+          }
+        },
+        "syncEvents": {
+          "title": "Receiving Sync Updates",
+          "intro": "Extensions can listen for sync events to reload their data when changes arrive from other devices.",
+          "automatic": {
+            "title": "Automatic Table Prefix",
+            "description": "Extension tables are automatically prefixed with the extension's public key and name, so you only receive events for your own tables."
+          }
+        }
+      }
+    }
+  }
+}

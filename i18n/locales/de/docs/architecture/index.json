@@ -1,0 +1,104 @@
+{
+  "docs": {
+    "architecture": {
+      "title": "Architektur-Übersicht",
+      "subtitle": "Umfassende technische Dokumentation der haex-vault Architektur, Komponenten und deren Zusammenspiel.",
+      "nav": {
+        "sync": "Sync & CRDT",
+        "extensions": "Extension-System",
+        "database": "Datenbank-Schema"
+      },
+      "toc": {
+        "overview": "Übersicht",
+        "techStack": "Tech Stack",
+        "repositories": "Repositories",
+        "projectStructure": "Projektstruktur",
+        "dataFlow": "Datenfluss",
+        "security": "Sicherheit"
+      },
+      "repos": {
+        "vault": "Hauptanwendung - Desktop/Mobile Client",
+        "syncServer": "Sync-Backend mit Supabase/PostgreSQL",
+        "marketplace": "Extension-Marketplace und Distribution",
+        "sdk": "SDK für Extension-Entwickler",
+        "website": "haex.space Website und Dokumentation"
+      },
+      "techStack": {
+        "frontend": {
+          "title": "Frontend"
+        },
+        "backend": {
+          "title": "Backend (Rust)"
+        },
+        "sync": {
+          "title": "Sync-Server"
+        },
+        "extensions": {
+          "title": "Extensions"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "Systemübersicht",
+          "intro": "haex-vault ist eine Tauri-basierte Desktop- und Mobile-Anwendung, die als sicherer Host für Extensions (haextensions) dient. Die Architektur basiert auf drei Kernprinzipien: Offline-First-Betrieb, Ende-zu-Ende-Verschlüsselung und Erweiterbarkeit.",
+          "description": "Die Anwendung besteht aus einem Vue 3 Frontend, das über Tauris IPC-Layer mit einem Rust-Backend kommuniziert. Alle Benutzerdaten werden in einer verschlüsselten SQLite-Datenbank mit SQLCipher gespeichert, mit CRDT-basierter Synchronisierung in die Cloud."
+        },
+        "techStack": {
+          "title": "Technologie-Stack",
+          "intro": "haex-vault nutzt einen modernen Tech-Stack, optimiert für Sicherheit, Performance und Entwicklererfahrung."
+        },
+        "repositories": {
+          "title": "Repository-Struktur",
+          "intro": "Das haex-Ökosystem besteht aus mehreren Repositories, jedes mit einer spezifischen Verantwortlichkeit."
+        },
+        "projectStructure": {
+          "title": "Projektstruktur",
+          "intro": "Das haex-vault Hauptrepository folgt einer Standard-Tauri-Projektstruktur mit zusätzlicher Organisation für das CRDT-Sync-System und die Extension-Runtime."
+        },
+        "dataFlow": {
+          "title": "Datenfluss",
+          "intro": "Daten fließen durch das System in einem vorhersehbaren Muster, von der Benutzerinteraktion durch die Sync-Schicht.",
+          "diagram": "Benutzeraktion → Vue-Komponente → Pinia Store → Tauri IPC → Rust Backend → SQLite",
+          "steps": {
+            "step1": {
+              "title": "Benutzerinteraktion",
+              "description": "Benutzer interagiert mit Vue-Komponenten. Änderungen werden an Pinia Stores dispatcht."
+            },
+            "step2": {
+              "title": "IPC-Kommunikation",
+              "description": "Stores rufen Tauri-Commands über Composable-Handler auf. Daten werden für IPC serialisiert."
+            },
+            "step3": {
+              "title": "Rust-Verarbeitung",
+              "description": "Rust-Backend validiert, verschlüsselt und speichert Daten in SQLite. CRDT-Trigger werden ausgelöst."
+            },
+            "step4": {
+              "title": "Sync-Orchestrierung",
+              "description": "Sync-Orchestrator erkennt Änderungen und pusht zur Cloud. Andere Geräte erhalten Realtime-Updates."
+            }
+          }
+        },
+        "security": {
+          "title": "Sicherheitsarchitektur",
+          "intro": "Sicherheit ist in jede Schicht der haex-vault Architektur eingebaut.",
+          "encryption": {
+            "title": "Verschlüsselte Speicherung",
+            "description": "Alle Benutzerdaten werden in SQLCipher-verschlüsselten SQLite-Datenbanken gespeichert. Der Verschlüsselungsschlüssel wird aus dem Vault-Passwort des Benutzers mittels PBKDF2 abgeleitet."
+          },
+          "twoPassword": {
+            "title": "Zwei-Passwort-System",
+            "description": "haex-vault verwendet separate Passwörter für lokale Verschlüsselung und Server-Authentifizierung:",
+            "vault": "Vault-Passwort",
+            "vaultDesc": "Verschlüsselt die lokale SQLite-Datenbank und den Sync-Key",
+            "server": "Server-Passwort",
+            "serverDesc": "Authentifiziert beim Sync-Server (Supabase Auth)"
+          },
+          "e2e": {
+            "title": "Ende-zu-Ende-Verschlüsselung",
+            "description": "Alle Daten, die in die Cloud synchronisiert werden, werden mit dem Vault-Key verschlüsselt, bevor sie das Gerät verlassen. Der Sync-Server sieht niemals Klartextdaten."
+          }
+        }
+      }
+    }
+  }
+}

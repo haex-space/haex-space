@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookOpen, Puzzle, Rocket, Settings, Shield, Database, Code, ExternalLink, ChevronRight, Menu, X, ChevronDown, Plug } from 'lucide-vue-next'
+import { BookOpen, Puzzle, Rocket, Settings, Shield, Database, Code, ExternalLink, ChevronRight, Menu, X, ChevronDown, Plug, Layers, RefreshCw, Table } from 'lucide-vue-next'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -60,6 +60,15 @@ const docsNavigation = computed(() => [
     items: [
       { title: t('docs.nav.introduction'), href: '/docs', icon: BookOpen },
       { title: t('docs.nav.quickstart'), href: '/docs/quickstart', icon: Rocket },
+    ]
+  },
+  {
+    title: t('docs.nav.architecture'),
+    items: [
+      { title: t('docs.nav.archOverview'), href: '/docs/architecture', icon: Layers },
+      { title: t('docs.nav.archSync'), href: '/docs/architecture/sync', icon: RefreshCw },
+      { title: t('docs.nav.archExtensions'), href: '/docs/architecture/extensions', icon: Puzzle },
+      { title: t('docs.nav.archDatabase'), href: '/docs/architecture/database', icon: Table },
     ]
   },
   {

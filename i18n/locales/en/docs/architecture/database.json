@@ -1,0 +1,125 @@
+{
+  "docs": {
+    "dbSchema": {
+      "title": "Database Schema",
+      "subtitle": "Complete documentation of the haex-vault database schema, including local SQLite tables and sync server schema.",
+      "toc": {
+        "overview": "Overview",
+        "crdtColumns": "CRDT Columns",
+        "coreTables": "Core Tables",
+        "crdtInfra": "CRDT Infrastructure",
+        "extensionTables": "Extension Tables",
+        "syncServer": "Sync Server Schema",
+        "triggers": "Triggers"
+      },
+      "tables": {
+        "vaultSettings": "Key-value settings storage for the vault",
+        "extensions": "Installed extensions metadata",
+        "permissions": "Extension permissions granted by user",
+        "migrations": "Tracking of applied extension migrations",
+        "workspaces": "Desktop workspace definitions",
+        "desktopItems": "Items placed on workspaces",
+        "devices": "Registered devices for this vault",
+        "syncBackends": "Sync server configurations",
+        "notifications": "In-app notifications"
+      },
+      "crdtTables": {
+        "dirtyTables": "Tables with pending local changes to sync",
+        "migrations": "Applied schema migrations tracking",
+        "conflicts": "Detected sync conflicts (for debugging)"
+      },
+      "syncBackends": {
+        "password": "Encrypted server password",
+        "syncKey": "Base64 encoded sync encryption key",
+        "vaultKeySalt": "PBKDF2 salt for vault key derivation",
+        "lastPush": "HLC timestamp of last successful push",
+        "lastPull": "Server timestamp of last successful pull"
+      },
+      "dirtyTables": {
+        "comment": "Tracks which tables have unsynced changes",
+        "example": "Example: After updating a password"
+      },
+      "vaultKeys": {
+        "encryptedKey": "AES-GCM encrypted with vault password",
+        "encryptedName": "AES-GCM encrypted with server password",
+        "keySalt": "PBKDF2 salt for vault password",
+        "nameSalt": "PBKDF2 salt for server password"
+      },
+      "syncChanges": {
+        "rowPks": "JSON object with primary key values",
+        "newValue": "Encrypted column value (AES-256-GCM)",
+        "partition": "Each vault gets its own partition:",
+        "autoCreated": "Partitions are auto-created via database trigger"
+      },
+      "sections": {
+        "overview": {
+          "title": "Schema Overview",
+          "intro": "haex-vault uses a dual-database architecture: a local encrypted SQLite database on each device, and a PostgreSQL database on the sync server.",
+          "local": {
+            "title": "Local Database",
+            "description": "SQLite with SQLCipher encryption, storing all user data and extension tables with CRDT columns."
+          },
+          "server": {
+            "title": "Sync Server",
+            "description": "PostgreSQL (Supabase) storing encrypted column-level changes and vault key metadata."
+          }
+        },
+        "crdtColumns": {
+          "title": "CRDT Columns",
+          "intro": "Every table that participates in sync has three special CRDT columns added automatically.",
+          "comment": "Added to all synced tables",
+          "timestamp": "Max HLC of all columns (for efficient queries)",
+          "columnHlcs": "JSON with per-column HLC timestamps",
+          "tombstone": "Soft-delete flag (0=active, 1=deleted)",
+          "example": {
+            "title": "Example Query",
+            "comment": "Inspecting CRDT columns"
+          }
+        },
+        "coreTables": {
+          "title": "Core Tables",
+          "intro": "These tables are part of haex-vault core and exist in every vault.",
+          "table": {
+            "name": "Table Name",
+            "description": "Description"
+          }
+        },
+        "crdtInfra": {
+          "title": "CRDT Infrastructure",
+          "intro": "These tables support the sync system but are NOT synced themselves (local-only).",
+          "synced": "Synced",
+          "localOnly": "Local Only"
+        },
+        "extensionTables": {
+          "title": "Extension Tables",
+          "intro": "Extensions can create their own tables. These are automatically namespaced to prevent conflicts.",
+          "naming": "Naming Pattern:",
+          "example": "Examples (haex-pass extension):",
+          "auto": {
+            "title": "Automatic CRDT Setup",
+            "description": "When an extension creates a table via migrations, CRDT columns and triggers are automatically added. Extension tables sync just like core tables."
+          }
+        },
+        "syncServer": {
+          "title": "Sync Server Schema",
+          "intro": "The sync server (haex-sync-server) uses PostgreSQL with Supabase for authentication and realtime.",
+          "partitioned": "Partitioned by vault_id",
+          "rls": {
+            "title": "Row Level Security",
+            "description": "Each partition has RLS policies ensuring users can only access their own vault's data. Policies are automatically created when partitions are created."
+          }
+        },
+        "triggers": {
+          "title": "SQLite Triggers",
+          "intro": "CRDT tables have INSERT and UPDATE triggers that mark the table as dirty when data changes.",
+          "naming": "Naming Convention:",
+          "example": "Example Triggers:",
+          "auto": {
+            "title": "Auto-Generated",
+            "description": "Triggers are automatically created by the Rust backend when tables are set up for CRDT sync. You don't need to create them manually."
+          }
+        }
+      }
+    }
+  }
+}

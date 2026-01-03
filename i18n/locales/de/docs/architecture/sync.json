@@ -1,0 +1,127 @@
+{
+  "docs": {
+    "sync": {
+      "title": "Sync & CRDT-System",
+      "subtitle": "Tiefgehende Dokumentation, wie haex-vault Daten zwischen Geräten mit Column-Level CRDTs und Hybrid Logical Clocks synchronisiert.",
+      "toc": {
+        "overview": "Übersicht",
+        "crdtBasics": "CRDT-Grundlagen",
+        "hlc": "Hybrid Logical Clocks",
+        "columnLevel": "Spalten-Level Sync",
+        "syncFlow": "Sync-Ablauf",
+        "push": "Push-Operation",
+        "pull": "Pull-Operation",
+        "realtime": "Realtime-Updates",
+        "softDelete": "Soft Delete",
+        "events": "Sync-Events"
+      },
+      "sections": {
+        "overview": {
+          "title": "Sync-Übersicht",
+          "intro": "haex-vault nutzt ein CRDT (Conflict-free Replicated Data Type) basiertes Sync-System, das nahtlosen Offline-First-Betrieb mit automatischer Konfliktauflösung ermöglicht.",
+          "features": {
+            "offline": {
+              "title": "Offline-First",
+              "description": "Arbeite ohne Internet. Änderungen werden synchronisiert, wenn du wieder online bist."
+            },
+            "realtime": {
+              "title": "Realtime-Sync",
+              "description": "Supabase Realtime pusht Updates sofort an andere Geräte."
+            },
+            "e2e": {
+              "title": "E2E-Verschlüsselt",
+              "description": "Alle synchronisierten Daten werden verschlüsselt, bevor sie dein Gerät verlassen."
+            }
+          }
+        },
+        "crdtBasics": {
+          "title": "CRDT-Grundlagen",
+          "intro": "CRDTs sind Datenstrukturen, die auf mehrere Computer repliziert, unabhängig modifiziert und ohne Konflikte zusammengeführt werden können.",
+          "lww": {
+            "title": "Last-Write-Wins (LWW)",
+            "description": "haex-vault verwendet LWW-Semantik mit Hybrid Logical Clocks. Die Änderung mit dem höchsten Timestamp gewinnt immer, was deterministische Konfliktauflösung auf allen Geräten sicherstellt."
+          },
+          "columns": {
+            "title": "CRDT-Spalten",
+            "description": "Jede synchronisierte Tabelle hat drei spezielle Spalten, die CRDT-Funktionalität ermöglichen:",
+            "comment": "Alle synchronisierten Tabellen haben diese Spalten",
+            "auto": "automatisch hinzugefügt",
+            "timestamp": "Max HLC über alle Spalten (für effiziente Abfragen)",
+            "columnHlcs": "JSON-Objekt mit HLC pro Spalte",
+            "tombstone": "0 = aktiv, 1 = soft-gelöscht"
+          }
+        },
+        "hlc": {
+          "title": "Hybrid Logical Clocks",
+          "intro": "HLCs kombinieren physische Zeit mit logischen Zählern, um global eindeutige, monoton steigende Timestamps zu erstellen, ohne synchronisierte Uhren zu benötigen.",
+          "format": "HLC-Format: ISO 8601 Timestamp + Geräte-ID Suffix",
+          "benefits": "Hauptvorteile von HLCs:",
+          "benefit1": "Lexikografisch sortierbar - einfacher String-Vergleich möglich",
+          "benefit2": "Global eindeutig - Geräte-ID Suffix verhindert Kollisionen",
+          "benefit3": "Kausal geordnet - respektiert Vorher-Nachher-Beziehungen"
+        },
+        "columnLevel": {
+          "title": "Spalten-Level Sync",
+          "intro": "Anders als Row-Level Sync verfolgt haex-vault Änderungen auf Spaltenebene. Das bedeutet, dass gleichzeitige Bearbeitungen verschiedener Spalten derselben Zeile automatisch zusammengeführt werden, ohne Datenverlust.",
+          "example": {
+            "title": "Konfliktauflösungs-Beispiel",
+            "code": "Gerät A: UPDATE passwords SET title = 'Gmail' WHERE id = 'abc'\n         (Timestamp: 2024-01-03T10:00:00-A)\n\nGerät B: UPDATE passwords SET password = 'newpass' WHERE id = 'abc'\n         (Timestamp: 2024-01-03T10:00:15-B)\n\nErgebnis nach Sync:\n- title = 'Gmail'     (von Gerät A)\n- password = 'newpass' (von Gerät B)\n\nBeide Änderungen bleiben erhalten!"
+          },
+          "important": {
+            "title": "Kein Datenverlust",
+            "description": "Mit Spalten-Level Tracking können zwei Geräte verschiedene Felder desselben Datensatzes gleichzeitig bearbeiten, und beide Änderungen bleiben erhalten."
+          },
+          "hlcJson": {
+            "title": "Spalten-HLC Speicherung"
+          }
+        },
+        "syncFlow": {
+          "title": "Sync-Ablauf",
+          "intro": "Der Sync-Prozess umfasst drei Hauptoperationen: Push, Pull und Realtime-Subscriptions.",
+          "push": {
+            "title": "Push-Operation",
+            "description": "Wenn du lokal Änderungen machst, erkennt der Sync-Orchestrator dirty Tables, scannt nach Änderungen seit dem letzten Push, verschlüsselt jeden Wert und sendet sie in Batches an den Server."
+          },
+          "pull": {
+            "title": "Pull-Operation",
+            "description": "Pull holt Änderungen vom Server seit dem letzten Pull-Timestamp. Jede Änderung wird entschlüsselt und mit lokalen Daten per HLC-Timestamps verglichen. Nur neuere Änderungen werden angewendet."
+          }
+        },
+        "realtime": {
+          "title": "Realtime-Updates",
+          "intro": "haex-vault abonniert Supabase Realtime-Channels, um sofortige Benachrichtigungen zu erhalten, wenn andere Geräte Änderungen pushen. Dies triggert eine debounced Pull-Operation.",
+          "fallback": {
+            "title": "Fallback-Polling",
+            "description": "Wenn Realtime-Subscriptions fehlschlagen, fällt das System auf periodisches Polling zurück (alle 5 Minuten), um sicherzustellen, dass Daten synchronisiert bleiben."
+          }
+        },
+        "softDelete": {
+          "title": "Soft Delete mit Tombstones",
+          "intro": "haex-vault verwendet Soft Deletion anstelle von echten DELETE-Statements. Dies stellt sicher, dass Löschungen ordnungsgemäß über Geräte synchronisiert werden können.",
+          "instead": "Anstatt:",
+          "use": "Verwende:",
+          "query": "Aktive Datensätze abfragen:",
+          "why": "Soft Deletion ermöglicht es, die Löschoperation wie jede andere Spaltenänderung zu behandeln, die ordnungsgemäß durch das CRDT-System synchronisiert wird. Die Zeile bleibt in der Datenbank mit haex_tombstone = 1."
+        },
+        "events": {
+          "title": "Sync-Events",
+          "intro": "Nach einem erfolgreichen Pull werden Events emittiert, um die Anwendung zu benachrichtigen, dass sich Daten geändert haben. Dies triggert UI-Updates und Store-Reloads.",
+          "twoEvents": {
+            "title": "Zwei Event-Typen",
+            "internal": "Für interne Pinia Stores (registriert via registerStoreForTables)",
+            "extensions": "Für native WebView Extensions (via vault-sdk)"
+          },
+          "important": {
+            "title": "Beide Events erforderlich",
+            "description": "Bei der Sync-Implementierung müssen BEIDE Events emittiert werden, damit sowohl interne Stores als auch Extensions Updates erhalten."
+          },
+          "usage": {
+            "title": "Verwendungsbeispiele",
+            "register": "Store für Table-Updates registrieren (im Orchestrator):",
+            "extension": "In Extension lauschen (via vault-sdk):"
+          }
+        }
+      }
+    }
+  }
+}

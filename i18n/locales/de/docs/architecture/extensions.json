@@ -1,0 +1,110 @@
+{
+  "docs": {
+    "extArch": {
+      "title": "Extension-System Architektur",
+      "subtitle": "Tiefgehende Dokumentation, wie Extensions sandboxed werden, mit haex-vault kommunizieren und sich in das Sync-System integrieren.",
+      "toc": {
+        "overview": "Übersicht",
+        "displayModes": "Anzeigemodi",
+        "lifecycle": "Lebenszyklus",
+        "permissions": "Berechtigungen",
+        "communication": "Kommunikation",
+        "devMode": "Entwicklungsmodus",
+        "syncEvents": "Sync-Events"
+      },
+      "sections": {
+        "overview": {
+          "title": "Extension-Übersicht",
+          "intro": "Extensions sind sandboxed Webanwendungen, die innerhalb von haex-vault laufen. Sie können über das SDK auf Vault-Daten zugreifen, während sie vom Host-System und voneinander isoliert sind.",
+          "features": {
+            "sandbox": {
+              "title": "Sandboxed Isolation",
+              "description": "Extensions laufen in isolierten Umgebungen mit expliziten Berechtigungen für jede Aktion."
+            },
+            "sdk": {
+              "title": "Einheitliches SDK",
+              "description": "Das haex-vault-sdk bietet eine konsistente API unabhängig vom Anzeigemodus."
+            },
+            "database": {
+              "title": "Eigene Datenbank-Tabellen",
+              "description": "Extensions können eigene Tabellen erstellen und verwalten mit automatischem CRDT-Sync."
+            },
+            "sync": {
+              "title": "Automatischer Sync",
+              "description": "Extension-Daten werden automatisch zwischen Geräten mit demselben CRDT-System synchronisiert."
+            }
+          }
+        },
+        "displayModes": {
+          "title": "Anzeigemodi",
+          "intro": "Extensions können je nach Plattform in zwei Modi laufen. Das SDK abstrahiert die Unterschiede.",
+          "table": {
+            "aspect": "Aspekt",
+            "platform": "Plattform",
+            "isolation": "Isolation",
+            "communication": "Kommunikation",
+            "debugging": "Debugging",
+            "performance": "Performance"
+          },
+          "manifest": {
+            "title": "Im Manifest konfigurieren"
+          }
+        },
+        "lifecycle": {
+          "title": "Extension-Lebenszyklus",
+          "intro": "Extensions durchlaufen einen definierten Lebenszyklus von Installation bis Runtime.",
+          "sync": {
+            "title": "Geräteübergreifende Installation",
+            "description": "Wenn du eine Extension installierst, werden die Metadaten auf andere Geräte synchronisiert. Die Extension-Dateien müssen jedoch separat auf jedem Gerät vom Marketplace heruntergeladen werden."
+          }
+        },
+        "permissions": {
+          "title": "Berechtigungssystem",
+          "intro": "Extensions müssen Berechtigungen in ihrem Manifest deklarieren. Benutzer erteilen oder verweigern diese Berechtigungen während der Installation.",
+          "types": {
+            "title": "Berechtigungstypen"
+          },
+          "enforcement": {
+            "title": "Berechtigungsdurchsetzung"
+          }
+        },
+        "communication": {
+          "title": "Extension-Kommunikation",
+          "intro": "Extensions kommunizieren mit dem Host durch verschiedene Mechanismen je nach Anzeigemodus.",
+          "iframe": {
+            "title": "iframe-Kommunikation (Desktop)"
+          },
+          "webview": {
+            "title": "WebView-Kommunikation (Mobile)"
+          }
+        },
+        "devMode": {
+          "title": "Entwicklungsmodus",
+          "intro": "Während der Entwicklung können Extensions von einem lokalen Dev-Server mit Hot-Reload-Unterstützung geladen werden.",
+          "features": {
+            "hotReload": {
+              "title": "Hot Reload",
+              "description": "Änderungen an deinem Extension-Code werden sofort reflektiert, ohne Neuinstallation."
+            },
+            "localOnly": {
+              "title": "Nur lokale Daten",
+              "description": "Dev-Extension-Tabellen werden NICHT auf andere Geräte synchronisiert. Sie verwenden CREATE TABLE IF NOT EXISTS für Idempotenz."
+            }
+          },
+          "important": {
+            "title": "Keine CRDT-Trigger",
+            "description": "Dev-Extension-Tabellen bekommen keine CRDT-Trigger, daher sind Änderungen nur lokal. Produktions-Extensions erhalten volle Sync-Unterstützung."
+          }
+        },
+        "syncEvents": {
+          "title": "Sync-Updates empfangen",
+          "intro": "Extensions können auf Sync-Events lauschen, um ihre Daten neu zu laden, wenn Änderungen von anderen Geräten eintreffen.",
+          "automatic": {
+            "title": "Automatisches Tabellen-Präfix",
+            "description": "Extension-Tabellen werden automatisch mit dem Public Key und Namen der Extension präfixiert, sodass du nur Events für deine eigenen Tabellen erhältst."
+          }
+        }
+      }
+    }
+  }
+}

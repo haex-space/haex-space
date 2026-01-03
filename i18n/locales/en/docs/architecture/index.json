@@ -1,0 +1,104 @@
+{
+  "docs": {
+    "architecture": {
+      "title": "Architecture Overview",
+      "subtitle": "Comprehensive technical documentation of the haex-vault architecture, components, and how they work together.",
+      "nav": {
+        "sync": "Sync & CRDT",
+        "extensions": "Extension System",
+        "database": "Database Schema"
+      },
+      "toc": {
+        "overview": "Overview",
+        "techStack": "Tech Stack",
+        "repositories": "Repositories",
+        "projectStructure": "Project Structure",
+        "dataFlow": "Data Flow",
+        "security": "Security"
+      },
+      "repos": {
+        "vault": "Main application - Desktop/Mobile client",
+        "syncServer": "Sync backend with Supabase/PostgreSQL",
+        "marketplace": "Extension marketplace and distribution",
+        "sdk": "SDK for extension developers",
+        "website": "haex.space website and documentation"
+      },
+      "techStack": {
+        "frontend": {
+          "title": "Frontend"
+        },
+        "backend": {
+          "title": "Backend (Rust)"
+        },
+        "sync": {
+          "title": "Sync Server"
+        },
+        "extensions": {
+          "title": "Extensions"
+        }
+      },
+      "sections": {
+        "overview": {
+          "title": "System Overview",
+          "intro": "haex-vault is a Tauri-based desktop and mobile application that serves as a secure host for extensions (haextensions). The architecture is designed around three core principles: offline-first operation, end-to-end encryption, and extensibility.",
+          "description": "The application consists of a Vue 3 frontend communicating with a Rust backend through Tauri's IPC layer. All user data is stored in an encrypted SQLite database using SQLCipher, with CRDT-based synchronization to the cloud."
+        },
+        "techStack": {
+          "title": "Technology Stack",
+          "intro": "haex-vault uses a modern tech stack optimized for security, performance, and developer experience."
+        },
+        "repositories": {
+          "title": "Repository Structure",
+          "intro": "The haex ecosystem consists of multiple repositories, each with a specific responsibility."
+        },
+        "projectStructure": {
+          "title": "Project Structure",
+          "intro": "The main haex-vault repository follows a standard Tauri project structure with additional organization for the CRDT sync system and extension runtime."
+        },
+        "dataFlow": {
+          "title": "Data Flow",
+          "intro": "Data flows through the system in a predictable pattern, from user interaction through the sync layer.",
+          "diagram": "User Action → Vue Component → Pinia Store → Tauri IPC → Rust Backend → SQLite",
+          "steps": {
+            "step1": {
+              "title": "User Interaction",
+              "description": "User interacts with Vue components. Changes are dispatched to Pinia stores."
+            },
+            "step2": {
+              "title": "IPC Communication",
+              "description": "Stores call Tauri commands through composable handlers. Data is serialized for IPC."
+            },
+            "step3": {
+              "title": "Rust Processing",
+              "description": "Rust backend validates, encrypts, and stores data in SQLite. CRDT triggers fire."
+            },
+            "step4": {
+              "title": "Sync Orchestration",
+              "description": "Sync orchestrator detects changes and pushes to cloud. Other devices receive realtime updates."
+            }
+          }
+        },
+        "security": {
+          "title": "Security Architecture",
+          "intro": "Security is built into every layer of the haex-vault architecture.",
+          "encryption": {
+            "title": "Encrypted Storage",
+            "description": "All user data is stored in SQLCipher-encrypted SQLite databases. The encryption key is derived from the user's vault password using PBKDF2."
+          },
+          "twoPassword": {
+            "title": "Two-Password System",
+            "description": "haex-vault uses separate passwords for local encryption and server authentication:",
+            "vault": "Vault Password",
+            "vaultDesc": "Encrypts the local SQLite database and sync key",
+            "server": "Server Password",
+            "serverDesc": "Authenticates with the sync server (Supabase Auth)"
+          },
+          "e2e": {
+            "title": "End-to-End Encryption",
+            "description": "All data synced to the cloud is encrypted with the vault key before leaving the device. The sync server never sees plaintext data."
+          }
+        }
+      }
+    }
+  }
+}

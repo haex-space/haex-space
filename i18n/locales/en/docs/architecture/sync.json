@@ -1,0 +1,127 @@
+{
+  "docs": {
+    "sync": {
+      "title": "Sync & CRDT System",
+      "subtitle": "Deep dive into how haex-vault synchronizes data across devices using Column-Level CRDTs and Hybrid Logical Clocks.",
+      "toc": {
+        "overview": "Overview",
+        "crdtBasics": "CRDT Basics",
+        "hlc": "Hybrid Logical Clocks",
+        "columnLevel": "Column-Level Sync",
+        "syncFlow": "Sync Flow",
+        "push": "Push Operation",
+        "pull": "Pull Operation",
+        "realtime": "Realtime Updates",
+        "softDelete": "Soft Delete",
+        "events": "Sync Events"
+      },
+      "sections": {
+        "overview": {
+          "title": "Sync Overview",
+          "intro": "haex-vault uses a CRDT (Conflict-free Replicated Data Type) based sync system that enables seamless offline-first operation with automatic conflict resolution.",
+          "features": {
+            "offline": {
+              "title": "Offline-First",
+              "description": "Work without internet. Changes sync when you're back online."
+            },
+            "realtime": {
+              "title": "Realtime Sync",
+              "description": "Supabase Realtime pushes updates instantly to other devices."
+            },
+            "e2e": {
+              "title": "E2E Encrypted",
+              "description": "All synced data is encrypted before leaving your device."
+            }
+          }
+        },
+        "crdtBasics": {
+          "title": "CRDT Fundamentals",
+          "intro": "CRDTs are data structures that can be replicated across multiple computers, modified independently, and merged without conflicts.",
+          "lww": {
+            "title": "Last-Write-Wins (LWW)",
+            "description": "haex-vault uses LWW semantics with Hybrid Logical Clocks. The change with the highest timestamp always wins, ensuring deterministic conflict resolution across all devices."
+          },
+          "columns": {
+            "title": "CRDT Columns",
+            "description": "Every synced table has three special columns that enable CRDT functionality:",
+            "comment": "All synced tables have these columns",
+            "auto": "added automatically",
+            "timestamp": "Max HLC across all columns (for efficient queries)",
+            "columnHlcs": "JSON object with HLC per column",
+            "tombstone": "0 = active, 1 = soft-deleted"
+          }
+        },
+        "hlc": {
+          "title": "Hybrid Logical Clocks",
+          "intro": "HLCs combine physical time with logical counters to create globally unique, monotonically increasing timestamps without requiring synchronized clocks.",
+          "format": "HLC Format: ISO 8601 timestamp + Device ID suffix",
+          "benefits": "Key benefits of HLCs:",
+          "benefit1": "Lexicographically sortable - can use simple string comparison",
+          "benefit2": "Globally unique - device ID suffix prevents collisions",
+          "benefit3": "Causally ordered - respects happens-before relationships"
+        },
+        "columnLevel": {
+          "title": "Column-Level Sync",
+          "intro": "Unlike row-level sync, haex-vault tracks changes at the column level. This means concurrent edits to different columns of the same row are automatically merged without data loss.",
+          "example": {
+            "title": "Conflict Resolution Example",
+            "code": "Device A: UPDATE passwords SET title = 'Gmail' WHERE id = 'abc'\n         (timestamp: 2024-01-03T10:00:00-A)\n\nDevice B: UPDATE passwords SET password = 'newpass' WHERE id = 'abc'\n         (timestamp: 2024-01-03T10:00:15-B)\n\nResult after sync:\n- title = 'Gmail'     (from Device A)\n- password = 'newpass' (from Device B)\n\nBoth changes are preserved!"
+          },
+          "important": {
+            "title": "No Data Loss",
+            "description": "With column-level tracking, two devices can edit different fields of the same record simultaneously, and both changes will be preserved."
+          },
+          "hlcJson": {
+            "title": "Column HLC Storage"
+          }
+        },
+        "syncFlow": {
+          "title": "Sync Flow",
+          "intro": "The sync process involves three main operations: push, pull, and realtime subscriptions.",
+          "push": {
+            "title": "Push Operation",
+            "description": "When you make changes locally, the sync orchestrator detects dirty tables, scans for changes since the last push, encrypts each value, and sends them to the server in batches."
+          },
+          "pull": {
+            "title": "Pull Operation",
+            "description": "Pull fetches changes from the server since the last pull timestamp. Each change is decrypted and compared against local data using HLC timestamps. Only newer changes are applied."
+          }
+        },
+        "realtime": {
+          "title": "Realtime Updates",
+          "intro": "haex-vault subscribes to Supabase Realtime channels to receive instant notifications when other devices push changes. This triggers a debounced pull operation.",
+          "fallback": {
+            "title": "Fallback Polling",
+            "description": "If realtime subscriptions fail, the system falls back to periodic polling (every 5 minutes) to ensure data stays synchronized."
+          }
+        },
+        "softDelete": {
+          "title": "Soft Delete with Tombstones",
+          "intro": "haex-vault uses soft deletion instead of actual DELETE statements. This ensures deletes can be properly synchronized across devices.",
+          "instead": "Instead of:",
+          "use": "Use:",
+          "query": "Query active records:",
+          "why": "Soft deletion allows the delete operation to be treated like any other column change, syncing properly through the CRDT system. The row remains in the database with haex_tombstone = 1."
+        },
+        "events": {
+          "title": "Sync Events",
+          "intro": "After a successful pull, events are emitted to notify the application that data has changed. This triggers UI updates and store reloads.",
+          "twoEvents": {
+            "title": "Two Event Types",
+            "internal": "For internal Pinia stores (registered via registerStoreForTables)",
+            "extensions": "For native WebView extensions (via vault-sdk)"
+          },
+          "important": {
+            "title": "Both Events Required",
+            "description": "When implementing sync, ensure BOTH events are emitted so that both internal stores and extensions receive updates."
+          },
+          "usage": {
+            "title": "Usage Examples",
+            "register": "Register store for table updates (in orchestrator):",
+            "extension": "Listen in extension (via vault-sdk):"
+          }
+        }
+      }
+    }
+  }
+}
