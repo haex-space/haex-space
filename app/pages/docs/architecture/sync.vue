@@ -24,6 +24,7 @@ tableOfContents.value = [
   { id: 'realtime', title: t('docs.sync.toc.realtime'), level: 2 },
   { id: 'soft-delete', title: t('docs.sync.toc.softDelete'), level: 2 },
   { id: 'events', title: t('docs.sync.toc.events'), level: 2 },
+  { id: 'event-filtering', title: t('docs.sync.toc.eventFiltering'), level: 3 },
 ]
 
 // Content paths for code examples
@@ -266,6 +267,30 @@ const syncFlowDiagram = `┌─────────────────�
           </div>
         </CardContent>
       </Card>
+
+      <!-- Event Filtering -->
+      <h3 id="event-filtering" class="font-semibold mt-8 mb-4 scroll-mt-20">{{ t('docs.sync.sections.events.filtering.title') }}</h3>
+      <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.events.filtering.intro') }}</p>
+      <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.events.filtering.description') }}</p>
+
+      <ul class="space-y-2 text-muted-foreground mb-6">
+        <li class="flex items-start gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
+          <span>{{ t('docs.sync.sections.events.filtering.wildcard') }}</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
+          <span>{{ t('docs.sync.sections.events.filtering.prefix') }}</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
+          <span>{{ t('docs.sync.sections.events.filtering.exact') }}</span>
+        </li>
+      </ul>
+
+      <DocsAlert type="info" :title="'Privacy'" class="mb-6">
+        {{ t('docs.sync.sections.events.filtering.privacy') }}
+      </DocsAlert>
 
       <h3 class="font-semibold mt-8 mb-4">{{ t('docs.sync.sections.events.usage.title') }}</h3>
       <p class="text-muted-foreground mb-4">{{ t('docs.sync.sections.events.usage.intro') }}</p>

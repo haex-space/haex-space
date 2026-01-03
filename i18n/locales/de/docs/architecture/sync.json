@@ -13,7 +13,8 @@
         "pull": "Pull-Operation",
         "realtime": "Realtime-Updates",
         "softDelete": "Soft Delete",
-        "events": "Sync-Events"
+        "events": "Sync-Events",
+        "eventFiltering": "Event-Filterung"
       },
       "sections": {
         "overview": {
@@ -115,9 +116,18 @@
             "internal": "Für interne Pinia Stores (registriert via registerStoreForTables)",
             "extensions": "Für Extensions via vault-sdk (verwende dies in deiner Extension)"
           },
+          "filtering": {
+            "title": "Berechtigungsbasierte Event-Filterung",
+            "intro": "Aus Sicherheits- und Datenschutzgründen werden Sync-Events basierend auf den Datenbank-Berechtigungen jeder Extension gefiltert. Extensions erhalten nur Benachrichtigungen über Tabellen, auf die sie Zugriff haben.",
+            "description": "Wenn die Synchronisation abgeschlossen ist, prüft haex-vault die DB-Berechtigungen jeder Extension und sendet nur Tabellennamen, die übereinstimmen:",
+            "wildcard": "Wildcard-Berechtigung (*) - sieht alle Tabellen",
+            "prefix": "Präfix-Match (z.B. publickey__extname__*) - sieht Tabellen mit diesem Präfix",
+            "exact": "Exakter Match - sieht nur diese spezifische Tabelle",
+            "privacy": "Dies verhindert, dass Extensions Aktivitäten in Tabellen anderer Extensions beobachten können, und gewährleistet den Datenschutz zwischen Extensions."
+          },
           "usage": {
             "title": "Sync-Events in Extensions verarbeiten",
-            "intro": "Das Event-Payload enthält eine Liste aller Tabellennamen, die aktualisiert wurden. Jede Extension sollte prüfen, ob eine ihrer Tabellen in der Liste ist und entsprechend Daten neu laden."
+            "intro": "Das Event-Payload enthält eine Liste der aktualisierten Tabellennamen (gefiltert auf nur die Tabellen, auf die deine Extension Zugriff hat). Prüfe, ob eine deiner Tabellen in der Liste ist und lade entsprechend Daten neu."
           }
         }
       }

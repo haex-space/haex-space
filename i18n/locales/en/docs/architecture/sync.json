@@ -13,7 +13,8 @@
         "pull": "Pull Operation",
         "realtime": "Realtime Updates",
         "softDelete": "Soft Delete",
-        "events": "Sync Events"
+        "events": "Sync Events",
+        "eventFiltering": "Event Filtering"
       },
       "sections": {
         "overview": {
@@ -115,9 +116,18 @@
             "internal": "For internal Pinia stores (registered via registerStoreForTables)",
             "extensions": "For extensions via vault-sdk (use this in your extension)"
           },
+          "filtering": {
+            "title": "Permission-Based Event Filtering",
+            "intro": "For security and privacy, sync events are filtered based on each extension's database permissions. Extensions only receive notifications about tables they have access to.",
+            "description": "When sync completes, haex-vault checks each extension's DB permissions and only includes table names that match:",
+            "wildcard": "Wildcard permission (*) - sees all tables",
+            "prefix": "Prefix match (e.g., publickey__extname__*) - sees tables with that prefix",
+            "exact": "Exact match - sees only that specific table",
+            "privacy": "This prevents extensions from observing activity in other extensions' tables, ensuring data privacy between extensions."
+          },
           "usage": {
             "title": "Handling Sync Events in Extensions",
-            "intro": "The event payload includes a list of all table names that were updated. Each extension should check if any of its tables are in the list and reload data accordingly."
+            "intro": "The event payload includes a list of table names that were updated (filtered to only tables your extension can access). Check if any of your tables are in the list and reload data accordingly."
           }
         }
       }
