@@ -187,6 +187,10 @@ const syncFlowDiagram = `┌─────────────────�
         {{ t('docs.sync.sections.columnLevel.important.description') }}
       </DocsAlert>
 
+      <DocsAlert type="destructive" :title="t('docs.sync.sections.columnLevel.pkWarning.title')" class="mt-4">
+        {{ t('docs.sync.sections.columnLevel.pkWarning.description') }}
+      </DocsAlert>
+
       <h3 class="font-semibold mt-8 mb-4">{{ t('docs.sync.sections.columnLevel.hlcJson.title') }}</h3>
       <DocsCodeBlock :path="paths.columnHlcJson" />
     </DocsSection>

@@ -72,6 +72,10 @@
             "title": "Kein Datenverlust",
             "description": "Mit Spalten-Level Tracking können zwei Geräte verschiedene Felder desselben Datensatzes gleichzeitig bearbeiten, und beide Änderungen bleiben erhalten."
           },
+          "pkWarning": {
+            "title": "Primary Keys werden NICHT getrackt",
+            "description": "CRDT trackt nur Nicht-Primary-Key-Spalten. Wenn deine Tabelle einen zusammengesetzten Primary Key hat (z.B. PRIMARY KEY (item_id, group_id)) und du eine der PK-Spalten aktualisierst, wird diese Änderung NICHT synchronisiert. Verwende einen einfachen PK und halte änderbare Spalten als normale (Nicht-PK) Spalten."
+          },
           "hlcJson": {
             "title": "Spalten-HLC Speicherung"
           }

@@ -72,6 +72,10 @@
             "title": "No Data Loss",
             "description": "With column-level tracking, two devices can edit different fields of the same record simultaneously, and both changes will be preserved."
           },
+          "pkWarning": {
+            "title": "Primary Keys Are NOT Tracked",
+            "description": "CRDT only tracks non-primary-key columns. If your table has a composite primary key (e.g., PRIMARY KEY (item_id, group_id)) and you update one of the PK columns, that change will NOT sync. Use a single-column PK and keep changeable columns as regular (non-PK) columns."
+          },
           "hlcJson": {
             "title": "Column HLC Storage"
           }
