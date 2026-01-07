@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Download, ExternalLink } from 'lucide-vue-next'
+import { Download, ExternalLink, FlaskConical } from 'lucide-vue-next'
 
 const { t } = useI18n()
 
@@ -17,8 +17,11 @@ interface ReleaseAsset {
 interface Release {
   tag_name: string
   assets: ReleaseAsset[]
+  prerelease: boolean
+  published_at: string
 }
 
+// Fetch latest stable release
 const { data: release, pending } = await useFetch<Release>(
   'https://api.github.com/repos/haex-space/haex-vault/releases/latest',
   {
@@ -29,15 +32,69 @@ const { data: release, pending } = await useFetch<Release>(
         browser_download_url: a.browser_download_url,
         size: a.size,
       })),
+      prerelease: data.prerelease,
+      published_at: data.published_at,
     }),
   },
 )
 
-const version = computed(() => release.value?.tag_name?.replace('v', '') || '...')
+// Fetch latest nightly release
+const nightlyRelease = ref<Release | null>(null)
+const nightlyPending = ref(true)
+
+onMounted(async () => {
+  try {
+    const releases = await $fetch<Release[]>('https://api.github.com/repos/haex-space/haex-vault/releases')
+    const nightly = releases.find((r) => r.tag_name.startsWith('nightly-'))
+    if (nightly) {
+      nightlyRelease.value = {
+        tag_name: nightly.tag_name,
+        assets: nightly.assets.map((a) => ({
+          name: a.name,
+          browser_download_url: a.browser_download_url,
+          size: a.size,
+        })),
+        prerelease: nightly.prerelease,
+        published_at: nightly.published_at,
+      }
+    }
+  } catch (e) {
+    console.error('Failed to fetch nightly releases:', e)
+  } finally {
+    nightlyPending.value = false
+  }
+})
+
+// Active tab (stable or nightly)
+const activeTab = ref<'stable' | 'nightly'>('stable')
+
+// Current release based on active tab
+const currentRelease = computed(() =>
+  activeTab.value === 'stable' ? release.value : nightlyRelease.value
+)
+
+const currentPending = computed(() =>
+  activeTab.value === 'stable' ? pending.value : nightlyPending.value
+)
+
+const version = computed(() => {
+  const tag = currentRelease.value?.tag_name
+  if (!tag) return '...'
+  if (tag.startsWith('nightly-')) {
+    // Format: nightly-20260107-abc1234 -> 20260107-abc1234
+    return tag.replace('nightly-', '')
+  }
+  return tag.replace('v', '')
+})
+
+const nightlyDate = computed(() => {
+  if (!nightlyRelease.value?.published_at) return null
+  return new Date(nightlyRelease.value.published_at).toLocaleDateString()
+})
 
 function getAssetUrl(pattern: string): string {
-  if (!release.value?.assets) return '#'
-  const asset = release.value.assets.find((a) => a.name.includes(pattern))
+  if (!currentRelease.value?.assets) return '#'
+  const asset = currentRelease.value.assets.find((a) => a.name.includes(pattern))
   return asset?.browser_download_url || '#'
 }
 
@@ -50,8 +107,8 @@ function formatSize(bytes: number): string {
 }
 
 function getAssetSize(pattern: string): string {
-  if (!release.value?.assets) return ''
-  const asset = release.value.assets.find((a) => a.name.includes(pattern))
+  if (!currentRelease.value?.assets) return ''
+  const asset = currentRelease.value.assets.find((a) => a.name.includes(pattern))
   return asset ? formatSize(asset.size) : ''
 }
 
@@ -121,11 +178,39 @@ const mobilePlatforms = computed(() => [
         <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
           {{ t('download.title') }}
         </h1>
-        <p class="text-xl text-muted-foreground max-w-2xl mx-auto mb-4">
+        <p class="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
           {{ t('download.subtitle') }}
         </p>
+
+        <!-- Version Tabs -->
+        <div class="flex justify-center gap-2 mb-4">
+          <Button
+            :variant="activeTab === 'stable' ? 'default' : 'outline'"
+            size="sm"
+            @click="activeTab = 'stable'"
+          >
+            {{ t('download.stable') }}
+          </Button>
+          <Button
+            :variant="activeTab === 'nightly' ? 'default' : 'outline'"
+            size="sm"
+            @click="activeTab = 'nightly'"
+            :disabled="!nightlyRelease"
+          >
+            <FlaskConical class="w-4 h-4 mr-1" />
+            {{ t('download.nightly') }}
+          </Button>
+        </div>
+
+        <!-- Version info -->
         <p class="text-sm text-muted-foreground">
-          {{ t('download.currentVersion') }}: <span class="font-mono">v{{ version }}</span>
+          <template v-if="activeTab === 'stable'">
+            {{ t('download.currentVersion') }}: <span class="font-mono">v{{ version }}</span>
+          </template>
+          <template v-else>
+            {{ t('download.nightlyVersion') }}: <span class="font-mono">{{ version }}</span>
+            <span v-if="nightlyDate" class="ml-2 text-xs">({{ nightlyDate }})</span>
+          </template>
           <a
             href="https://github.com/haex-space/haex-vault/releases"
             target="_blank"
@@ -135,6 +220,17 @@ const mobilePlatforms = computed(() => [
             <ExternalLink class="w-3 h-3" />
           </a>
         </p>
+
+        <!-- Nightly warning -->
+        <div v-if="activeTab === 'nightly'" class="mt-4 max-w-xl mx-auto">
+          <div class="flex items-start gap-3 p-4 rounded-lg border border-yellow-500/50 bg-yellow-500/10 text-left">
+            <FlaskConical class="h-5 w-5 text-yellow-500 shrink-0 mt-0.5" />
+            <div>
+              <p class="font-medium text-yellow-600 dark:text-yellow-400">{{ t('download.nightlyWarning.title') }}</p>
+              <p class="text-sm text-muted-foreground mt-1">{{ t('download.nightlyWarning.description') }}</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- Desktop Downloads -->
@@ -149,7 +245,10 @@ const mobilePlatforms = computed(() => [
                 </div>
                 <div>
                   <CardTitle>{{ platform.name }}</CardTitle>
-                  <p class="text-sm text-muted-foreground">v{{ version }}</p>
+                  <p class="text-sm text-muted-foreground">
+                    <template v-if="activeTab === 'stable'">v{{ version }}</template>
+                    <template v-else>{{ version }}</template>
+                  </p>
                 </div>
               </div>
               <CardDescription>
@@ -157,8 +256,13 @@ const mobilePlatforms = computed(() => [
               </CardDescription>
             </CardHeader>
             <CardContent class="space-y-2">
-              <template v-if="pending">
+              <template v-if="currentPending">
                 <div v-for="i in 2" :key="i" class="h-12 rounded-lg bg-muted animate-pulse" />
+              </template>
+              <template v-else-if="!currentRelease">
+                <div class="p-3 rounded-lg border border-dashed border-border text-center">
+                  <span class="text-sm text-muted-foreground">{{ t('download.noRelease') }}</span>
+                </div>
               </template>
               <a
                 v-else
@@ -190,7 +294,10 @@ const mobilePlatforms = computed(() => [
                 </div>
                 <div>
                   <CardTitle>{{ platform.name }}</CardTitle>
-                  <p class="text-sm text-muted-foreground">v{{ version }}</p>
+                  <p class="text-sm text-muted-foreground">
+                    <template v-if="activeTab === 'stable'">v{{ version }}</template>
+                    <template v-else>{{ version }}</template>
+                  </p>
                 </div>
               </div>
               <CardDescription>
@@ -203,8 +310,13 @@ const mobilePlatforms = computed(() => [
                   <span class="text-sm text-muted-foreground">{{ t('download.comingSoon') }}</span>
                 </div>
               </template>
-              <template v-else-if="pending">
+              <template v-else-if="currentPending">
                 <div class="h-12 rounded-lg bg-muted animate-pulse" />
+              </template>
+              <template v-else-if="!currentRelease">
+                <div class="p-3 rounded-lg border border-dashed border-border text-center">
+                  <span class="text-sm text-muted-foreground">{{ t('download.noRelease') }}</span>
+                </div>
               </template>
               <a
                 v-else

@@ -4,7 +4,15 @@
     "title": "Download haex-vault",
     "subtitle": "Secure, encrypted storage for all your data. Available for desktop and mobile.",
     "currentVersion": "Current version",
+    "nightlyVersion": "Nightly build",
     "allReleases": "All releases",
+    "stable": "Stable",
+    "nightly": "Nightly",
+    "noRelease": "No release available",
+    "nightlyWarning": {
+      "title": "Experimental Build",
+      "description": "Nightly builds are automated and may contain bugs or incomplete features. Use at your own risk."
+    },
     "desktop": "Desktop",
     "mobile": "Mobile",
     "comingSoon": "Coming Soon",
