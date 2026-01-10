@@ -22,6 +22,8 @@ ENV SUPABASE_KEY=${SUPABASE_KEY}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Increase Node memory limit for build
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm build
 
 # Production stage
