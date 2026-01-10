@@ -1,0 +1,65 @@
+name: Deploy on Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+
+            APP_DIR="/home/haex-service/apps/haex-space"
+            cd "$APP_DIR"
+
+            echo "Pulling latest changes..."
+            git -C app fetch --tags
+            git -C app checkout ${{ github.ref_name }}
+
+            echo "Building and starting container..."
+            docker compose up -d --build --force-recreate
+
+            echo "Cleaning up old images..."
+            docker image prune -f
+
+            echo "Waiting for container to be healthy..."
+            sleep 10
+
+            echo "Deployment complete: ${{ github.ref_name }}"
+
+      - name: Health Check
+        run: |
+          echo "Running health check..."
+
+          max_attempts=12
+          attempt=1
+
+          while [ $attempt -le $max_attempts ]; do
+            echo "Attempt $attempt/$max_attempts..."
+
+            status_code=$(curl -s -o /dev/null -w "%{http_code}" https://haex.space --max-time 10 || echo "000")
+
+            if [ "$status_code" = "200" ]; then
+              echo "Health check passed! Site is responding with HTTP 200"
+              exit 0
+            fi
+
+            echo "Got HTTP $status_code, waiting 10 seconds..."
+            sleep 10
+            attempt=$((attempt + 1))
+          done
+
+          echo "Health check failed after $max_attempts attempts"
+          exit 1

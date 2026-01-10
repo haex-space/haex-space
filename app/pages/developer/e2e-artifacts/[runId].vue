@@ -8,7 +8,6 @@ import {
   Video,
   Image,
   FileText,
-  ExternalLink,
   Play,
 } from "lucide-vue-next";
 
@@ -44,6 +43,20 @@ const { data, pending, error } = await useFetch<ArtifactDetails>(
 
 const selectedVideo = ref<string | null>(null);
 const selectedScreenshot = ref<string | null>(null);
+
+const isVideoModalOpen = computed({
+  get: () => selectedVideo.value !== null,
+  set: (value: boolean) => {
+    if (!value) selectedVideo.value = null;
+  },
+});
+
+const isScreenshotModalOpen = computed({
+  get: () => selectedScreenshot.value !== null,
+  set: (value: boolean) => {
+    if (!value) selectedScreenshot.value = null;
+  },
+});
 
 function getFileUrl(path: string) {
   return `/api/e2e-artifacts/${runId}/file?path=${encodeURIComponent(path)}`;
@@ -208,7 +221,7 @@ function getVideoName(path: string) {
     </div>
 
     <!-- Video Modal -->
-    <Dialog v-model:open="selectedVideo !== null" @update:open="(v) => !v && (selectedVideo = null)">
+    <Dialog v-model:open="isVideoModalOpen">
       <DialogContent class="max-w-4xl">
         <DialogHeader>
           <DialogTitle>{{ selectedVideo ? getVideoName(selectedVideo) : '' }}</DialogTitle>
@@ -225,7 +238,7 @@ function getVideoName(path: string) {
     </Dialog>
 
     <!-- Screenshot Modal -->
-    <Dialog v-model:open="selectedScreenshot !== null" @update:open="(v) => !v && (selectedScreenshot = null)">
+    <Dialog v-model:open="isScreenshotModalOpen">
       <DialogContent class="max-w-4xl">
         <DialogHeader>
           <DialogTitle>Screenshot</DialogTitle>
