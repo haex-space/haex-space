@@ -16,6 +16,7 @@ tableOfContents.value = [
   { id: 'migrations', title: t('docs.database.toc.migrations'), level: 2 },
   { id: 'queries', title: t('docs.database.toc.queries'), level: 2 },
   { id: 'crdt-sync', title: t('docs.database.toc.crdtSync'), level: 2 },
+  { id: 'no-sync-tables', title: t('docs.database.toc.noSyncTables'), level: 2 },
   { id: 'drizzle-orm', title: t('docs.database.toc.drizzleOrm'), level: 2 },
 ]
 
@@ -161,10 +162,35 @@ await client.execute(\`
 // The following columns are automatically managed by haex-vault:
 // - haex_timestamp: Row-level timestamp for sync ordering
 // - haex_column_hlcs: Per-column hybrid logical clocks
-// - haex_deleted: Soft delete flag for sync
+// - haex_tombstone: Soft delete flag for sync
 
 // Important: Do NOT create columns starting with 'haex_'
 // They will be overwritten by the sync system`,
+
+  noSyncTable: `// Tables ending with _no_sync are NOT synchronized
+// Use this for local-only data like caches or session state
+
+const cacheName = client.getTableName('image_cache_no_sync')
+
+await client.execute(\`
+  CREATE TABLE IF NOT EXISTS \${cacheName} (
+    id TEXT PRIMARY KEY,
+    image_url TEXT NOT NULL,
+    cached_data BLOB,
+    cached_at TEXT DEFAULT CURRENT_TIMESTAMP
+  )
+\`)
+
+// This table will:
+// - NOT get CRDT columns (haex_timestamp, etc.)
+// - NOT be synchronized between devices
+// - Be purely local to this device
+
+// Use cases:
+// - Cache data that can be regenerated
+// - Session/auth tokens
+// - Temporary processing data
+// - Device-specific settings`,
 
   drizzleSetup: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'

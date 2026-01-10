@@ -2,6 +2,7 @@
   "name": "haex-space",
   "dependencies": {
     "@haex-space/marketplace-sdk": "^0.1.6",
+    "@octokit/rest": "^21.1.1",
     "@haex-space/vault-sdk": "2.3.12",
     "@nuxt/scripts": "^0.11.6",
     "@nuxtjs/color-mode": "^4.0.0",
