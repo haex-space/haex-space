@@ -275,7 +275,7 @@ function scrollToSection(id: string) {
               </li>
               <li>
                 <a
-                  href="https://github.com/haex-space/haex-vault/actions/workflows/e2e.yml"
+                  href="https://github.com/haex-space/haex-vault/actions/workflows/release.yml"
                   target="_blank"
                   class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
                 >
