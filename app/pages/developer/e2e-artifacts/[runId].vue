@@ -11,6 +11,10 @@ import {
   Play,
 } from "lucide-vue-next";
 
+definePageMeta({
+  layout: false, // Layout handled by parent developer.vue
+});
+
 interface TestResult {
   name: string;
   status: "passed" | "failed" | "skipped";
