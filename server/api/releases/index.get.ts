@@ -1,10 +1,11 @@
 import { Octokit } from "@octokit/rest";
+import { loadReleaseMetadata } from "../../utils/release-storage";
 
 const REPO_OWNER = "haex-space";
 const REPO_NAME = "haex-vault";
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
 
-interface Release {
+interface ReleaseData {
   tag_name: string;
   assets: Array<{
     name: string;
@@ -16,17 +17,33 @@ interface Release {
 }
 
 interface CachedReleases {
-  data: Release[] | null;
+  data: ReleaseData[] | null;
   timestamp: number;
 }
 
-// Simple in-memory cache
-let cache: CachedReleases | null = null;
+// Simple in-memory cache for GitHub fallback
+let githubCache: CachedReleases | null = null;
 
 export default defineEventHandler(async () => {
+  // First, try to get locally stored releases
+  const localReleases = loadReleaseMetadata();
+  if (localReleases.length > 0) {
+    return localReleases.map((r) => ({
+      tag_name: r.tag_name,
+      assets: r.assets.map((a) => ({
+        name: a.name,
+        browser_download_url: a.downloadUrl,
+        size: a.size,
+      })),
+      prerelease: r.prerelease,
+      published_at: r.published_at,
+    }));
+  }
+
+  // Fallback to GitHub API if no local releases
   // Check cache
-  if (cache && Date.now() - cache.timestamp < CACHE_TTL) {
-    return cache.data;
+  if (githubCache && Date.now() - githubCache.timestamp < CACHE_TTL) {
+    return githubCache.data;
   }
 
   const octokit = new Octokit();
@@ -38,7 +55,7 @@ export default defineEventHandler(async () => {
       per_page: 20,
     });
 
-    const releases = data
+    const releases: ReleaseData[] = data
       .filter((r) => !r.draft)
       .map((r) => ({
         tag_name: r.tag_name,
@@ -48,11 +65,11 @@ export default defineEventHandler(async () => {
           size: a.size,
         })),
         prerelease: r.prerelease,
-        published_at: r.published_at,
+        published_at: r.published_at || new Date().toISOString(),
       }));
 
     // Update cache
-    cache = {
+    githubCache = {
       data: releases,
       timestamp: Date.now(),
     };
@@ -60,9 +77,12 @@ export default defineEventHandler(async () => {
     return releases;
   } catch (error: unknown) {
     // If we have stale cache, return it on error
-    if (cache?.data) {
-      console.warn("[releases] GitHub API error, returning stale cache:", error);
-      return cache.data;
+    if (githubCache?.data) {
+      console.warn(
+        "[releases] GitHub API error, returning stale cache:",
+        error
+      );
+      return githubCache.data;
     }
 
     const message = error instanceof Error ? error.message : "Unknown error";

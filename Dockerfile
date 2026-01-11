@@ -32,6 +32,9 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nuxt
 
+# Create releases storage directory
+RUN mkdir -p /data/releases && chown -R nuxt:nodejs /data/releases
+
 COPY --from=builder /app/.output ./.output
 
 USER nuxt
