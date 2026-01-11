@@ -2,7 +2,7 @@ import { Octokit } from "@octokit/rest";
 import JSZip from "jszip";
 
 const REPO_OWNER = "haex-space";
-const REPO_NAME = "haex-e2e-tests";
+const REPO_NAME = "haex-vault";
 
 export default defineEventHandler(async (event) => {
   const runId = getRouterParam(event, "runId");

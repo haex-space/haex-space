@@ -21,18 +21,18 @@ interface ArtifactRun {
 }
 
 const REPO_OWNER = "haex-space";
-const REPO_NAME = "haex-e2e-tests";
+const REPO_NAME = "haex-vault";
 
 export default defineEventHandler(async () => {
   // No auth needed for public repos (60 requests/hour rate limit)
   const octokit = new Octokit();
 
   try {
-    // Get recent workflow runs
+    // Get recent workflow runs from haex-vault release workflow
     const { data: workflowRuns } = await octokit.actions.listWorkflowRuns({
       owner: REPO_OWNER,
       repo: REPO_NAME,
-      workflow_id: "e2e-tests.yml",
+      workflow_id: "release.yml",
       per_page: 20,
     });
 
