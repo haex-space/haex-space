@@ -28,7 +28,8 @@
       "sdkFilesystem": "Filesystem API",
       "sdkWeb": "Web API",
       "sdkExternalBridge": "External Bridge",
-      "resources": "Ressourcen"
+      "resources": "Ressourcen",
+      "e2eArtifacts": "E2E-Test-Artefakte"
     },
     "toc": {
       "overview": "Übersicht",

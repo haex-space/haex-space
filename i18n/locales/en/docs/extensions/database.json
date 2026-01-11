@@ -10,6 +10,7 @@
         "migrations": "Migrations",
         "queries": "Queries",
         "crdtSync": "CRDT Sync",
+        "noSyncTables": "No-Sync Tables",
         "drizzleOrm": "Drizzle ORM"
       },
       "features": {
@@ -67,6 +68,18 @@
           "hlcsDesc": "Hybrid logical clock state for each column",
           "deletedDesc": "Soft delete flag (0 = active, 1 = deleted)",
           "warning": "Do not create columns starting with 'haex_' in your schema. These are reserved and managed automatically by haex-vault."
+        },
+        "noSyncTables": {
+          "title": "No-Sync Tables",
+          "intro": "Sometimes you need tables that should NOT be synchronized between devices. For example, caches, session tokens, or temporary data. Use the _no_sync suffix to exclude tables from CRDT synchronization.",
+          "tableName": "Table Name",
+          "synced": "Synced",
+          "useCase": "Use Case",
+          "syncedData": "User data synced across devices",
+          "userPrefs": "User preferences synced across devices",
+          "cacheData": "Local cache, regenerated per device",
+          "sessionData": "Auth tokens, device-specific",
+          "tip": "Tables with _no_sync suffix don't get CRDT columns and are completely local to each device. Data in these tables will be lost if the app is uninstalled."
         },
         "drizzleOrm": {
           "title": "Drizzle ORM",

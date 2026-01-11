@@ -10,6 +10,7 @@
         "migrations": "Migrationen",
         "queries": "Abfragen",
         "crdtSync": "CRDT-Sync",
+        "noSyncTables": "Nicht-synchronisierte Tabellen",
         "drizzleOrm": "Drizzle ORM"
       },
       "features": {
@@ -67,6 +68,18 @@
           "hlcsDesc": "Hybrid Logical Clock Status für jede Spalte",
           "deletedDesc": "Soft-Delete-Flag (0 = aktiv, 1 = gelöscht)",
           "warning": "Erstelle keine Spalten, die mit 'haex_' in deinem Schema beginnen. Diese sind reserviert und werden automatisch von haex-vault verwaltet."
+        },
+        "noSyncTables": {
+          "title": "Nicht-synchronisierte Tabellen",
+          "intro": "Manchmal benötigst du Tabellen, die NICHT zwischen Geräten synchronisiert werden sollen. Zum Beispiel Caches, Session-Tokens oder temporäre Daten. Verwende den _no_sync Suffix, um Tabellen von der CRDT-Synchronisation auszuschließen.",
+          "tableName": "Tabellenname",
+          "synced": "Synchronisiert",
+          "useCase": "Verwendungszweck",
+          "syncedData": "Benutzerdaten, synchronisiert über Geräte",
+          "userPrefs": "Benutzereinstellungen, synchronisiert über Geräte",
+          "cacheData": "Lokaler Cache, pro Gerät regeneriert",
+          "sessionData": "Auth-Tokens, gerätespezifisch",
+          "tip": "Tabellen mit _no_sync Suffix erhalten keine CRDT-Spalten und sind vollständig lokal auf jedem Gerät. Daten in diesen Tabellen gehen verloren, wenn die App deinstalliert wird."
         },
         "drizzleOrm": {
           "title": "Drizzle ORM",

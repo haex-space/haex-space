@@ -395,6 +395,51 @@ await db
       </DocsAlert>
     </DocsSection>
 
+    <!-- No-Sync Tables -->
+    <DocsSection id="no-sync-tables" :title="t('docs.database.sections.noSyncTables.title')" :icon="Table">
+      <p class="text-muted-foreground mb-6">{{ t('docs.database.sections.noSyncTables.intro') }}</p>
+
+      <DocsCodeBlock :code="code.noSyncTable" language="typescript" class="mb-6" />
+
+      <div class="overflow-x-auto mb-6">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b">
+              <th class="text-left py-3 px-4 font-medium">{{ t('docs.database.sections.noSyncTables.tableName') }}</th>
+              <th class="text-left py-3 px-4 font-medium">{{ t('docs.database.sections.noSyncTables.synced') }}</th>
+              <th class="text-left py-3 px-4 font-medium">{{ t('docs.database.sections.noSyncTables.useCase') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b">
+              <td class="py-3 px-4"><code class="text-primary">passwords</code></td>
+              <td class="py-3 px-4 text-green-500">✓</td>
+              <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.noSyncTables.syncedData') }}</td>
+            </tr>
+            <tr class="border-b">
+              <td class="py-3 px-4"><code class="text-primary">settings</code></td>
+              <td class="py-3 px-4 text-green-500">✓</td>
+              <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.noSyncTables.userPrefs') }}</td>
+            </tr>
+            <tr class="border-b">
+              <td class="py-3 px-4"><code class="text-primary">cache_no_sync</code></td>
+              <td class="py-3 px-4 text-red-500">✗</td>
+              <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.noSyncTables.cacheData') }}</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-4"><code class="text-primary">session_no_sync</code></td>
+              <td class="py-3 px-4 text-red-500">✗</td>
+              <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.noSyncTables.sessionData') }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <DocsAlert type="info">
+        {{ t('docs.database.sections.noSyncTables.tip') }}
+      </DocsAlert>
+    </DocsSection>
+
     <!-- Drizzle ORM -->
     <DocsSection id="drizzle-orm" :title="t('docs.database.sections.drizzleOrm.title')" :icon="Layers">
       <p class="text-muted-foreground mb-6">{{ t('docs.database.sections.drizzleOrm.intro') }}</p>
