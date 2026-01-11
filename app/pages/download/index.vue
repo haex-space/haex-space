@@ -21,22 +21,8 @@ interface Release {
   published_at: string
 }
 
-// Fetch latest stable release
-const { data: release, pending } = await useFetch<Release>(
-  'https://api.github.com/repos/haex-space/haex-vault/releases/latest',
-  {
-    transform: (data: Release) => ({
-      tag_name: data.tag_name,
-      assets: data.assets.map((a) => ({
-        name: a.name,
-        browser_download_url: a.browser_download_url,
-        size: a.size,
-      })),
-      prerelease: data.prerelease,
-      published_at: data.published_at,
-    }),
-  },
-)
+// Fetch latest stable release (via cached server API)
+const { data: release, pending } = await useFetch<Release>('/api/releases/latest')
 
 // Fetch latest nightly release
 const nightlyRelease = ref<Release | null>(null)
@@ -44,19 +30,11 @@ const nightlyPending = ref(true)
 
 onMounted(async () => {
   try {
-    const releases = await $fetch<Release[]>('https://api.github.com/repos/haex-space/haex-vault/releases')
+    // Fetch all releases via cached server API
+    const releases = await $fetch<Release[]>('/api/releases')
     const nightly = releases.find((r) => r.tag_name.startsWith('nightly-'))
     if (nightly) {
-      nightlyRelease.value = {
-        tag_name: nightly.tag_name,
-        assets: nightly.assets.map((a) => ({
-          name: a.name,
-          browser_download_url: a.browser_download_url,
-          size: a.size,
-        })),
-        prerelease: nightly.prerelease,
-        published_at: nightly.published_at,
-      }
+      nightlyRelease.value = nightly
     }
   } catch (e) {
     console.error('Failed to fetch nightly releases:', e)
