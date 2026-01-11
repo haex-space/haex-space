@@ -187,7 +187,7 @@ const syncFlowDiagram = `┌─────────────────�
         {{ t('docs.sync.sections.columnLevel.important.description') }}
       </DocsAlert>
 
-      <DocsAlert type="destructive" :title="t('docs.sync.sections.columnLevel.pkWarning.title')" class="mt-4">
+      <DocsAlert type="danger" :title="t('docs.sync.sections.columnLevel.pkWarning.title')" class="mt-4">
         {{ t('docs.sync.sections.columnLevel.pkWarning.description') }}
       </DocsAlert>
 

@@ -75,7 +75,7 @@ export default defineEventHandler(async (event) => {
       setHeader(event, "Content-Type", "application/json");
     }
 
-    setHeader(event, "Content-Length", content.length.toString());
+    setHeader(event, "Content-Length", content.length);
     setHeader(event, "Cache-Control", "public, max-age=86400");
 
     return content;
