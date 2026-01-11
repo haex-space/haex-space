@@ -3,10 +3,6 @@ import { ArrowLeft, Loader2, Upload, FileArchive, CheckCircle2, AlertCircle } fr
 import { useMarketplaceStore } from '~/stores/marketplace'
 import { useExtensionUpload } from '~/composables/useExtensionUpload'
 
-definePageMeta({
-  layout: false,
-})
-
 const { t } = useI18n()
 const localePath = useLocalePath()
 const store = useMarketplaceStore()

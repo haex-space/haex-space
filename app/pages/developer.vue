@@ -8,20 +8,13 @@ definePageMeta({
 
 <template>
   <ClientOnly>
-    <NuxtLayout name="default">
-      <template #header-actions>
-        <DeveloperHeaderActions />
-      </template>
-      <NuxtPage />
-    </NuxtLayout>
+    <NuxtPage />
     <template #fallback>
-      <NuxtLayout name="default">
-        <div class="container mx-auto px-4 py-8">
-          <div class="flex items-center justify-center min-h-[50vh]">
-            <Loader2 class="h-8 w-8 animate-spin text-primary" />
-          </div>
+      <div class="container mx-auto px-4 py-8">
+        <div class="flex items-center justify-center min-h-[50vh]">
+          <Loader2 class="h-8 w-8 animate-spin text-primary" />
         </div>
-      </NuxtLayout>
+      </div>
     </template>
   </ClientOnly>
 </template>

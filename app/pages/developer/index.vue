@@ -2,10 +2,6 @@
 import { Package, Download, Star, Plus, BookOpen, Store, AlertCircle, Loader2 } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
 
-definePageMeta({
-  layout: false, // Layout handled by parent developer.vue
-})
-
 const { t } = useI18n()
 const store = useMarketplaceStore()
 

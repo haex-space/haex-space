@@ -2,10 +2,6 @@
 import { Package, Plus, Search, Loader2 } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
 
-definePageMeta({
-  layout: false,
-})
-
 const { t } = useI18n()
 const store = useMarketplaceStore()
 

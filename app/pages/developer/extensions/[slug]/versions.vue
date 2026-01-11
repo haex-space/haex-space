@@ -3,10 +3,6 @@ import { ArrowLeft, Loader2, Package, Download, Calendar, FileArchive, History }
 import { useMarketplaceStore, type PublisherExtension } from '~/stores/marketplace'
 import type { ExtensionVersion } from '@haex-space/marketplace-sdk'
 
-definePageMeta({
-  layout: false,
-})
-
 const { t } = useI18n()
 const route = useRoute()
 const store = useMarketplaceStore()

@@ -5,10 +5,6 @@ import 'md-editor-v3/lib/style.css'
 import { useMarketplaceStore, type PublisherExtension } from '~/stores/marketplace'
 import { useExtensionUpload } from '~/composables/useExtensionUpload'
 
-definePageMeta({
-  layout: false,
-})
-
 const { t, locale } = useI18n()
 const route = useRoute()
 const store = useMarketplaceStore()

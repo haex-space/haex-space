@@ -3,10 +3,6 @@ import { User, Globe, Mail, FileText, Loader2, CheckCircle, AlertCircle, Key, Tr
 import { useClipboard } from '@vueuse/core'
 import { useMarketplaceStore, type ApiKey } from '~/stores/marketplace'
 
-definePageMeta({
-  layout: false, // Layout handled by parent developer.vue
-})
-
 const { t } = useI18n()
 const store = useMarketplaceStore()
 

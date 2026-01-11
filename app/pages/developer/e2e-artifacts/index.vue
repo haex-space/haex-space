@@ -9,9 +9,6 @@ import {
   ChevronRight,
 } from "lucide-vue-next";
 
-definePageMeta({
-  layout: false, // Layout handled by parent developer.vue
-});
 
 interface Artifact {
   id: number;
