@@ -16,8 +16,10 @@
       "step2": "Gib folgende Konfiguration ein:",
       "endpoint": "Endpoint",
       "bucket": "Bucket",
-      "accessKey": "Access Key (deine User-ID)",
-      "secretKey": "Secret Key (dein Session-Token)",
+      "accessKey": "Access Key",
+      "secretKey": "Secret Key",
+      "sessionToken": "Session Token",
+      "sessionTokenHint": "Der Session Token läuft ab, wenn du dich ausloggst. Du musst ihn in haex-vault aktualisieren, wenn du dich erneut anmeldest.",
       "copyConfig": "Konfiguration kopieren",
       "copied": "Kopiert!"
     },

@@ -16,8 +16,10 @@
       "step2": "Enter the following configuration:",
       "endpoint": "Endpoint",
       "bucket": "Bucket",
-      "accessKey": "Access Key (your user ID)",
-      "secretKey": "Secret Key (your session token)",
+      "accessKey": "Access Key",
+      "secretKey": "Secret Key",
+      "sessionToken": "Session Token",
+      "sessionTokenHint": "The session token expires when you log out. You'll need to update it in haex-vault when logging in again.",
       "copyConfig": "Copy Configuration",
       "copied": "Copied!"
     },

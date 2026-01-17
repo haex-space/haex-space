@@ -5,8 +5,9 @@ import { useClipboard } from "@vueuse/core";
 const { t } = useI18n();
 
 const supabase = useSupabaseClient();
+const runtimeConfig = useRuntimeConfig();
 
-const showSecretKey = ref(false);
+const showSessionToken = ref(false);
 const userId = ref<string | null>(null);
 const sessionToken = ref<string | null>(null);
 
@@ -19,18 +20,27 @@ onMounted(async () => {
   sessionToken.value = data.session?.access_token || null;
 });
 
+// Bucket name is per-user: storage-{user_id}
+const bucketName = computed(() =>
+  userId.value ? `storage-${userId.value}` : ""
+);
+
 const config = computed(() => ({
   endpoint: "https://supabase.haex.space/storage/v1/s3",
   region: "auto",
-  bucket: "user-files",
-  accessKeyId: userId.value || "",
-  secretAccessKey: sessionToken.value || "",
+  bucket: bucketName.value,
+  // Session Token Auth: Access Key = Project Reference
+  accessKeyId: "haex",
+  // Session Token Auth: Secret Key = Anon Key
+  secretAccessKey: runtimeConfig.public.supabase.key,
+  // Session Token Auth: User JWT
+  sessionToken: sessionToken.value || "",
 }));
 
-// Masked secret key display
-const maskedSecretKey = computed(() => {
+// Masked session token display
+const maskedSessionToken = computed(() => {
   if (!sessionToken.value) return "••••••••••••••••";
-  if (showSecretKey.value) return sessionToken.value;
+  if (showSessionToken.value) return sessionToken.value;
   return sessionToken.value.slice(0, 10) + "••••••••" + sessionToken.value.slice(-4);
 });
 
@@ -45,6 +55,7 @@ const fullConfigJson = computed(() =>
         bucket: config.value.bucket,
         accessKeyId: config.value.accessKeyId,
         secretAccessKey: config.value.secretAccessKey,
+        sessionToken: config.value.sessionToken,
         pathStyle: true,
       },
     },
@@ -105,7 +116,7 @@ const fullConfigJson = computed(() =>
         <div class="flex justify-between items-center gap-2">
           <span class="text-muted-foreground shrink-0">{{ t("storage.setup.bucket") }}</span>
           <div class="flex items-center gap-1">
-            <code class="font-mono text-xs bg-background px-2 py-1 rounded">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded break-all">
               {{ config.bucket }}
             </code>
             <Button
@@ -123,7 +134,7 @@ const fullConfigJson = computed(() =>
         <div class="flex justify-between items-center gap-2">
           <span class="text-muted-foreground shrink-0">{{ t("storage.setup.accessKey") }}</span>
           <div class="flex items-center gap-1">
-            <code class="font-mono text-xs bg-background px-2 py-1 rounded truncate max-w-[200px]">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded">
               {{ config.accessKeyId }}
             </code>
             <Button
@@ -141,17 +152,9 @@ const fullConfigJson = computed(() =>
         <div class="flex justify-between items-center gap-2">
           <span class="text-muted-foreground shrink-0">{{ t("storage.setup.secretKey") }}</span>
           <div class="flex items-center gap-1">
-            <code class="font-mono text-xs bg-background px-2 py-1 rounded truncate max-w-[160px]">
-              {{ maskedSecretKey }}
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded break-all">
+              {{ config.secretAccessKey }}
             </code>
-            <Button
-              variant="ghost"
-              size="sm"
-              class="h-7 w-7 p-0 shrink-0"
-              @click="showSecretKey = !showSecretKey"
-            >
-              <component :is="showSecretKey ? EyeOff : Eye" class="h-3.5 w-3.5" />
-            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -162,7 +165,38 @@ const fullConfigJson = computed(() =>
             </Button>
           </div>
         </div>
+
+        <!-- Session Token -->
+        <div class="flex justify-between items-center gap-2">
+          <span class="text-muted-foreground shrink-0">{{ t("storage.setup.sessionToken") }}</span>
+          <div class="flex items-center gap-1">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded truncate max-w-[160px]">
+              {{ maskedSessionToken }}
+            </code>
+            <Button
+              variant="ghost"
+              size="sm"
+              class="h-7 w-7 p-0 shrink-0"
+              @click="showSessionToken = !showSessionToken"
+            >
+              <component :is="showSessionToken ? EyeOff : Eye" class="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              class="h-7 w-7 p-0 shrink-0"
+              @click="copy(config.sessionToken)"
+            >
+              <Copy class="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
       </div>
+
+      <!-- Info about session token -->
+      <p class="text-xs text-muted-foreground">
+        {{ t("storage.setup.sessionTokenHint") }}
+      </p>
 
       <Button
         variant="outline"
