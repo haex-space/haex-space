@@ -97,7 +97,7 @@ function getVideoName(path: string) {
 <template>
   <div class="container mx-auto px-4 py-8">
     <!-- Back button -->
-    <NuxtLink to="/developer/e2e-artifacts" class="inline-flex items-center text-muted-foreground hover:text-foreground mb-6">
+    <NuxtLink to="/e2e-artifacts" class="inline-flex items-center text-muted-foreground hover:text-foreground mb-6">
       <ArrowLeft class="h-4 w-4 mr-2" />
       Back to all runs
     </NuxtLink>

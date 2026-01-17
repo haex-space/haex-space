@@ -167,7 +167,7 @@ function getStatusClass(status: string) {
                   </td>
                   <td class="p-4 text-right">
                     <div class="flex items-center justify-end gap-2">
-                      <NuxtLink :to="`/developer/e2e-artifacts/${run.id}`">
+                      <NuxtLink :to="`/e2e-artifacts/${run.id}`">
                         <Button variant="ghost" size="sm">
                           View
                           <ChevronRight class="h-4 w-4 ml-1" />

@@ -275,7 +275,7 @@ function scrollToSection(id: string) {
               </li>
               <li>
                 <NuxtLink
-                  to="/developer/e2e-artifacts"
+                  to="/e2e-artifacts"
                   class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
                 >
                   <TestTube2 class="w-4 h-4" />
