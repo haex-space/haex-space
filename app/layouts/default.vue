@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Languages, Moon, Sun, Monitor, Check, LogOut, User, ChevronDown } from 'lucide-vue-next'
+import { Languages, Moon, Sun, Monitor, Check, LogOut, User, ChevronDown, HardDrive } from 'lucide-vue-next'
 import { useVaultSyncStore } from '~/stores/vaultSync'
 
 const { t, locale, locales, setLocale } = useI18n()
@@ -158,6 +158,13 @@ async function handleLogout() {
                       {{ t('common.dashboard') }}
                     </NuxtLinkLocale>
                   </DropdownMenuItem>
+                  <DropdownMenuItem as-child>
+                    <NuxtLinkLocale to="/storage" class="flex items-center gap-2 cursor-pointer">
+                      <HardDrive class="h-4 w-4" />
+                      {{ t('common.storage') }}
+                    </NuxtLinkLocale>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem @click="handleLogout" class="flex items-center gap-2 cursor-pointer text-destructive">
                     <LogOut class="h-4 w-4" />
                     {{ t('common.logout') }}

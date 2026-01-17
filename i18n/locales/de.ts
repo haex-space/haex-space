@@ -32,6 +32,7 @@ import developerSettings from './de/developer/settings.json'
 import developerExtensions from './de/developer/extensions.json'
 import dashboard from './de/dashboard.json'
 import downloadPass from './de/downloadPass.json'
+import storage from './de/storage.json'
 
 function deepMerge(...objects: Record<string, unknown>[]): Record<string, unknown> {
   const result: Record<string, unknown> = {}
@@ -90,6 +91,7 @@ export default defineI18nLocale(() => {
     developerSettings,
     developerExtensions,
     dashboard,
-    downloadPass
+    downloadPass,
+    storage
   )
 })

@@ -1,0 +1,33 @@
+{
+  "storage": {
+    "title": "Cloud Storage",
+    "description": "Encrypted file storage for your haex-vault. Files are uploaded via haex-files and are end-to-end encrypted.",
+    "quota": {
+      "title": "Storage Usage",
+      "used": "{used} of {total} used",
+      "remaining": "{remaining} remaining",
+      "atLimit": "Storage limit reached",
+      "atLimitHint": "Delete files or upgrade your plan to upload more."
+    },
+    "setup": {
+      "title": "Setup in haex-vault",
+      "description": "Add haex Cloud Storage as an S3 backend in your vault.",
+      "step1": "Open haex-vault and go to Settings → Storage Backends",
+      "step2": "Click 'Add Backend' and select 'S3 Compatible'",
+      "step3": "Enter the following configuration:",
+      "endpoint": "Endpoint",
+      "bucket": "Bucket",
+      "accessKey": "Access Key (your user ID)",
+      "secretKey": "Secret Key (your session token)",
+      "copyConfig": "Copy Configuration",
+      "downloadVault": "Download haex-vault"
+    },
+    "tiers": {
+      "title": "Storage Plans",
+      "free": "Free",
+      "current": "Current Plan",
+      "upgrade": "Upgrade",
+      "comingSoon": "Coming Soon"
+    }
+  }
+}

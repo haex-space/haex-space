@@ -1,0 +1,33 @@
+{
+  "storage": {
+    "title": "Cloud-Speicher",
+    "description": "Verschlüsselter Dateispeicher für deinen haex-vault. Dateien werden über haex-files hochgeladen und sind Ende-zu-Ende verschlüsselt.",
+    "quota": {
+      "title": "Speichernutzung",
+      "used": "{used} von {total} verwendet",
+      "remaining": "{remaining} verfügbar",
+      "atLimit": "Speicherlimit erreicht",
+      "atLimitHint": "Lösche Dateien oder upgrade deinen Plan, um mehr hochzuladen."
+    },
+    "setup": {
+      "title": "Einrichtung in haex-vault",
+      "description": "Füge haex Cloud Storage als S3-Backend in deinem Vault hinzu.",
+      "step1": "Öffne haex-vault und gehe zu Einstellungen → Speicher-Backends",
+      "step2": "Klicke auf 'Backend hinzufügen' und wähle 'S3-kompatibel'",
+      "step3": "Gib folgende Konfiguration ein:",
+      "endpoint": "Endpoint",
+      "bucket": "Bucket",
+      "accessKey": "Access Key (deine User-ID)",
+      "secretKey": "Secret Key (dein Session-Token)",
+      "copyConfig": "Konfiguration kopieren",
+      "downloadVault": "haex-vault herunterladen"
+    },
+    "tiers": {
+      "title": "Speicherpläne",
+      "free": "Kostenlos",
+      "current": "Aktueller Plan",
+      "upgrade": "Upgrade",
+      "comingSoon": "Demnächst verfügbar"
+    }
+  }
+}

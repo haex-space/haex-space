@@ -5,6 +5,7 @@
     "logout": "Logout",
     "account": "Account",
     "dashboard": "Dashboard",
+    "storage": "Cloud Storage",
     "marketplace": "Marketplace",
     "download": "Download",
     "downloadVault": "haex-vault",
