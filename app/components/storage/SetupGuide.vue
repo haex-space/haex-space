@@ -4,17 +4,18 @@ import { useClipboard } from "@vueuse/core";
 
 const { t } = useI18n();
 
-const supabaseUser = useSupabaseUser();
 const supabase = useSupabaseClient();
 
 const showSecretKey = ref(false);
+const userId = ref<string | null>(null);
 const sessionToken = ref<string | null>(null);
 
 const { copy, copied } = useClipboard({ copiedDuring: 1500 });
 
-// Fetch session token on mount
+// Fetch user and session token on mount
 onMounted(async () => {
   const { data } = await supabase.auth.getSession();
+  userId.value = data.session?.user?.id || null;
   sessionToken.value = data.session?.access_token || null;
 });
 
@@ -22,7 +23,7 @@ const config = computed(() => ({
   endpoint: "https://supabase.haex.space/storage/v1/s3",
   region: "auto",
   bucket: "user-files",
-  accessKeyId: supabaseUser.value?.id || "",
+  accessKeyId: userId.value || "",
   secretAccessKey: sessionToken.value || "",
 }));
 
@@ -86,7 +87,7 @@ const fullConfigJson = computed(() =>
         <div class="flex justify-between items-center gap-2">
           <span class="text-muted-foreground shrink-0">{{ t("storage.setup.endpoint") }}</span>
           <div class="flex items-center gap-1">
-            <code class="font-mono text-xs bg-background px-2 py-1 rounded truncate max-w-[240px]">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded break-all">
               {{ config.endpoint }}
             </code>
             <Button
