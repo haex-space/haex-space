@@ -24,8 +24,12 @@ const REPO_OWNER = "haex-space";
 const REPO_NAME = "haex-vault";
 
 export default defineEventHandler(async () => {
-  // No auth needed for public repos (60 requests/hour rate limit)
-  const octokit = new Octokit();
+  const config = useRuntimeConfig();
+
+  // Use auth token for higher rate limits (5000 requests/hour vs 60)
+  const octokit = new Octokit({
+    auth: config.githubToken,
+  });
 
   try {
     // Get recent workflow runs from haex-vault release workflow
