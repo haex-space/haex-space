@@ -152,7 +152,15 @@ async function handleMarketplaceLogin() {
               />
             </div>
             <div class="space-y-2">
-              <Label for="sync-password">{{ t("auth.login.password") }}</Label>
+              <div class="flex items-center justify-between">
+                <Label for="sync-password">{{ t("auth.login.password") }}</Label>
+                <NuxtLinkLocale
+                  to="/auth/forgot-password"
+                  class="text-xs text-muted-foreground hover:text-primary hover:underline"
+                >
+                  {{ t("auth.login.forgotPassword") }}
+                </NuxtLinkLocale>
+              </div>
               <Input
                 id="sync-password"
                 v-model="sync.password"
@@ -206,9 +214,17 @@ async function handleMarketplaceLogin() {
               />
             </div>
             <div class="space-y-2">
-              <Label for="marketplace-password">{{
-                t("auth.login.password")
-              }}</Label>
+              <div class="flex items-center justify-between">
+                <Label for="marketplace-password">{{
+                  t("auth.login.password")
+                }}</Label>
+                <NuxtLinkLocale
+                  to="/auth/forgot-password"
+                  class="text-xs text-muted-foreground hover:text-primary hover:underline"
+                >
+                  {{ t("auth.login.forgotPassword") }}
+                </NuxtLinkLocale>
+              </div>
               <Input
                 id="marketplace-password"
                 v-model="marketplace.password"

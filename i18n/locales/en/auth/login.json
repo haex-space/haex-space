@@ -13,6 +13,7 @@
       "emailPlaceholder": "mail{'@'}example.com",
       "password": "Password",
       "passwordPlaceholder": "Enter your password",
+      "forgotPassword": "Forgot password?",
       "submit": "Sign In",
       "noAccount": "Don't have an account?",
       "signUp": "Sign up",
