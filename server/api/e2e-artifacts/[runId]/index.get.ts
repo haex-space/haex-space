@@ -103,7 +103,7 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const details: ArtifactDetails & { debugFiles?: string[] } = {
+    const details: ArtifactDetails = {
       runId: parseInt(runId),
       artifactId: e2eArtifact.id,
       name: e2eArtifact.name,
@@ -113,8 +113,6 @@ export default defineEventHandler(async (event) => {
       screenshots,
       testResults,
       htmlReportAvailable,
-      // Temporary debug: show all files in the zip
-      debugFiles: files.slice(0, 50),
     };
 
     return details;
