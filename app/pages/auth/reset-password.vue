@@ -6,8 +6,10 @@ definePageMeta({
 });
 
 const { t } = useI18n();
-const localePath = useLocalePath();
 const route = useRoute();
+
+// Get tab from query param (sync or marketplace)
+const tab = computed(() => route.query.tab as string || "sync");
 
 useSeoMeta({
   title: t("auth.resetPassword.title") + " - haex.space",
@@ -20,9 +22,18 @@ const loading = ref(false);
 const error = ref("");
 const success = ref(false);
 const initializing = ref(true);
-const sessionError = ref(false);
+const hasSessionError = ref(false);
 
 const supabase = useSupabaseClient();
+
+// Build links with tab param
+const loginLink = computed(() => {
+  return tab.value === "marketplace" ? "/auth/login?tab=marketplace" : "/auth/login";
+});
+
+const forgotPasswordLink = computed(() => {
+  return tab.value === "marketplace" ? "/auth/forgot-password?tab=marketplace" : "/auth/forgot-password";
+});
 
 // Handle the recovery token from URL hash
 onMounted(async () => {
@@ -38,16 +49,16 @@ onMounted(async () => {
 
     if (accessToken && refreshToken) {
       try {
-        const { error: sessionError } = await supabase.auth.setSession({
+        const { error: setSessionError } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken,
         });
 
-        if (sessionError) {
-          throw sessionError;
+        if (setSessionError) {
+          throw setSessionError;
         }
       } catch (e: any) {
-        sessionError.value = true;
+        hasSessionError.value = true;
         error.value = e.message || t("auth.resetPassword.errors.invalidToken");
       }
     }
@@ -55,8 +66,8 @@ onMounted(async () => {
 
   // Check if we have a valid session
   const { data: { session } } = await supabase.auth.getSession();
-  if (!session && !sessionError.value) {
-    sessionError.value = true;
+  if (!session && !hasSessionError.value) {
+    hasSessionError.value = true;
     error.value = t("auth.resetPassword.errors.noSession");
   }
 
@@ -122,14 +133,14 @@ async function handleSubmit() {
       </div>
 
       <!-- Session Error State -->
-      <div v-else-if="sessionError" class="text-center space-y-4">
+      <div v-else-if="hasSessionError" class="text-center space-y-4">
         <div class="mx-auto w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center">
           <XCircle class="w-6 h-6 text-destructive" />
         </div>
         <p class="text-sm text-muted-foreground">
           {{ error || t("auth.resetPassword.errors.invalidToken") }}
         </p>
-        <NuxtLinkLocale to="/auth/forgot-password">
+        <NuxtLinkLocale :to="forgotPasswordLink">
           <Button variant="outline" class="w-full">
             {{ t("auth.resetPassword.requestNewLink") }}
           </Button>
@@ -144,7 +155,7 @@ async function handleSubmit() {
         <p class="text-sm text-muted-foreground">
           {{ t("auth.resetPassword.successMessage") }}
         </p>
-        <NuxtLinkLocale to="/auth/login">
+        <NuxtLinkLocale :to="loginLink">
           <Button class="w-full">
             {{ t("auth.resetPassword.goToLogin") }}
           </Button>

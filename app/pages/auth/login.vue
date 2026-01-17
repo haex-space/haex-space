@@ -219,7 +219,7 @@ async function handleMarketplaceLogin() {
                   t("auth.login.password")
                 }}</Label>
                 <NuxtLinkLocale
-                  to="/auth/forgot-password"
+                  to="/auth/forgot-password?tab=marketplace"
                   class="text-xs text-muted-foreground hover:text-primary hover:underline"
                 >
                   {{ t("auth.login.forgotPassword") }}

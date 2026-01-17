@@ -8,6 +8,8 @@ import authRegister from './de/auth/register.json'
 import authLogin from './de/auth/login.json'
 import authConfirm from './de/auth/confirm.json'
 import authCheckEmail from './de/auth/check-email.json'
+import authForgotPassword from './de/auth/forgot-password.json'
+import authResetPassword from './de/auth/reset-password.json'
 import docsIndex from './de/docs/index.json'
 import docsQuickstart from './de/docs/quickstart.json'
 import docsExtensionsIndex from './de/docs/extensions/index.json'
@@ -65,6 +67,8 @@ export default defineI18nLocale(() => {
     authLogin,
     authConfirm,
     authCheckEmail,
+    authForgotPassword,
+    authResetPassword,
     docsIndex,
     docsQuickstart,
     docsExtensionsIndex,
