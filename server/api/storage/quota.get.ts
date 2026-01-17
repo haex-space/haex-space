@@ -26,11 +26,14 @@ export default defineEventHandler(async (event): Promise<StorageQuotaResponse> =
     });
 
     if (error) {
+      console.error("RPC error:", error);
       throw createError({
         statusCode: 500,
         message: `Failed to fetch quota: ${error.message}`,
       });
     }
+
+    console.log("RPC result for user", user.id, ":", data);
 
     // Function returns a single row
     const quota = data?.[0];
