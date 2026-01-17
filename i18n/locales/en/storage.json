@@ -12,15 +12,14 @@
     "setup": {
       "title": "Setup in haex-vault",
       "description": "Add haex Cloud Storage as an S3 backend in your vault.",
-      "step1": "Open haex-vault and go to Settings → Storage Backends",
-      "step2": "Click 'Add Backend' and select 'S3 Compatible'",
-      "step3": "Enter the following configuration:",
+      "step1": "Open haex-vault and go to Settings → Storage Backends → Add Backend",
+      "step2": "Enter the following configuration:",
       "endpoint": "Endpoint",
       "bucket": "Bucket",
       "accessKey": "Access Key (your user ID)",
       "secretKey": "Secret Key (your session token)",
       "copyConfig": "Copy Configuration",
-      "downloadVault": "Download haex-vault"
+      "copied": "Copied!"
     },
     "tiers": {
       "title": "Storage Plans",

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { Copy, Check, Eye, EyeOff } from "lucide-vue-next";
+import { useClipboard } from "@vueuse/core";
 
 const { t } = useI18n();
 
 const supabaseUser = useSupabaseUser();
 const supabase = useSupabaseClient();
 
-const copied = ref(false);
 const showSecretKey = ref(false);
 const sessionToken = ref<string | null>(null);
+
+const { copy, copied } = useClipboard({ copiedDuring: 1500 });
 
 // Fetch session token on mount
 onMounted(async () => {
@@ -31,8 +33,8 @@ const maskedSecretKey = computed(() => {
   return sessionToken.value.slice(0, 10) + "••••••••" + sessionToken.value.slice(-4);
 });
 
-async function copyConfig() {
-  const configText = JSON.stringify(
+const fullConfigJson = computed(() =>
+  JSON.stringify(
     {
       type: "s3",
       name: "haex Cloud Storage",
@@ -47,14 +49,8 @@ async function copyConfig() {
     },
     null,
     2
-  );
-
-  await navigator.clipboard.writeText(configText);
-  copied.value = true;
-  setTimeout(() => {
-    copied.value = false;
-  }, 2000);
-}
+  )
+);
 </script>
 
 <template>
@@ -63,7 +59,7 @@ async function copyConfig() {
     <ol class="space-y-4 text-sm">
       <li class="flex gap-3">
         <span
-          class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium flex-shrink-0"
+          class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium shrink-0"
         >
           1
         </span>
@@ -73,7 +69,7 @@ async function copyConfig() {
       </li>
       <li class="flex gap-3">
         <span
-          class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium flex-shrink-0"
+          class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium shrink-0"
         >
           2
         </span>
@@ -81,52 +77,87 @@ async function copyConfig() {
           {{ t("storage.setup.step2") }}
         </span>
       </li>
-      <li class="flex gap-3">
-        <span
-          class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium flex-shrink-0"
-        >
-          3
-        </span>
-        <span class="text-muted-foreground pt-0.5">
-          {{ t("storage.setup.step3") }}
-        </span>
-      </li>
     </ol>
 
     <!-- Configuration details -->
     <div class="rounded-lg border bg-muted/50 p-4 space-y-3">
-      <div class="grid gap-2 text-sm">
-        <div class="flex justify-between items-center">
-          <span class="text-muted-foreground">{{ t("storage.setup.endpoint") }}</span>
-          <code class="font-mono text-xs bg-background px-2 py-0.5 rounded">
-            {{ config.endpoint }}
-          </code>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-muted-foreground">{{ t("storage.setup.bucket") }}</span>
-          <code class="font-mono text-xs bg-background px-2 py-0.5 rounded">
-            {{ config.bucket }}
-          </code>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-muted-foreground">{{ t("storage.setup.accessKey") }}</span>
-          <code class="font-mono text-xs bg-background px-2 py-0.5 rounded truncate max-w-[220px]">
-            {{ config.accessKeyId }}
-          </code>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-muted-foreground">{{ t("storage.setup.secretKey") }}</span>
+      <div class="grid gap-3 text-sm">
+        <!-- Endpoint -->
+        <div class="flex justify-between items-center gap-2">
+          <span class="text-muted-foreground shrink-0">{{ t("storage.setup.endpoint") }}</span>
           <div class="flex items-center gap-1">
-            <code class="font-mono text-xs bg-background px-2 py-0.5 rounded truncate max-w-[180px]">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded truncate max-w-[240px]">
+              {{ config.endpoint }}
+            </code>
+            <Button
+              variant="ghost"
+              size="sm"
+              class="h-7 w-7 p-0 shrink-0"
+              @click="copy(config.endpoint)"
+            >
+              <Copy class="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+
+        <!-- Bucket -->
+        <div class="flex justify-between items-center gap-2">
+          <span class="text-muted-foreground shrink-0">{{ t("storage.setup.bucket") }}</span>
+          <div class="flex items-center gap-1">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded">
+              {{ config.bucket }}
+            </code>
+            <Button
+              variant="ghost"
+              size="sm"
+              class="h-7 w-7 p-0 shrink-0"
+              @click="copy(config.bucket)"
+            >
+              <Copy class="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+
+        <!-- Access Key -->
+        <div class="flex justify-between items-center gap-2">
+          <span class="text-muted-foreground shrink-0">{{ t("storage.setup.accessKey") }}</span>
+          <div class="flex items-center gap-1">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded truncate max-w-[200px]">
+              {{ config.accessKeyId }}
+            </code>
+            <Button
+              variant="ghost"
+              size="sm"
+              class="h-7 w-7 p-0 shrink-0"
+              @click="copy(config.accessKeyId)"
+            >
+              <Copy class="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+
+        <!-- Secret Key -->
+        <div class="flex justify-between items-center gap-2">
+          <span class="text-muted-foreground shrink-0">{{ t("storage.setup.secretKey") }}</span>
+          <div class="flex items-center gap-1">
+            <code class="font-mono text-xs bg-background px-2 py-1 rounded truncate max-w-[160px]">
               {{ maskedSecretKey }}
             </code>
             <Button
               variant="ghost"
               size="sm"
-              class="h-6 w-6 p-0"
+              class="h-7 w-7 p-0 shrink-0"
               @click="showSecretKey = !showSecretKey"
             >
-              <component :is="showSecretKey ? EyeOff : Eye" class="h-3 w-3" />
+              <component :is="showSecretKey ? EyeOff : Eye" class="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              class="h-7 w-7 p-0 shrink-0"
+              @click="copy(config.secretAccessKey)"
+            >
+              <Copy class="h-3.5 w-3.5" />
             </Button>
           </div>
         </div>
@@ -136,10 +167,10 @@ async function copyConfig() {
         variant="outline"
         size="sm"
         class="w-full"
-        @click="copyConfig"
+        @click="copy(fullConfigJson)"
       >
         <component :is="copied ? Check : Copy" class="h-4 w-4 mr-2" />
-        {{ copied ? "Copied!" : t("storage.setup.copyConfig") }}
+        {{ copied ? t("storage.setup.copied") : t("storage.setup.copyConfig") }}
       </Button>
     </div>
   </div>

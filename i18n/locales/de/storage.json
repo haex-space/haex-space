@@ -12,15 +12,14 @@
     "setup": {
       "title": "Einrichtung in haex-vault",
       "description": "Füge haex Cloud Storage als S3-Backend in deinem Vault hinzu.",
-      "step1": "Öffne haex-vault und gehe zu Einstellungen → Speicher-Backends",
-      "step2": "Klicke auf 'Backend hinzufügen' und wähle 'S3-kompatibel'",
-      "step3": "Gib folgende Konfiguration ein:",
+      "step1": "Öffne haex-vault und gehe zu Einstellungen → Speicher-Backends → Backend hinzufügen",
+      "step2": "Gib folgende Konfiguration ein:",
       "endpoint": "Endpoint",
       "bucket": "Bucket",
       "accessKey": "Access Key (deine User-ID)",
       "secretKey": "Secret Key (dein Session-Token)",
       "copyConfig": "Konfiguration kopieren",
-      "downloadVault": "haex-vault herunterladen"
+      "copied": "Kopiert!"
     },
     "tiers": {
       "title": "Speicherpläne",
