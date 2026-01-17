@@ -32,8 +32,12 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // No auth needed for public repos
-  const octokit = new Octokit();
+  const config = useRuntimeConfig();
+
+  // GitHub requires auth for downloading artifacts, even from public repos
+  const octokit = new Octokit({
+    auth: config.githubToken,
+  });
 
   try {
     // Get artifacts for this run

@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    githubToken: process.env.NUXT_GITHUB_TOKEN,
     public: {
       marketplaceSupabaseUrl: process.env.NUXT_PUBLIC_MARKETPLACE_SUPABASE_URL,
       marketplaceSupabaseKey: process.env.NUXT_PUBLIC_MARKETPLACE_SUPABASE_KEY,
