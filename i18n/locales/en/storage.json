@@ -26,8 +26,13 @@
       "title": "Storage Plans",
       "free": "Free",
       "current": "Current Plan",
+      "currentPlan": "Current Plan",
       "upgrade": "Upgrade",
-      "comingSoon": "Coming Soon"
+      "upgradeTo": "Upgrade to",
+      "selectPlan": "Select a plan...",
+      "month": "mo",
+      "comingSoon": "Coming Soon",
+      "comingSoonHint": "Paid plans coming soon. All tiers are currently free during beta."
     }
   }
 }

@@ -68,7 +68,7 @@ onMounted(async () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <StorageTiersList
+          <StorageTierSelector
             :tiers="store.tiers"
             :current-tier-slug="store.quota?.tierSlug"
             :loading="!store.hasFetched"

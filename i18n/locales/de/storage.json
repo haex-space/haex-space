@@ -26,8 +26,13 @@
       "title": "Speicherpläne",
       "free": "Kostenlos",
       "current": "Aktueller Plan",
+      "currentPlan": "Aktueller Plan",
       "upgrade": "Upgrade",
-      "comingSoon": "Demnächst verfügbar"
+      "upgradeTo": "Upgrade auf",
+      "selectPlan": "Plan auswählen...",
+      "month": "Mo",
+      "comingSoon": "Demnächst verfügbar",
+      "comingSoonHint": "Bezahlte Pläne kommen bald. Alle Tiers sind während der Beta kostenlos."
     }
   }
 }

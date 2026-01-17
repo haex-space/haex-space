@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { AlertCircle } from "lucide-vue-next";
 import type { StorageQuota } from "~/stores/storage";
+import { formatBytes } from "~/utils/format";
 
 const props = defineProps<{
   quota: StorageQuota | null;
@@ -8,15 +9,6 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-
-// Format bytes to human-readable
-function formatBytes(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-}
 
 const usagePercent = computed(() =>
   props.quota
