@@ -18,10 +18,10 @@
       "bucket": "Bucket",
       "accessKey": "Access Key",
       "secretKey": "Secret Key",
-      "sessionToken": "Session Token",
-      "sessionTokenHint": "The session token expires when you log out. You'll need to update it in haex-vault when logging in again.",
+      "credentialsHint": "These credentials are permanent and tied to your account. Keep the secret key secure.",
       "copyConfig": "Copy Configuration",
-      "copied": "Copied!"
+      "copied": "Copied!",
+      "error": "Failed to load storage credentials. Please try again."
     },
     "tiers": {
       "title": "Storage Plans",

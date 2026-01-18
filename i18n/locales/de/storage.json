@@ -18,10 +18,10 @@
       "bucket": "Bucket",
       "accessKey": "Access Key",
       "secretKey": "Secret Key",
-      "sessionToken": "Session Token",
-      "sessionTokenHint": "Der Session Token läuft ab, wenn du dich ausloggst. Du musst ihn in haex-vault aktualisieren, wenn du dich erneut anmeldest.",
+      "credentialsHint": "Diese Zugangsdaten sind permanent und mit deinem Account verknüpft. Halte den Secret Key geheim.",
       "copyConfig": "Konfiguration kopieren",
-      "copied": "Kopiert!"
+      "copied": "Kopiert!",
+      "error": "Zugangsdaten konnten nicht geladen werden. Bitte versuche es erneut."
     },
     "tiers": {
       "title": "Speicherpläne",
