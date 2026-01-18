@@ -198,6 +198,16 @@ async function handleRefresh() {
             </Button>
           </div>
         </div>
+
+        <!-- Path Style -->
+        <div class="flex justify-between items-center gap-2">
+          <span class="text-muted-foreground shrink-0">{{
+            t("storage.setup.pathStyle")
+          }}</span>
+          <code class="font-mono text-xs bg-background px-2 py-1 rounded">
+            {{ t("storage.setup.pathStyleValue") }}
+          </code>
+        </div>
       </div>
 
       <!-- Info about credentials -->

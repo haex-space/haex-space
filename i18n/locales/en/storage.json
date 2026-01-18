@@ -18,6 +18,8 @@
       "bucket": "Bucket",
       "accessKey": "Access Key",
       "secretKey": "Secret Key",
+      "pathStyle": "Path Style",
+      "pathStyleValue": "Enabled",
       "credentialsHint": "These credentials are permanent and tied to your account. Keep the secret key secure.",
       "copyConfig": "Copy Configuration",
       "copied": "Copied!",
