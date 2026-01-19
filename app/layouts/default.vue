@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Languages, Moon, Sun, Monitor, Check, LogOut, User, ChevronDown, HardDrive } from 'lucide-vue-next'
+import { Languages, Moon, Sun, Monitor, Check, LogOut, User, ChevronDown, HardDrive, Store } from 'lucide-vue-next'
 import { useVaultSyncStore } from '~/stores/vaultSync'
+import { useMarketplaceStore } from '~/stores/marketplace'
 
 const { t, locale, locales, setLocale } = useI18n()
 const colorMode = useColorMode()
@@ -8,6 +9,19 @@ const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 const localePath = useLocalePath()
 const vaultSyncStore = useVaultSyncStore()
+const marketplaceStore = useMarketplaceStore()
+const route = useRoute()
+
+// Initialize marketplace store on client
+onMounted(() => {
+  marketplaceStore.init()
+})
+
+// Check if we're on a marketplace-related page
+const isMarketplacePage = computed(() => {
+  const path = route.path
+  return path.includes('/marketplace') || path.includes('/developer')
+})
 
 const availableLocales = computed(() =>
   (locales.value as Array<{ code: string; name: string }>).map(l => ({
@@ -31,6 +45,11 @@ async function handleLogout() {
   vaultSyncStore.reset()
   await supabase.auth.signOut()
   await navigateTo(localePath('/'))
+}
+
+async function handleMarketplaceLogout() {
+  await marketplaceStore.signOut()
+  await navigateTo(localePath('/marketplace'))
 }
 </script>
 
@@ -141,7 +160,34 @@ async function handleLogout() {
 
           <!-- Header Actions Slot (default: login/logout button) -->
           <slot name="header-actions">
-            <template v-if="user">
+            <!-- Show Marketplace user on marketplace/developer pages -->
+            <template v-if="isMarketplacePage && marketplaceStore.isAuthenticated">
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                  <Button variant="ghost" size="icon">
+                    <Store class="h-4 w-4" />
+                    <span class="sr-only">{{ t('common.account') }}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>{{ marketplaceStore.user?.email }}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem as-child>
+                    <NuxtLinkLocale to="/developer" class="flex items-center gap-2 cursor-pointer">
+                      <User class="h-4 w-4" />
+                      Developer Dashboard
+                    </NuxtLinkLocale>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem @click="handleMarketplaceLogout" class="flex items-center gap-2 cursor-pointer text-destructive">
+                    <LogOut class="h-4 w-4" />
+                    {{ t('common.logout') }}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </template>
+            <!-- Show Sync user -->
+            <template v-else-if="user">
               <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                   <Button variant="ghost" size="icon">
