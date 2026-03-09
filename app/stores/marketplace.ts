@@ -320,6 +320,14 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     return result.extension
   }
 
+  async function deleteExtension(slug: string) {
+    await fetchApi(`/publish/extensions/${slug}`, {
+      method: 'DELETE'
+    })
+
+    extensions.value = extensions.value.filter((e: PublisherExtension) => e.slug !== slug)
+  }
+
   async function uploadExtensionIcon(slug: string, file: File) {
     const apiUrl = config.public.marketplaceApiUrl as string
     const token = accessToken.value
@@ -507,6 +515,7 @@ export const useMarketplaceStore = defineStore('marketplace', () => {
     fetchMyExtensions,
     createExtension,
     updateExtension,
+    deleteExtension,
     uploadExtensionIcon,
     uploadExtensionBundle,
     uploadMarketplaceImage,

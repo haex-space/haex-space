@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowLeft, Loader2, CheckCircle, AlertCircle, Package, ExternalLink, Upload, FileArchive, Save, History } from 'lucide-vue-next'
+import { ArrowLeft, Loader2, CheckCircle, AlertCircle, Package, ExternalLink, Upload, FileArchive, Save, History, Trash2 } from 'lucide-vue-next'
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { useMarketplaceStore, type PublisherExtension } from '~/stores/marketplace'
@@ -7,6 +7,8 @@ import { useExtensionUpload } from '~/composables/useExtensionUpload'
 
 const { t, locale } = useI18n()
 const route = useRoute()
+const router = useRouter()
+const localePath = useLocalePath()
 const store = useMarketplaceStore()
 const colorMode = useColorMode()
 
@@ -32,6 +34,30 @@ const form = reactive({
 const saving = ref(false)
 const saveSuccess = ref(false)
 const saveError = ref('')
+
+// Delete state
+const deleteDialogOpen = ref(false)
+const deleteConfirmName = ref('')
+const deleting = ref(false)
+const deleteError = ref('')
+
+const canConfirmDelete = computed(() => deleteConfirmName.value === extension.value?.name)
+
+async function handleDelete() {
+  if (!extension.value || !canConfirmDelete.value) return
+
+  deleting.value = true
+  deleteError.value = ''
+
+  try {
+    await store.deleteExtension(extension.value.slug)
+    navigateTo(localePath('/developer/extensions'))
+  } catch (err: unknown) {
+    deleteError.value = err instanceof Error ? err.message : 'Unknown error'
+  } finally {
+    deleting.value = false
+  }
+}
 
 // Version upload using composable with validation
 const {
@@ -479,8 +505,61 @@ async function handleEditorUploadImg(files: File[], callback: (urls: string[]) =
               </div>
             </CardContent>
           </Card>
+
+          <!-- Delete Extension -->
+          <Card class="border-destructive/50">
+            <CardHeader>
+              <CardTitle class="text-base text-destructive">{{ t('developer.extensions.edit.delete') }}</CardTitle>
+              <CardDescription>{{ t('developer.extensions.edit.deleteWarning') }}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button
+                variant="destructive"
+                class="w-full"
+                @click="deleteDialogOpen = true"
+              >
+                <Trash2 class="h-4 w-4 mr-2" />
+                {{ t('developer.extensions.edit.delete') }}
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
+      <!-- Delete Confirmation Dialog -->
+      <AlertDialog v-model:open="deleteDialogOpen">
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{{ t('developer.extensions.edit.delete') }}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {{ t('developer.extensions.edit.deleteWarning') }}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div class="space-y-2 py-2">
+            <Label for="delete-confirm">{{ t('developer.extensions.edit.deleteTypeName', { name: extension.name }) }}</Label>
+            <Input
+              id="delete-confirm"
+              v-model="deleteConfirmName"
+              :placeholder="extension.name"
+              autocomplete="off"
+            />
+            <div v-if="deleteError" class="flex items-center gap-2 text-sm text-destructive">
+              <AlertCircle class="h-4 w-4 shrink-0" />
+              <span>{{ deleteError }}</span>
+            </div>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel :disabled="deleting" @click="deleteConfirmName = ''">{{ t('common.cancel') }}</AlertDialogCancel>
+            <Button
+              variant="destructive"
+              :disabled="!canConfirmDelete || deleting"
+              @click="handleDelete"
+            >
+              <Loader2 v-if="deleting" class="h-4 w-4 mr-2 animate-spin" />
+              {{ deleting ? t('developer.extensions.edit.deleting') : t('developer.extensions.edit.deleteConfirm') }}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   </div>
 </template>
