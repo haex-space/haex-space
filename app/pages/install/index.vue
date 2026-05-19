@@ -4,8 +4,8 @@ import { ExternalLink, Download } from 'lucide-vue-next'
 const { t } = useI18n()
 
 useSeoMeta({
-  title: 'Install haex-vault - haex.space',
-  description: 'Step-by-step install guides for haex-vault on macOS, Linux, Windows, Android and iOS.',
+  title: () => t('install.seo.title'),
+  description: () => t('install.seo.description'),
 })
 
 const brewCmd = `brew tap haex-space/vault
