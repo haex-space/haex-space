@@ -16,6 +16,30 @@
     "desktop": "Desktop",
     "mobile": "Mobil",
     "comingSoon": "Demnächst verfügbar",
+    "installMethods": {
+      "title": "Über Paketmanager installieren",
+      "subtitle": "Lieber per Kommandozeile? Füge unser Repository deinem Paketmanager hinzu und bekomme Updates automatisch über deinen gewohnten Upgrade-Befehl.",
+      "brew": {
+        "title": "macOS — Homebrew",
+        "description": "Unseren Homebrew-Cask hinzufügen. Läuft auf Apple Silicon und Intel.",
+        "updateNote": "Updates:"
+      },
+      "apt": {
+        "title": "Debian / Ubuntu — APT",
+        "description": "apt.haex.space Repository einbinden. Unterstützt amd64 und arm64.",
+        "updateNote": "Updates kommen automatisch mit:"
+      },
+      "dnf": {
+        "title": "Fedora / RHEL / Rocky / Alma — DNF/YUM",
+        "description": "rpm.haex.space Repository einbinden. Unterstützt x86_64 und aarch64.",
+        "updateNote": "Updates kommen automatisch mit:"
+      },
+      "zypper": {
+        "title": "openSUSE — Zypper",
+        "description": "rpm.haex.space Repository in Zypper einbinden.",
+        "updateNote": "Updates kommen automatisch mit:"
+      }
+    },
     "whyVault": "Warum haex-vault?",
     "features": {
       "encryption": {
