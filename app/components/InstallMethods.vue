@@ -52,7 +52,7 @@ brew install --cask haex-vault`
     </div>
 
     <Tabs default-value="brew" class="max-w-3xl mx-auto">
-      <TabsList class="grid w-full grid-cols-4">
+      <TabsList class="grid w-full grid-cols-2 gap-2 sm:grid-cols-4">
         <TabsTrigger value="brew">
           <Apple class="w-4 h-4 mr-2" />
           Homebrew
