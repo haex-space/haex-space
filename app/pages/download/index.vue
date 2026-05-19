@@ -260,6 +260,9 @@ const mobilePlatforms = computed(() => [
         </div>
       </section>
 
+      <!-- Install via Package Manager (apt / rpm / homebrew) -->
+      <InstallMethods />
+
       <!-- Mobile Downloads -->
       <section class="container mx-auto px-4 pb-16">
         <h2 class="text-2xl font-bold mb-6">{{ t('download.mobile') }}</h2>
