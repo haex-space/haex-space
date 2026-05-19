@@ -31,7 +31,10 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: latest
+          # Pinned: pnpm 11 ignores pnpm.onlyBuiltDependencies in package.json
+          # and exits 1 with ERR_PNPM_IGNORED_BUILDS. Match the version pinned
+          # via packageManager so CI behaves like local dev.
+          version: 10.28.2
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
