@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Download, Store, Shield, RefreshCw, Puzzle, Layers, WifiOff, Lock, ArrowRight, GitMerge, HardDrive, Server } from 'lucide-vue-next'
+import { Rocket, Store, Shield, RefreshCw, Puzzle, Layers, WifiOff, Lock, ArrowRight, GitMerge, HardDrive, Server } from 'lucide-vue-next'
 
 const { t } = useI18n()
 
@@ -35,10 +35,10 @@ const features = computed(() => [
         {{ t('home.subtitle') }}
       </p>
       <div class="flex gap-4 justify-center">
-        <NuxtLinkLocale to="/download">
+        <NuxtLinkLocale to="/install">
           <Button size="lg" class="gap-2">
-            <Download class="w-5 h-5" />
-            {{ t('home.cta.download') }}
+            <Rocket class="w-5 h-5" />
+            {{ t('home.cta.install') }}
           </Button>
         </NuxtLinkLocale>
         <NuxtLinkLocale to="/marketplace">

@@ -1,0 +1,68 @@
+{
+  "install": {
+    "badge": "Plattformübergreifend",
+    "title": "haex-vault installieren",
+    "subtitle": "Wähle deine Plattform und folge den Schritten. Updates kommen automatisch über deinen Paketmanager.",
+    "recommended": "Empfohlen",
+    "comingSoon": "Demnächst",
+    "rawBinariesNote": "Du suchst direkte Binary-Downloads (AppImage, MSI, rohes .deb/.rpm)?",
+    "rawBinariesLink": "Alle Downloads anzeigen",
+    "mobile": {
+      "tab": "Mobil",
+      "android": {
+        "title": "Android",
+        "description": "Lade das universelle APK aus dem aktuellen GitHub Release. Play-Store-Distribution ist auf der Roadmap.",
+        "button": "APK herunterladen"
+      },
+      "ios": {
+        "title": "iOS",
+        "description": "App-Store-Distribution ist in Vorbereitung."
+      }
+    },
+    "macos": {
+      "brew": {
+        "title": "Homebrew",
+        "description": "Unseren Homebrew-Cask hinzufügen. Läuft auf Apple Silicon und Intel — Homebrew wählt automatisch die passende Variante.",
+        "updateNote": "Updates:"
+      },
+      "dmg": {
+        "title": "DMG manuell herunterladen",
+        "description": "Lieber ohne Homebrew? Die signierte DMG (Apple Silicon oder Intel) gibt's direkt aus dem GitHub Release.",
+        "button": "Zur Download-Seite"
+      }
+    },
+    "linux": {
+      "apt": {
+        "title": "Debian / Ubuntu — APT",
+        "description": "apt.haex.space Repository einbinden. Aktuell nur amd64 (arm64 folgt in Kürze).",
+        "updateNote": "Updates kommen automatisch mit:"
+      },
+      "dnf": {
+        "title": "Fedora / RHEL / Rocky / Alma — DNF / YUM",
+        "description": "rpm.haex.space Repository einbinden. Aktuell nur x86_64 (aarch64 folgt in Kürze).",
+        "updateNote": "Updates kommen automatisch mit:"
+      },
+      "zypper": {
+        "title": "openSUSE — Zypper",
+        "description": "rpm.haex.space Repository in Zypper einbinden.",
+        "updateNote": "Updates kommen automatisch mit:"
+      },
+      "appimage": {
+        "title": "AppImage (ohne Installation)",
+        "description": "Eigenständiges Binary. Herunterladen, ausführbar machen, starten. Updates manuell (neu herunterladen).",
+        "button": "AppImage herunterladen"
+      }
+    },
+    "windows": {
+      "installer": {
+        "title": "Windows Installer (.exe / .msi)",
+        "description": "Installer herunterladen und ausführen. MSI- und EXE-Variante sind beide verfügbar.",
+        "button": "Zur Download-Seite"
+      },
+      "winget": {
+        "title": "winget",
+        "description": "Native Windows-Paketmanager-Integration ist geplant."
+      }
+    }
+  }
+}

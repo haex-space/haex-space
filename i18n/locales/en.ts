@@ -1,6 +1,7 @@
 import common from './en/common.json'
 import index from './en/index.json'
 import download from './en/download.json'
+import install from './en/install.json'
 import privacy from './en/privacy.json'
 import terms from './en/terms.json'
 import marketplace from './en/marketplace/index.json'
@@ -61,6 +62,7 @@ export default defineI18nLocale(() => {
     common,
     index,
     download,
+    install,
     privacy,
     terms,
     marketplace,

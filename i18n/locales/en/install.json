@@ -1,0 +1,68 @@
+{
+  "install": {
+    "badge": "Cross-Platform",
+    "title": "Install haex-vault",
+    "subtitle": "Pick your platform and follow the steps. Updates flow through your system's package manager automatically.",
+    "recommended": "Recommended",
+    "comingSoon": "Coming Soon",
+    "rawBinariesNote": "Looking for direct binary downloads (AppImage, MSI, raw .deb/.rpm)?",
+    "rawBinariesLink": "See all downloads",
+    "mobile": {
+      "tab": "Mobile",
+      "android": {
+        "title": "Android",
+        "description": "Sideload the universal APK from the latest GitHub release. Google Play distribution is on the roadmap.",
+        "button": "Download APK"
+      },
+      "ios": {
+        "title": "iOS",
+        "description": "App Store distribution is in preparation."
+      }
+    },
+    "macos": {
+      "brew": {
+        "title": "Homebrew",
+        "description": "Tap our Homebrew cask. Works on both Apple Silicon and Intel — Homebrew picks the right binary automatically.",
+        "updateNote": "Updates:"
+      },
+      "dmg": {
+        "title": "Download the DMG manually",
+        "description": "Prefer to skip Homebrew? Grab the signed DMG (Apple Silicon or Intel) directly from the GitHub release.",
+        "button": "Go to downloads"
+      }
+    },
+    "linux": {
+      "apt": {
+        "title": "Debian / Ubuntu — APT",
+        "description": "Add the apt.haex.space repository. Currently amd64 only (arm64 coming soon).",
+        "updateNote": "Updates arrive automatically with:"
+      },
+      "dnf": {
+        "title": "Fedora / RHEL / Rocky / Alma — DNF / YUM",
+        "description": "Add the rpm.haex.space repository. Currently x86_64 only (aarch64 coming soon).",
+        "updateNote": "Updates arrive automatically with:"
+      },
+      "zypper": {
+        "title": "openSUSE — Zypper",
+        "description": "Add the rpm.haex.space repository to zypper.",
+        "updateNote": "Updates arrive automatically with:"
+      },
+      "appimage": {
+        "title": "AppImage (no install)",
+        "description": "Self-contained binary. Download, mark executable, run. Updates are manual (re-download).",
+        "button": "Download AppImage"
+      }
+    },
+    "windows": {
+      "installer": {
+        "title": "Windows Installer (.exe / .msi)",
+        "description": "Download and run the installer. Both the MSI and EXE flavours are available on the downloads page.",
+        "button": "Go to downloads"
+      },
+      "winget": {
+        "title": "winget",
+        "description": "Native Windows package manager support is planned."
+      }
+    }
+  }
+}
