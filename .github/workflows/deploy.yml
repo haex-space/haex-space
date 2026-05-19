@@ -9,6 +9,12 @@ on:
   pull_request:
     branches:
       - main
+  # Allows release-please.yml to re-dispatch this workflow against the new
+  # v* tag after a Release-PR merge. GITHUB_TOKEN cannot chain `push: tags`
+  # events to other workflows (anti-recursion), but workflow_dispatch is
+  # exempt — github.ref becomes refs/tags/vX.Y.Z when called with --ref
+  # vX.Y.Z, so the build-and-push gate below still passes.
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
