@@ -1,5 +1,9 @@
 {
   "install": {
+    "seo": {
+      "title": "haex-vault installieren - haex.space",
+      "description": "Schritt-für-Schritt-Anleitungen zum Installieren von haex-vault auf macOS, Linux, Windows, Android und iOS."
+    },
     "badge": "Plattformübergreifend",
     "title": "haex-vault installieren",
     "subtitle": "Wähle deine Plattform und folge den Schritten. Updates kommen automatisch über deinen Paketmanager.",
