@@ -26,12 +26,12 @@
       },
       "apt": {
         "title": "Debian / Ubuntu — APT",
-        "description": "apt.haex.space Repository einbinden. Aktuell nur amd64 (arm64 folgt in Kürze).",
+        "description": "apt.haex.space Repository einbinden. Unterstützt amd64 und arm64.",
         "updateNote": "Updates kommen automatisch mit:"
       },
       "dnf": {
         "title": "Fedora / RHEL / Rocky / Alma — DNF/YUM",
-        "description": "rpm.haex.space Repository einbinden. Aktuell nur x86_64 (aarch64 folgt in Kürze).",
+        "description": "rpm.haex.space Repository einbinden. Unterstützt x86_64 und aarch64.",
         "updateNote": "Updates kommen automatisch mit:"
       },
       "zypper": {
