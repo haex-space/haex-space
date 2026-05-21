@@ -248,7 +248,7 @@ useSeoMeta({
               <!-- Login prompt for non-logged-in users -->
               <div v-if="!store.user" class="text-center py-4 text-muted-foreground">
                 <p>{{ t('marketplace.reviews.loginToReview') }}</p>
-                <NuxtLinkLocale to="/auth/login?tab=marketplace" class="text-primary hover:underline">
+                <NuxtLinkLocale to="/auth/login" class="text-primary hover:underline">
                   {{ t('marketplace.reviews.loginLink') }}
                 </NuxtLinkLocale>
               </div>

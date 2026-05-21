@@ -8,11 +8,7 @@ definePageMeta({
 
 const { t } = useI18n()
 const localePath = useLocalePath()
-const route = useRoute()
 const marketplaceStore = useMarketplaceStore()
-
-// Determine account type from query param
-const isMarketplace = computed(() => route.query.type === 'marketplace')
 
 useSeoMeta({
   title: 'Email Verification - haex.space',
@@ -23,63 +19,43 @@ const status = ref<'loading' | 'success' | 'error'>('loading')
 const errorMessage = ref('')
 
 onMounted(async () => {
-  if (isMarketplace.value) {
-    // Marketplace account verification
-    await marketplaceStore.init()
+  await marketplaceStore.init()
+  const supabase = marketplaceStore.client
 
-    const hashParams = new URLSearchParams(window.location.hash.substring(1))
-    const accessToken = hashParams.get('access_token')
-    const refreshToken = hashParams.get('refresh_token')
-    const type = hashParams.get('type')
+  if (!supabase) {
+    status.value = 'error'
+    errorMessage.value = t('auth.confirm.errors.failed')
+    return
+  }
 
-    if (accessToken && type === 'signup') {
-      const { error } = await marketplaceStore.client?.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken || ''
-      }) ?? { error: new Error('Client not initialized') }
+  const hashParams = new URLSearchParams(window.location.hash.substring(1))
+  const accessToken = hashParams.get('access_token')
+  const refreshToken = hashParams.get('refresh_token')
+  const type = hashParams.get('type')
 
-      if (error) {
-        status.value = 'error'
-        errorMessage.value = error.message || t('auth.confirm.errors.failed')
-      } else {
-        status.value = 'success'
-        setTimeout(() => {
-          navigateTo(localePath('/developer'))
-        }, 2000)
-      }
-    } else if (marketplaceStore.isAuthenticated) {
+  if (accessToken && type === 'signup') {
+    const { error } = await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken || '',
+    })
+
+    if (error) {
+      status.value = 'error'
+      errorMessage.value = error.message || t('auth.confirm.errors.failed')
+    } else {
       status.value = 'success'
       setTimeout(() => {
         navigateTo(localePath('/developer'))
       }, 2000)
-    } else {
-      status.value = 'error'
-      errorMessage.value = t('auth.confirm.errors.noSession')
     }
+  } else if (marketplaceStore.isAuthenticated) {
+    status.value = 'success'
+    setTimeout(() => {
+      navigateTo(localePath('/developer'))
+    }, 2000)
   } else {
-    // Vault Sync account verification
-    const supabase = useSupabaseClient()
-
-    try {
-      const { data: { session }, error } = await supabase.auth.getSession()
-
-      if (error) {
-        throw error
-      }
-
-      if (session) {
-        status.value = 'success'
-        setTimeout(() => {
-          navigateTo(localePath('/dashboard'))
-        }, 2000)
-      } else {
-        status.value = 'error'
-        errorMessage.value = t('auth.confirm.errors.noSession')
-      }
-    } catch (e: any) {
-      status.value = 'error'
-      errorMessage.value = e.message || t('auth.confirm.errors.failed')
-    }
+    status.value = 'error'
+    errorMessage.value = t('auth.confirm.errors.noSession')
   }
 })
 </script>
@@ -87,7 +63,6 @@ onMounted(async () => {
 <template>
   <Card class="w-full max-w-md text-center">
     <CardHeader>
-      <!-- Loading State -->
       <template v-if="status === 'loading'">
         <div class="mx-auto w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
           <Loader2 class="w-8 h-8 text-muted-foreground animate-spin" />
@@ -98,7 +73,6 @@ onMounted(async () => {
         </CardDescription>
       </template>
 
-      <!-- Success State -->
       <template v-else-if="status === 'success'">
         <div class="mx-auto w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mb-4">
           <CheckCircle class="w-8 h-8 text-green-500" />
@@ -109,7 +83,6 @@ onMounted(async () => {
         </CardDescription>
       </template>
 
-      <!-- Error State -->
       <template v-else>
         <div class="mx-auto w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
           <XCircle class="w-8 h-8 text-destructive" />
@@ -132,12 +105,12 @@ onMounted(async () => {
             {{ t('auth.confirm.error.description') }}
           </p>
           <div class="flex gap-2 justify-center">
-            <NuxtLinkLocale :to="isMarketplace ? '/auth/register?tab=marketplace' : '/auth/register'">
+            <NuxtLinkLocale to="/auth/register">
               <Button variant="outline">
                 {{ t('auth.confirm.error.tryAgain') }}
               </Button>
             </NuxtLinkLocale>
-            <NuxtLinkLocale :to="isMarketplace ? '/auth/login?tab=marketplace' : '/auth/login'">
+            <NuxtLinkLocale to="/auth/login">
               <Button>
                 {{ t('auth.confirm.error.login') }}
               </Button>

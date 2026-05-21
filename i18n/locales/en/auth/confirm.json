@@ -8,7 +8,7 @@
       "success": {
         "title": "Email verified!",
         "subtitle": "Your account has been verified successfully",
-        "redirecting": "Redirecting you to the dashboard..."
+        "redirecting": "Redirecting you to the developer dashboard..."
       },
       "error": {
         "title": "Verification failed",

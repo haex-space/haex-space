@@ -36,7 +36,6 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/mdc",
     "@nuxtjs/color-mode",
-    "@nuxtjs/supabase",
     "@pinia/nuxt",
     "@nuxtjs/turnstile",
   ],
@@ -45,16 +44,6 @@ export default defineNuxtConfig({
     siteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
     secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY,
     addValidateEndpoint: true,
-  },
-
-  supabase: {
-    url: process.env.SUPABASE_URL,
-    key: process.env.SUPABASE_KEY,
-    redirectOptions: {
-      login: "/auth/login",
-      callback: "/auth/confirm",
-      exclude: ["/*"], // Exclude all routes from auth redirect
-    },
   },
 
   colorMode: {

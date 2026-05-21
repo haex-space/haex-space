@@ -31,9 +31,7 @@ import docsArchitectureDatabase from './en/docs/architecture/database.json'
 import developerIndex from './en/developer/index.json'
 import developerSettings from './en/developer/settings.json'
 import developerExtensions from './en/developer/extensions.json'
-import dashboard from './en/dashboard.json'
 import downloadPass from './en/downloadPass.json'
-import storage from './en/storage.json'
 
 function deepMerge(...objects: Record<string, unknown>[]): Record<string, unknown> {
   const result: Record<string, unknown> = {}
@@ -92,8 +90,6 @@ export default defineI18nLocale(() => {
     developerIndex,
     developerSettings,
     developerExtensions,
-    dashboard,
-    downloadPass,
-    storage
+    downloadPass
   )
 })

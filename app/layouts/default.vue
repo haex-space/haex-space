@@ -1,26 +1,15 @@
 <script setup lang="ts">
-import { Languages, Moon, Sun, Monitor, Check, LogOut, User, ChevronDown, HardDrive, Store } from 'lucide-vue-next'
-import { useVaultSyncStore } from '~/stores/vaultSync'
+import { Languages, Moon, Sun, Monitor, Check, LogOut, User, ChevronDown, Store } from 'lucide-vue-next'
 import { useMarketplaceStore } from '~/stores/marketplace'
 
 const { t, locale, locales, setLocale } = useI18n()
 const colorMode = useColorMode()
-const user = useSupabaseUser()
-const supabase = useSupabaseClient()
 const localePath = useLocalePath()
-const vaultSyncStore = useVaultSyncStore()
 const marketplaceStore = useMarketplaceStore()
-const route = useRoute()
 
 // Initialize marketplace store on client
 onMounted(() => {
   marketplaceStore.init()
-})
-
-// Check if we're on a marketplace-related page
-const isMarketplacePage = computed(() => {
-  const path = route.path
-  return path.includes('/marketplace') || path.includes('/developer')
 })
 
 const availableLocales = computed(() =>
@@ -39,13 +28,6 @@ const themeIcon = computed(() => {
   if (colorMode.preference === 'light') return Sun
   return Monitor
 })
-
-async function handleLogout() {
-  vaultSyncStore.clearServerPassword()
-  vaultSyncStore.reset()
-  await supabase.auth.signOut()
-  await navigateTo(localePath('/'))
-}
 
 async function handleMarketplaceLogout() {
   await marketplaceStore.signOut()
@@ -114,8 +96,8 @@ async function handleMarketplaceLogout() {
               <DropdownMenuItem
                 v-for="loc in availableLocales"
                 :key="loc.code"
-                @click="setLocale(loc.code as 'en' | 'de')"
                 class="flex items-center justify-between"
+                @click="setLocale(loc.code as 'en' | 'de')"
               >
                 {{ loc.name }}
                 <Check v-if="locale === loc.code" class="h-4 w-4 ml-2" />
@@ -134,21 +116,21 @@ async function handleMarketplaceLogout() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{{ t('common.theme') }}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem @click="setTheme('light')" class="flex items-center justify-between">
+              <DropdownMenuItem class="flex items-center justify-between" @click="setTheme('light')">
                 <span class="flex items-center gap-2">
                   <Sun class="h-4 w-4" />
                   {{ t('common.themeLight') }}
                 </span>
                 <Check v-if="colorMode.preference === 'light'" class="h-4 w-4 ml-2" />
               </DropdownMenuItem>
-              <DropdownMenuItem @click="setTheme('dark')" class="flex items-center justify-between">
+              <DropdownMenuItem class="flex items-center justify-between" @click="setTheme('dark')">
                 <span class="flex items-center gap-2">
                   <Moon class="h-4 w-4" />
                   {{ t('common.themeDark') }}
                 </span>
                 <Check v-if="colorMode.preference === 'dark'" class="h-4 w-4 ml-2" />
               </DropdownMenuItem>
-              <DropdownMenuItem @click="setTheme('system')" class="flex items-center justify-between">
+              <DropdownMenuItem class="flex items-center justify-between" @click="setTheme('system')">
                 <span class="flex items-center gap-2">
                   <Monitor class="h-4 w-4" />
                   {{ t('common.themeSystem') }}
@@ -158,10 +140,9 @@ async function handleMarketplaceLogout() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <!-- Header Actions Slot (default: login/logout button) -->
+          <!-- Header Actions Slot (default: marketplace login/logout) -->
           <slot name="header-actions">
-            <!-- Show Marketplace user on marketplace/developer pages -->
-            <template v-if="isMarketplacePage && marketplaceStore.isAuthenticated">
+            <template v-if="marketplaceStore.isAuthenticated">
               <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                   <Button variant="ghost" size="icon">
@@ -175,43 +156,11 @@ async function handleMarketplaceLogout() {
                   <DropdownMenuItem as-child>
                     <NuxtLinkLocale to="/developer" class="flex items-center gap-2 cursor-pointer">
                       <User class="h-4 w-4" />
-                      Developer Dashboard
+                      {{ t('common.developerDashboard') }}
                     </NuxtLinkLocale>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem @click="handleMarketplaceLogout" class="flex items-center gap-2 cursor-pointer text-destructive">
-                    <LogOut class="h-4 w-4" />
-                    {{ t('common.logout') }}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </template>
-            <!-- Show Sync user -->
-            <template v-else-if="user">
-              <DropdownMenu>
-                <DropdownMenuTrigger as-child>
-                  <Button variant="ghost" size="icon">
-                    <User class="h-4 w-4" />
-                    <span class="sr-only">{{ t('common.account') }}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>{{ user.email }}</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem as-child>
-                    <NuxtLinkLocale to="/dashboard" class="flex items-center gap-2 cursor-pointer">
-                      <User class="h-4 w-4" />
-                      {{ t('common.dashboard') }}
-                    </NuxtLinkLocale>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem as-child>
-                    <NuxtLinkLocale to="/storage" class="flex items-center gap-2 cursor-pointer">
-                      <HardDrive class="h-4 w-4" />
-                      {{ t('common.storage') }}
-                    </NuxtLinkLocale>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem @click="handleLogout" class="flex items-center gap-2 cursor-pointer text-destructive">
+                  <DropdownMenuItem class="flex items-center gap-2 cursor-pointer text-destructive" @click="handleMarketplaceLogout">
                     <LogOut class="h-4 w-4" />
                     {{ t('common.logout') }}
                   </DropdownMenuItem>
