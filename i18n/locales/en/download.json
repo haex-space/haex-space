@@ -26,12 +26,12 @@
       },
       "apt": {
         "title": "Debian / Ubuntu — APT",
-        "description": "Add the apt.haex.space repository. Currently amd64 only (arm64 coming soon).",
+        "description": "Add the apt.haex.space repository. Supports amd64 and arm64.",
         "updateNote": "Updates arrive automatically with:"
       },
       "dnf": {
         "title": "Fedora / RHEL / Rocky / Alma — DNF/YUM",
-        "description": "Add the rpm.haex.space repository. Currently x86_64 only (aarch64 coming soon).",
+        "description": "Add the rpm.haex.space repository. Supports x86_64 and aarch64.",
         "updateNote": "Updates arrive automatically with:"
       },
       "zypper": {

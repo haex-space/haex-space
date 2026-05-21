@@ -9,7 +9,7 @@ curl -fsSL https://apt.haex.space/pubkey.gpg \\
   | sudo tee /etc/apt/keyrings/haex-vault.asc > /dev/null
 
 # 2. Add the repository
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/haex-vault.asc] https://apt.haex.space stable main" \\
+echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/haex-vault.asc] https://apt.haex.space stable main" \\
   | sudo tee /etc/apt/sources.list.d/haex-vault.list > /dev/null
 
 # 3. Install
