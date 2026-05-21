@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { Loader2, CheckCircle, XCircle } from "lucide-vue-next";
+import { useMarketplaceStore } from "~/stores/marketplace";
 
 definePageMeta({
   layout: "auth",
 });
 
 const { t } = useI18n();
-const route = useRoute();
-
-// Get tab from query param (sync or marketplace)
-const tab = computed(() => route.query.tab as string || "sync");
+const marketplaceStore = useMarketplaceStore();
 
 useSeoMeta({
   title: t("auth.resetPassword.title") + " - haex.space",
@@ -24,25 +22,21 @@ const success = ref(false);
 const initializing = ref(true);
 const hasSessionError = ref(false);
 
-const supabase = useSupabaseClient();
-
-// Build links with tab param
-const loginLink = computed(() => {
-  return tab.value === "marketplace" ? "/auth/login?tab=marketplace" : "/auth/login";
-});
-
-const forgotPasswordLink = computed(() => {
-  return tab.value === "marketplace" ? "/auth/forgot-password?tab=marketplace" : "/auth/forgot-password";
-});
-
-// Handle the recovery token from URL hash
 onMounted(async () => {
-  // Supabase sends recovery tokens in the URL hash
-  // The format is: #access_token=...&refresh_token=...&type=recovery
-  const hash = window.location.hash;
+  await marketplaceStore.init();
+  const supabase = marketplaceStore.client;
 
+  if (!supabase) {
+    hasSessionError.value = true;
+    error.value = t("auth.resetPassword.errors.noSession");
+    initializing.value = false;
+    return;
+  }
+
+  // Supabase sends recovery tokens in the URL hash
+  // Format: #access_token=...&refresh_token=...&type=recovery
+  const hash = window.location.hash;
   if (hash && hash.includes("type=recovery")) {
-    // Parse the hash parameters
     const params = new URLSearchParams(hash.substring(1));
     const accessToken = params.get("access_token");
     const refreshToken = params.get("refresh_token");
@@ -64,7 +58,6 @@ onMounted(async () => {
     }
   }
 
-  // Check if we have a valid session
   const { data: { session } } = await supabase.auth.getSession();
   if (!session && !hasSessionError.value) {
     hasSessionError.value = true;
@@ -74,20 +67,14 @@ onMounted(async () => {
   initializing.value = false;
 });
 
-const passwordsMatch = computed(() => {
-  return password.value === confirmPassword.value;
-});
-
-const passwordValid = computed(() => {
-  return password.value.length >= 8;
-});
+const passwordsMatch = computed(() => password.value === confirmPassword.value);
+const passwordValid = computed(() => password.value.length >= 8);
 
 async function handleSubmit() {
   if (!passwordsMatch.value) {
     error.value = t("auth.resetPassword.errors.passwordMismatch");
     return;
   }
-
   if (!passwordValid.value) {
     error.value = t("auth.resetPassword.errors.passwordTooShort");
     return;
@@ -97,6 +84,11 @@ async function handleSubmit() {
   error.value = "";
 
   try {
+    const supabase = marketplaceStore.client;
+    if (!supabase) {
+      throw new Error(t("auth.resetPassword.errors.failed"));
+    }
+
     const { error: updateError } = await supabase.auth.updateUser({
       password: password.value,
     });
@@ -106,8 +98,6 @@ async function handleSubmit() {
     }
 
     success.value = true;
-
-    // Sign out after password reset
     await supabase.auth.signOut();
   } catch (e: any) {
     error.value = e.message || t("auth.resetPassword.errors.failed");
@@ -127,12 +117,10 @@ async function handleSubmit() {
     </CardHeader>
 
     <CardContent>
-      <!-- Loading State -->
       <div v-if="initializing" class="flex justify-center py-8">
         <Loader2 class="w-8 h-8 animate-spin text-primary" />
       </div>
 
-      <!-- Session Error State -->
       <div v-else-if="hasSessionError" class="text-center space-y-4">
         <div class="mx-auto w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center">
           <XCircle class="w-6 h-6 text-destructive" />
@@ -140,14 +128,13 @@ async function handleSubmit() {
         <p class="text-sm text-muted-foreground">
           {{ error || t("auth.resetPassword.errors.invalidToken") }}
         </p>
-        <NuxtLinkLocale :to="forgotPasswordLink">
+        <NuxtLinkLocale to="/auth/forgot-password">
           <Button variant="outline" class="w-full">
             {{ t("auth.resetPassword.requestNewLink") }}
           </Button>
         </NuxtLinkLocale>
       </div>
 
-      <!-- Success State -->
       <div v-else-if="success" class="text-center space-y-4">
         <div class="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
           <CheckCircle class="w-6 h-6 text-primary" />
@@ -155,15 +142,14 @@ async function handleSubmit() {
         <p class="text-sm text-muted-foreground">
           {{ t("auth.resetPassword.successMessage") }}
         </p>
-        <NuxtLinkLocale :to="loginLink">
+        <NuxtLinkLocale to="/auth/login">
           <Button class="w-full">
             {{ t("auth.resetPassword.goToLogin") }}
           </Button>
         </NuxtLinkLocale>
       </div>
 
-      <!-- Form State -->
-      <form v-else @submit.prevent="handleSubmit" class="space-y-4">
+      <form v-else class="space-y-4" @submit.prevent="handleSubmit">
         <div class="space-y-2">
           <Label for="password">{{ t("auth.resetPassword.password") }}</Label>
           <Input

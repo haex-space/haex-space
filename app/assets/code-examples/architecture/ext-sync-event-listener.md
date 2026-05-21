@@ -1,16 +1,14 @@
 ```typescript
-// In your extension (using vault-sdk)
+// Inside an extension: listen for relevant sync updates
 import { HAEXTENSION_EVENTS } from '@haex-space/vault-sdk'
 
-vault.on(HAEXTENSION_EVENTS.SYNC_TABLES_UPDATED, async (event) => {
-  const tables = event.data?.tables || []
+const { client } = useHaexVaultSdk()
 
-  // Check if our tables are affected
-  const ourTablePrefix = vault.getTableName('')
-  const hasOurTables = tables.some(t => t.startsWith(ourTablePrefix))
+client.on(HAEXTENSION_EVENTS.SYNC_TABLES_UPDATED, async (event) => {
+  const tables = event.data?.tables ?? []
+  const ourPrefix = client.getTableName('') // '<pubKey>__<extName>__'
 
-  if (hasOurTables) {
-    // Reload data from database
+  if (tables.some((t) => t.startsWith(ourPrefix))) {
     await reloadDataAsync()
   }
 })

@@ -12,14 +12,14 @@
         "push": "Push-Operation",
         "pull": "Pull-Operation",
         "realtime": "Realtime-Updates",
-        "softDelete": "Soft Delete",
+        "softDelete": "Deletes",
         "events": "Sync-Events",
         "eventFiltering": "Event-Filterung"
       },
       "sections": {
         "overview": {
           "title": "Sync-Übersicht",
-          "intro": "haex-vault nutzt ein CRDT (Conflict-free Replicated Data Type) basiertes Sync-System, das nahtlosen Offline-First-Betrieb mit automatischer Konfliktauflösung ermöglicht.",
+          "intro": "haex-vault nutzt ein CRDT-basiertes (Conflict-free Replicated Data Type) Sync-System, das nahtlosen Offline-First-Betrieb mit automatischer Konfliktauflösung ermöglicht.",
           "features": {
             "offline": {
               "title": "Offline-First",
@@ -27,11 +27,11 @@
             },
             "realtime": {
               "title": "Realtime-Sync",
-              "description": "Supabase Realtime pusht Updates sofort an andere Geräte."
+              "description": "Ein geteilter WebSocket zum haex-sync-server löst einen debounced Pull aus, sobald ein anderes Gerät pusht."
             },
             "e2e": {
               "title": "E2E-Verschlüsselt",
-              "description": "Alle synchronisierten Daten werden verschlüsselt, bevor sie dein Gerät verlassen."
+              "description": "Jeder Spaltenwert wird mit dem Vault-Key verschlüsselt, bevor er das Gerät verlässt."
             }
           }
         },
@@ -40,41 +40,40 @@
           "intro": "CRDTs sind Datenstrukturen, die auf mehrere Computer repliziert, unabhängig modifiziert und ohne Konflikte zusammengeführt werden können.",
           "lww": {
             "title": "Last-Write-Wins (LWW)",
-            "description": "haex-vault verwendet LWW-Semantik mit Hybrid Logical Clocks. Die Änderung mit dem höchsten Timestamp gewinnt immer, was deterministische Konfliktauflösung auf allen Geräten sicherstellt."
+            "description": "haex-vault verwendet LWW-Semantik mit Hybrid Logical Clocks. Die Änderung mit dem höchsten HLC gewinnt immer, was deterministische Konfliktauflösung auf allen Geräten sicherstellt."
           },
           "columns": {
             "title": "CRDT-Spalten",
-            "description": "Jede synchronisierte Tabelle hat drei spezielle Spalten, die CRDT-Funktionalität ermöglichen:",
-            "comment": "Alle synchronisierten Tabellen haben diese Spalten",
+            "description": "Jede synchronisierte Tabelle hat zwei spezielle Spalten, die CRDT-Funktionalität ermöglichen:",
+            "comment": "Alle synchronisierten Tabellen erhalten diese Spalten",
             "auto": "automatisch hinzugefügt",
-            "timestamp": "Max HLC über alle Spalten (für effiziente Abfragen)",
+            "hlc": "Row-Level HLC (Maximum aller Spalten-HLCs, für effiziente Abfragen)",
             "columnHlcs": "JSON-Objekt mit HLC pro Spalte",
-            "tombstone": "0 = aktiv, 1 = soft-gelöscht"
+            "deletesNote": "Deletes werden in einer separaten Tabelle haex_deleted_rows getrackt - es gibt keine Tombstone-Spalte."
           }
         },
         "hlc": {
           "title": "Hybrid Logical Clocks",
-          "intro": "HLCs kombinieren physische Zeit mit logischen Zählern, um global eindeutige, monoton steigende Timestamps zu erstellen, ohne synchronisierte Uhren zu benötigen.",
-          "format": "HLC-Format: ISO 8601 Timestamp + Geräte-ID Suffix",
+          "intro": "HLCs kombinieren physische Zeit mit einer stabilen Node-ID, um global eindeutige, monoton steigende Timestamps zu erstellen, ohne synchronisierte Uhren zu benötigen.",
+          "format": "HLC-Format: {ntp_time_hex}/{node_uuid_hex}",
           "benefits": "Hauptvorteile von HLCs:",
-          "benefit1": "Lexikografisch sortierbar - einfacher String-Vergleich möglich",
-          "benefit2": "Global eindeutig - Geräte-ID Suffix verhindert Kollisionen",
+          "benefit1": "Lexikographisch sortierbar - einfacher String-Vergleich",
+          "benefit2": "Global eindeutig - die 16-Byte Node-ID verhindert Kollisionen",
           "benefit3": "Kausal geordnet - respektiert Vorher-Nachher-Beziehungen"
         },
         "columnLevel": {
           "title": "Spalten-Level Sync",
-          "intro": "Anders als Row-Level Sync verfolgt haex-vault Änderungen auf Spaltenebene. Das bedeutet, dass gleichzeitige Bearbeitungen verschiedener Spalten derselben Zeile automatisch zusammengeführt werden, ohne Datenverlust.",
+          "intro": "Anders als Row-Level Sync verfolgt haex-vault Änderungen auf Spaltenebene. Gleichzeitige Bearbeitungen verschiedener Spalten derselben Zeile werden automatisch zusammengeführt, ohne Datenverlust.",
           "example": {
-            "title": "Konfliktauflösungs-Beispiel",
-            "code": "Gerät A: UPDATE passwords SET title = 'Gmail' WHERE id = 'abc'\n         (Timestamp: 2024-01-03T10:00:00-A)\n\nGerät B: UPDATE passwords SET password = 'newpass' WHERE id = 'abc'\n         (Timestamp: 2024-01-03T10:00:15-B)\n\nErgebnis nach Sync:\n- title = 'Gmail'     (von Gerät A)\n- password = 'newpass' (von Gerät B)\n\nBeide Änderungen bleiben erhalten!"
+            "title": "Konfliktauflösungs-Beispiel"
           },
           "important": {
             "title": "Kein Datenverlust",
-            "description": "Mit Spalten-Level Tracking können zwei Geräte verschiedene Felder desselben Datensatzes gleichzeitig bearbeiten, und beide Änderungen bleiben erhalten."
+            "description": "Mit Spalten-Level-Tracking können zwei Geräte verschiedene Felder desselben Datensatzes gleichzeitig bearbeiten - beide Änderungen bleiben erhalten."
           },
           "pkWarning": {
             "title": "Primary Keys werden NICHT getrackt",
-            "description": "CRDT trackt nur Nicht-Primary-Key-Spalten. Wenn deine Tabelle einen zusammengesetzten Primary Key hat (z.B. PRIMARY KEY (item_id, group_id)) und du eine der PK-Spalten aktualisierst, wird diese Änderung NICHT synchronisiert. Verwende einen einfachen PK und halte änderbare Spalten als normale (Nicht-PK) Spalten."
+            "description": "CRDT trackt nur Nicht-Primary-Key-Spalten. Wenn deine Tabelle einen zusammengesetzten Primary Key hat (z.B. PRIMARY KEY (item_id, group_id)) und du eine der PK-Spalten aktualisierst, wird diese Änderung NICHT synchronisiert. Verwende einen einfachen PK und halte änderbare Felder als normale Spalten."
           },
           "hlcJson": {
             "title": "Spalten-HLC Speicherung"
@@ -82,38 +81,35 @@
         },
         "syncFlow": {
           "title": "Sync-Ablauf",
-          "intro": "Der Sync-Prozess umfasst drei Hauptoperationen: Push, Pull und Realtime-Subscriptions.",
+          "intro": "Der Sync-Prozess besteht aus drei Teilen: Push, Pull und ein geteilter WebSocket, der andere Geräte signalisiert.",
           "push": {
             "title": "Push-Operation",
-            "description": "Wenn du lokal Änderungen machst, erkennt der Sync-Orchestrator dirty Tables, scannt nach Änderungen seit dem letzten Push, verschlüsselt jeden Wert und sendet sie in Batches an den Server."
+            "description": "Bei lokalen Änderungen scannt der Sync-Orchestrator dirty Tables, gruppiert Spalten-Änderungen nach HLC, verschlüsselt jeden Wert und sendet Chunks (<= 2000 Changes) zum Server."
           },
           "pull": {
             "title": "Pull-Operation",
-            "description": "Pull holt Änderungen vom Server seit dem letzten Pull-Timestamp. Jede Änderung wird entschlüsselt und mit lokalen Daten per HLC-Timestamps verglichen. Nur neuere Änderungen werden angewendet."
+            "description": "Pull holt Server-Änderungen seit dem letzten HLC-Cursor. Jede Änderung wird entschlüsselt und per Spalten-Level HLC-Vergleich angewendet - nur neuere Werte gewinnen."
           }
         },
         "realtime": {
           "title": "Realtime-Updates",
-          "intro": "haex-vault abonniert Supabase Realtime-Channels, um sofortige Benachrichtigungen zu erhalten, wenn andere Geräte Änderungen pushen. Dies triggert eine debounced Pull-Operation.",
+          "intro": "haex-vault öffnet einen einzelnen geteilten WebSocket zum haex-sync-server, authentifiziert mit der DID des Geräts. Eingehende Events dienen nur als Trigger - der authoritative Datenpfad ist immer der Pull-Endpoint.",
           "fallback": {
             "title": "Fallback-Polling",
-            "description": "Wenn Realtime-Subscriptions fehlschlagen, fällt das System auf periodisches Polling zurück (alle 5 Minuten), um sicherzustellen, dass Daten synchronisiert bleiben."
+            "description": "Wenn der WebSocket abbricht (Mobile Doze, Netzwerkwechsel, ...), fällt der Orchestrator auf periodische Pulls zurück und verbindet sich mit exponential backoff neu."
           }
         },
         "softDelete": {
-          "title": "Soft Delete mit Tombstones",
-          "intro": "haex-vault verwendet Soft Deletion anstelle von echten DELETE-Statements. Dies stellt sicher, dass Löschungen ordnungsgemäß über Geräte synchronisiert werden können.",
-          "instead": "Anstatt:",
-          "use": "Verwende:",
-          "query": "Aktive Datensätze abfragen:",
-          "why": "Soft Deletion ermöglicht es, die Löschoperation wie jede andere Spaltenänderung zu behandeln, die ordnungsgemäß durch das CRDT-System synchronisiert wird. Die Zeile bleibt in der Datenbank mit haex_tombstone = 1."
+          "title": "Deletes",
+          "intro": "haex-vault löscht Zeilen wirklich - aber ein BEFORE DELETE Trigger loggt Tabellenname und Primärschlüssel der gelöschten Zeile in haex_deleted_rows, damit die Löschung repliziert werden kann.",
+          "why": "Das bedeutet, deine Queries brauchen keinen `WHERE haex_tombstone = 0`-Filter. Zeilen, die existieren, sind aktiv; gelöschte Zeilen sind lokal weg und werden über haex_deleted_rows an andere Geräte propagiert."
         },
         "events": {
           "title": "Sync-Events",
-          "intro": "Nach einem erfolgreichen Pull werden Events automatisch vom Sync-Orchestrator emittiert, um die Anwendung zu benachrichtigen, dass sich Daten geändert haben. Extensions müssen diese Events nicht selbst emittieren - sie müssen nur darauf lauschen und reagieren.",
+          "intro": "Nach einem erfolgreichen Pull emittiert der Sync-Orchestrator automatisch Events, um die Anwendung zu benachrichtigen, dass sich Daten geändert haben. Extensions müssen diese Events nicht selbst emittieren - sie müssen nur darauf lauschen und reagieren.",
           "automatic": {
             "title": "Automatische Event-Emission",
-            "description": "Der Sync-Orchestrator emittiert automatisch Events nach jedem erfolgreichen Pull. Extensions müssen diese Events nicht selbst emittieren - sie werden intern von haex-vault verarbeitet."
+            "description": "Der Sync-Orchestrator emittiert nach jedem erfolgreichen Pull automatisch Events. Extensions müssen diese Events nicht selbst emittieren - haex-vault übernimmt das intern."
           },
           "twoEvents": {
             "title": "Zwei Event-Typen",
@@ -125,7 +121,7 @@
             "intro": "Aus Sicherheits- und Datenschutzgründen werden Sync-Events basierend auf den Datenbank-Berechtigungen jeder Extension gefiltert. Extensions erhalten nur Benachrichtigungen über Tabellen, auf die sie Zugriff haben.",
             "description": "Wenn die Synchronisation abgeschlossen ist, prüft haex-vault die DB-Berechtigungen jeder Extension und sendet nur Tabellennamen, die übereinstimmen:",
             "wildcard": "Wildcard-Berechtigung (*) - sieht alle Tabellen",
-            "prefix": "Präfix-Match (z.B. publickey__extname__*) - sieht Tabellen mit diesem Präfix",
+            "prefix": "Präfix-Match (z.B. publicKey__extName__*) - sieht Tabellen mit diesem Präfix",
             "exact": "Exakter Match - sieht nur diese spezifische Tabelle",
             "privacy": "Dies verhindert, dass Extensions Aktivitäten in Tabellen anderer Extensions beobachten können, und gewährleistet den Datenschutz zwischen Extensions."
           },

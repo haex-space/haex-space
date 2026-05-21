@@ -24,21 +24,20 @@ tableOfContents.value = [
 ]
 
 const coreTables = [
-  { name: 'haex_vault_settings', description: t('docs.dbSchema.tables.vaultSettings'), crdt: true },
   { name: 'haex_extensions', description: t('docs.dbSchema.tables.extensions'), crdt: true },
   { name: 'haex_extension_permissions', description: t('docs.dbSchema.tables.permissions'), crdt: true },
   { name: 'haex_extension_migrations', description: t('docs.dbSchema.tables.migrations'), crdt: true },
-  { name: 'haex_workspaces', description: t('docs.dbSchema.tables.workspaces'), crdt: true },
-  { name: 'haex_desktop_items', description: t('docs.dbSchema.tables.desktopItems'), crdt: true },
-  { name: 'haex_devices', description: t('docs.dbSchema.tables.devices'), crdt: true },
   { name: 'haex_sync_backends', description: t('docs.dbSchema.tables.syncBackends'), crdt: true },
-  { name: 'haex_notifications', description: t('docs.dbSchema.tables.notifications'), crdt: true },
+  { name: 'haex_identities', description: t('docs.dbSchema.tables.identities'), crdt: true },
+  { name: 'haex_spaces', description: t('docs.dbSchema.tables.spaces'), crdt: true },
 ]
 
 const crdtTables = [
+  { name: 'haex_crdt_configs', description: t('docs.dbSchema.crdtTables.configs'), crdt: false },
   { name: 'haex_crdt_dirty_tables', description: t('docs.dbSchema.crdtTables.dirtyTables'), crdt: false },
   { name: 'haex_crdt_migrations', description: t('docs.dbSchema.crdtTables.migrations'), crdt: false },
   { name: 'haex_crdt_conflicts', description: t('docs.dbSchema.crdtTables.conflicts'), crdt: false },
+  { name: 'haex_deleted_rows', description: t('docs.dbSchema.crdtTables.deletedRows'), crdt: false },
 ]
 
 // Content paths for code examples
@@ -111,11 +110,11 @@ const paths = {
       <Card class="mb-6">
         <CardContent class="pt-6">
           <pre class="text-sm leading-relaxed overflow-x-auto"><code>-- {{ t('docs.dbSchema.sections.crdtColumns.comment') }}
-haex_timestamp TEXT NOT NULL,      -- {{ t('docs.dbSchema.sections.crdtColumns.timestamp') }}
+haex_hlc TEXT NOT NULL,            -- {{ t('docs.dbSchema.sections.crdtColumns.hlc') }}
 haex_column_hlcs TEXT NOT NULL     -- {{ t('docs.dbSchema.sections.crdtColumns.columnHlcs') }}
-                 DEFAULT '{}',
-haex_tombstone INTEGER NOT NULL    -- {{ t('docs.dbSchema.sections.crdtColumns.tombstone') }}
-                 DEFAULT 0</code></pre>
+                 DEFAULT '{}'
+
+-- {{ t('docs.dbSchema.sections.crdtColumns.deletesNote') }}</code></pre>
         </CardContent>
       </Card>
 

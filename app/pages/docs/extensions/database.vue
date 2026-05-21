@@ -148,8 +148,8 @@ await client.transaction([
   'UPDATE stats SET user_count = user_count + 1'
 ])`,
 
-  crdtTable: `// haex-vault automatically adds CRDT columns to all tables
-// You don't need to define them in your schema
+  crdtTable: `// haex-vault automatically adds CRDT columns to all tables.
+// You don't need to define them in your schema.
 
 await client.execute(\`
   CREATE TABLE IF NOT EXISTS \${tableName} (
@@ -159,13 +159,18 @@ await client.execute(\`
   )
 \`)
 
-// The following columns are automatically managed by haex-vault:
-// - haex_timestamp: Row-level timestamp for sync ordering
-// - haex_column_hlcs: Per-column hybrid logical clocks
-// - haex_tombstone: Soft delete flag for sync
+// The following columns are managed automatically by haex-vault:
+// - haex_hlc:         Row-level Hybrid Logical Clock
+//                     (max over all column HLCs)
+// - haex_column_hlcs: JSON map of HLC per column for column-level
+//                     last-write-wins merging
 
-// Important: Do NOT create columns starting with 'haex_'
-// They will be overwritten by the sync system`,
+// Deletes are NOT marked with a tombstone column on the table.
+// A BEFORE DELETE trigger logs them into haex_deleted_rows so they
+// are still replicated by sync.
+
+// Important: Do NOT create columns starting with 'haex_'.
+// They are reserved by the CRDT layer.`,
 
   noSyncTable: `// Tables ending with _no_sync are NOT synchronized
 // Use this for local-only data like caches or session state
@@ -182,7 +187,7 @@ await client.execute(\`
 \`)
 
 // This table will:
-// - NOT get CRDT columns (haex_timestamp, etc.)
+// - NOT get CRDT columns (haex_hlc, haex_column_hlcs)
 // - NOT be synchronized between devices
 // - Be purely local to this device
 
@@ -370,23 +375,22 @@ await db
           </thead>
           <tbody>
             <tr class="border-b">
-              <td class="py-3 px-4"><code class="text-primary">haex_timestamp</code></td>
-              <td class="py-3 px-4 text-muted-foreground">INTEGER</td>
-              <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.crdtSync.timestampDesc') }}</td>
+              <td class="py-3 px-4"><code class="text-primary">haex_hlc</code></td>
+              <td class="py-3 px-4 text-muted-foreground">TEXT</td>
+              <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.crdtSync.hlcDesc') }}</td>
             </tr>
-            <tr class="border-b">
+            <tr>
               <td class="py-3 px-4"><code class="text-primary">haex_column_hlcs</code></td>
               <td class="py-3 px-4 text-muted-foreground">TEXT</td>
               <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.crdtSync.hlcsDesc') }}</td>
             </tr>
-            <tr>
-              <td class="py-3 px-4"><code class="text-primary">haex_deleted</code></td>
-              <td class="py-3 px-4 text-muted-foreground">INTEGER</td>
-              <td class="py-3 px-4 text-muted-foreground">{{ t('docs.database.sections.crdtSync.deletedDesc') }}</td>
-            </tr>
           </tbody>
         </table>
       </div>
+
+      <DocsAlert type="info" class="mb-6">
+        {{ t('docs.database.sections.crdtSync.deletesNote') }}
+      </DocsAlert>
 
       <DocsCodeBlock :code="code.crdtTable" language="typescript" />
 

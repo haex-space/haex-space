@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { Loader2, ArrowLeft, Mail } from "lucide-vue-next";
+import { useMarketplaceStore } from "~/stores/marketplace";
 
 definePageMeta({
   layout: "auth",
 });
 
 const { t } = useI18n();
-const route = useRoute();
-
-// Get tab from query param (sync or marketplace)
-const tab = computed(() => route.query.tab as string || "sync");
+const marketplaceStore = useMarketplaceStore();
 
 useSeoMeta({
   title: t("auth.forgotPassword.title") + " - haex.space",
@@ -21,11 +19,8 @@ const loading = ref(false);
 const error = ref("");
 const success = ref(false);
 
-const supabase = useSupabaseClient();
-
-// Build the back to login link with tab param
-const loginLink = computed(() => {
-  return tab.value === "marketplace" ? "/auth/login?tab=marketplace" : "/auth/login";
+onMounted(async () => {
+  await marketplaceStore.init();
 });
 
 async function handleSubmit() {
@@ -33,16 +28,16 @@ async function handleSubmit() {
   error.value = "";
 
   try {
-    // Include tab in redirect URL so reset-password knows where to redirect after
-    const redirectUrl = tab.value === "marketplace"
-      ? `${window.location.origin}/auth/reset-password?tab=marketplace`
-      : `${window.location.origin}/auth/reset-password`;
+    const supabase = marketplaceStore.client;
+    if (!supabase) {
+      throw new Error(t("auth.forgotPassword.errors.failed"));
+    }
 
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(
       email.value,
       {
-        redirectTo: redirectUrl,
-      }
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      },
     );
 
     if (resetError) {
@@ -76,7 +71,7 @@ async function handleSubmit() {
         <p class="text-sm text-muted-foreground">
           {{ t("auth.forgotPassword.successMessage") }}
         </p>
-        <NuxtLinkLocale :to="loginLink">
+        <NuxtLinkLocale to="/auth/login">
           <Button variant="outline" class="w-full">
             <ArrowLeft class="w-4 h-4 mr-2" />
             {{ t("auth.forgotPassword.backToLogin") }}
@@ -85,7 +80,7 @@ async function handleSubmit() {
       </div>
 
       <!-- Form State -->
-      <form v-else @submit.prevent="handleSubmit" class="space-y-4">
+      <form v-else class="space-y-4" @submit.prevent="handleSubmit">
         <div class="space-y-2">
           <Label for="email">{{ t("auth.forgotPassword.email") }}</Label>
           <Input
@@ -108,7 +103,7 @@ async function handleSubmit() {
         </Button>
 
         <div class="text-center text-sm text-muted-foreground">
-          <NuxtLinkLocale :to="loginLink" class="text-primary hover:underline">
+          <NuxtLinkLocale to="/auth/login" class="text-primary hover:underline">
             <ArrowLeft class="w-3 h-3 inline mr-1" />
             {{ t("auth.forgotPassword.backToLogin") }}
           </NuxtLinkLocale>

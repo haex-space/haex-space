@@ -37,32 +37,39 @@ const code = {
   "displayMode": "window",
   "singleInstance": true,
 
-  "publicKey": "a1b2c3d4e5f6...",
+  "migrationsDir": "database/migrations",
+
+  "publicKey": "MCowBQYDK2VwAyEA...",
   "signature": "",
 
   "permissions": {
-    "database": [],
+    "database": null,
     "filesystem": [
-      { "target": "**/*.json", "operation": "read_write" }
+      { "target": "**/*.json", "operation": "readWrite" }
     ],
     "http": [
       { "target": "https://api.haveibeenpwned.com/**" }
     ],
     "shell": null
+  },
+
+  "i18n": {
+    "de": { "name": "Passwort-Manager", "description": "Passwörter sicher speichern" },
+    "en": { "name": "Password Manager", "description": "Securely store passwords" }
   }
 }`,
 
   permissionsDatabase: `"permissions": {
   "database": [
-    { "target": "MCowBQYDK2Vw...__other-extension__users", "operation": "read" },
-    { "target": "MCowBQYDK2Vw...__other-extension__settings", "operation": "read_write" }
+    { "target": "MCowBQYDK2Vw...__other-extension__users",    "operation": "read" },
+    { "target": "MCowBQYDK2Vw...__other-extension__settings", "operation": "readWrite" }
   ]
 }`,
 
   permissionsFilesystem: `"permissions": {
   "filesystem": [
-    { "target": "**/*.txt", "operation": "read" },
-    { "target": "exports/**", "operation": "read_write" }
+    { "target": "**/*.txt",     "operation": "read" },
+    { "target": "/exports/**",  "operation": "readWrite" }
   ]
 }`,
 
@@ -113,13 +120,13 @@ const optionalFields = computed(() => [
   },
   {
     name: 'entry',
-    type: 'string',
+    type: 'string | null',
     default: '"index.html"',
     description: t('docs.manifest.fields.entry')
   },
   {
     name: 'icon',
-    type: 'string',
+    type: 'string | null',
     default: '"icon.png"',
     description: t('docs.manifest.fields.icon')
   },
@@ -131,9 +138,21 @@ const optionalFields = computed(() => [
   },
   {
     name: 'singleInstance',
-    type: 'boolean',
+    type: 'boolean | null',
     default: 'false',
     description: t('docs.manifest.fields.singleInstance')
+  },
+  {
+    name: 'migrationsDir',
+    type: 'string | null',
+    default: '-',
+    description: t('docs.manifest.fields.migrationsDir')
+  },
+  {
+    name: 'i18n',
+    type: 'Record<string, { name?: string; description?: string }> | null',
+    default: '-',
+    description: t('docs.manifest.fields.i18n')
   },
   {
     name: 'signature',

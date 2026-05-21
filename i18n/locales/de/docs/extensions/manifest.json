@@ -21,20 +21,22 @@
       "fields": {
         "name": "Eindeutiger Bezeichner für deine Extension (Kleinbuchstaben, alphanumerisch, Bindestriche)",
         "version": "Semantische Versionszeichenkette (z.B. 1.0.0)",
-        "publicKey": "Ed25519 Public Key (64 Hex-Zeichen, generiert durch haex init)",
+        "publicKey": "Ed25519 Public Key (Base64, generiert durch haex init)",
         "author": "Autorenname, der im Marketplace angezeigt wird",
         "description": "Menschenlesbare Beschreibung deiner Extension",
         "homepage": "URL zur Homepage oder Repository deiner Extension",
         "entry": "HTML-Einstiegspunkt relativ zum Build-Output",
-        "icon": "Pfad zum Extension-Icon (relativ zum haextension-Ordner)",
+        "icon": "Pfad zum Extension-Icon (relativ zum Extension-Root)",
         "displayMode": "Wie die Extension in haex-vault angezeigt wird",
         "singleInstance": "Wenn true, kann nur eine Instanz gleichzeitig laufen",
+        "migrationsDir": "Pfad (relativ zum Extension-Root) zu einem Drizzle-Style Migrations-Verzeichnis mit _journal.json und *.sql-Dateien",
+        "i18n": "Locale-spezifische Overrides für Name und Beschreibung (Key ist der Locale-Code, z.B. 'de', 'en')",
         "signature": "Ed25519-Signatur (wird automatisch beim Signieren hinzugefügt)"
       },
       "displayModes": {
-        "auto": "Wählt automatisch den besten Anzeigemodus basierend auf dem Kontext",
-        "window": "Als separates Fenster mit nativen Fenstersteuerungen anzeigen",
-        "iframe": "Als eingebetteter iframe innerhalb von haex-vault anzeigen"
+        "auto": "Wählt automatisch den besten Modus (Tauri WebviewWindow auf Desktop, iframe auf Mobile)",
+        "window": "In einem dedizierten Tauri WebviewWindow mit nativen Fenstersteuerungen öffnen",
+        "iframe": "Als eingebetteten iframe innerhalb von haex-vault rendern"
       },
       "sections": {
         "overview": {
@@ -57,11 +59,11 @@
           "title": "Berechtigungen",
           "intro": "Deklariere alle Berechtigungen, die deine Extension benötigt, im Manifest. Benutzer werden diese während der Installation überprüfen.",
           "database": "Datenbank-Berechtigungen",
-          "databaseDesc": "Definiere, auf welche Tabellen deine Extension lesend oder schreibend zugreifen kann:",
+          "databaseDesc": "Operationen: read | readWrite | create | delete | alterDrop. Targets sind die vollständig prefixed Tabellennamen anderer Extensions:",
           "filesystem": "Dateisystem-Berechtigungen",
-          "filesystemDesc": "Gib Dateipfade und Operationen mit Glob-Patterns an:",
+          "filesystemDesc": "Operationen: read | readWrite. Targets verwenden Glob-Patterns:",
           "http": "HTTP-Berechtigungen",
-          "httpDesc": "Deklariere URLs, von denen deine Extension Daten abrufen kann, mit Glob-Patterns:",
+          "httpDesc": "Nur URL-Pattern - jede erlaubte URL oder Domain wird als target deklariert. Die HTTP-Methode wird zwar aus dem Manifest geparst, aber zur Laufzeit derzeit nicht enforced. Targets verwenden Glob-Patterns:",
           "note": "Für detaillierte Berechtigungsinformationen siehe den",
           "learnMore": "Berechtigungs-Leitfaden"
         },

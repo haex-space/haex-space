@@ -19,7 +19,7 @@
           },
           "frameworks": {
             "title": "Framework Support",
-            "description": "Native adapters for Vue, React, Svelte, and vanilla JavaScript."
+            "description": "Native adapters for Vue, React, Svelte, Nuxt, and vanilla JavaScript."
           },
           "distribution": {
             "title": "Easy Distribution",
@@ -131,7 +131,7 @@
         },
         "crdt": {
           "title": "Reserved Columns",
-          "description": "haex-vault automatically adds CRDT sync columns (haex_timestamp, haex_column_hlcs, haex_deleted) to all tables. Do not create columns starting with 'haex_' as they will be overwritten."
+          "description": "haex-vault automatically adds the CRDT sync columns haex_hlc and haex_column_hlcs to all tables. Do not create columns starting with 'haex_' - they are reserved by the CRDT layer. Deletes are tracked separately via haex_deleted_rows; there is no tombstone column."
         },
         "queries": {
           "title": "Queries & Mutations"
@@ -143,7 +143,7 @@
       },
       "storage": {
         "title": "Key-Value Storage",
-        "intro": "For simple data that doesn't need database features, use the Storage API. It provides a localStorage-like interface scoped to your extension."
+        "intro": "For simple data that doesn't need database features, use the Storage API. It provides a localStorage-like interface (getItem / setItem / removeItem / keys / clear) scoped to your extension."
       },
       "filesystem": {
         "title": "Filesystem Access",
@@ -165,9 +165,10 @@
           "filesystem": "Filesystem Operations",
           "fsRead": "Read files from specified paths",
           "fsReadWrite": "Read and write files",
-          "fsDelete": "Delete files and directories",
           "http": "HTTP Requests",
-          "httpDescription": "Use glob patterns to specify allowed URLs. Use ** for path wildcards and * for single segment wildcards."
+          "httpDescription": "URL-pattern based: declare each allowed URL/domain as a target (glob patterns ** / *). The HTTP method is not currently enforced; only the URL is checked.",
+          "shell": "Shell",
+          "shellExecute": "Run a shell command configured by the user"
         },
         "checking": {
           "title": "Checking Permissions at Runtime"
@@ -179,7 +180,7 @@
       },
       "buildSign": {
         "title": "Build & Sign",
-        "intro": "When you're ready to distribute your extension, build it and sign it with your private key.",
+        "intro": "When you're ready to distribute your extension, build it and sign it with your private key. The CLI produces a .xt file.",
         "warning": {
           "title": "Important",
           "description": "Keep your private key safe and backed up. If you lose it, you cannot update your extension and will need to publish as a new extension with a different identity."
@@ -199,7 +200,7 @@
           },
           "step3": {
             "title": "Submit to Marketplace",
-            "description": "Upload your .haextension file to the marketplace with your listing details."
+            "description": "Upload your signed .xt file to the marketplace with your listing details."
           },
           "step4": {
             "title": "Review Process",

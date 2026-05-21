@@ -10,11 +10,16 @@
   "signature": "",
   "displayMode": "auto",
   "singleInstance": false,
+  "migrationsDir": "database/migrations",
   "permissions": {
-    "database": [],
-    "filesystem": [],
-    "http": [],
-    "shell": []
+    "database": null,
+    "filesystem": null,
+    "http": null,
+    "shell": null
+  },
+  "i18n": {
+    "de": { "name": "Meine Erweiterung", "description": "Eine kurze Beschreibung" },
+    "en": { "name": "My Extension", "description": "A brief description" }
   }
 }
 ```

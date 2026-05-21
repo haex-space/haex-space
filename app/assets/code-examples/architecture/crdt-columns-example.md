@@ -3,16 +3,14 @@
 SELECT
   id,
   title,
-  haex_timestamp,
-  haex_column_hlcs,
-  haex_tombstone
+  haex_hlc,
+  haex_column_hlcs
 FROM haex_passwords
 WHERE id = 'abc-123';
 
 -- Result:
 -- id: "abc-123"
 -- title: "Gmail"
--- haex_timestamp: "2024-01-03T10:45:30.200-B"
--- haex_column_hlcs: '{"id":"2024-01-03T10:00:00.000-A","title":"2024-01-03T10:45:30.200-B"}'
--- haex_tombstone: 0
+-- haex_hlc: "7B7E2C9E10000000/8a4e23f76b0a4d9faabbccddeeff0011"
+-- haex_column_hlcs: '{"id":"7B7E2C800000000/8a4e...","title":"7B7E2C9E10000000/8a4e..."}'
 ```

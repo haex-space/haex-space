@@ -25,10 +25,10 @@ const code = {
   "permissions": {
     "database": [
       { "target": "MCowBQYDK2Vw...__password-manager__credentials", "operation": "read" },
-      { "target": "MCowBQYDK2Vw...__password-manager__categories", "operation": "read_write" }
+      { "target": "MCowBQYDK2Vw...__password-manager__categories", "operation": "readWrite" }
     ],
     "filesystem": [
-      { "target": "exports/**", "operation": "read_write" }
+      { "target": "/exports/**", "operation": "readWrite" }
     ],
     "http": [
       { "target": "https://api.example.com/**" }
@@ -37,15 +37,19 @@ const code = {
   }
 }`,
 
-  databasePermissions: `// Access another extension's table
+  databasePermissions: `// Access another extension's table.
 // Format: {publicKey}__{extensionName}__{tableName}
 { "target": "MCowBQYDK2Vw...__password-manager__credentials", "operation": "read" }
 
-// Full access to another extension's table
-{ "target": "MCowBQYDK2Vw...__password-manager__categories", "operation": "read_write" }
+// Read + write on another extension's table:
+{ "target": "MCowBQYDK2Vw...__password-manager__categories", "operation": "readWrite" }
 
-// Access all tables of a specific extension (use sparingly)
-{ "target": "MCowBQYDK2Vw...__password-manager__*", "operation": "read" }`,
+// Allowed manifest operations for database:
+//   "read" | "readWrite" | "create" | "delete" | "alterDrop"
+//
+// The SDK's permission check API uses a simplified pair:
+//   "read" | "write"
+// where "write" subsumes readWrite/create/delete/alterDrop.`,
 
   databaseAccess: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
@@ -58,44 +62,49 @@ const depTable = client.getDependencyTableName(
   'credentials'
 )
 
-// Query the dependency table (requires permission in manifest)
+// Query the dependency table (requires the permission entry shown above)
 const credentials = await client.query(\`SELECT * FROM \${depTable}\`)`,
 
-  filesystemPermissions: `// Read text files anywhere
+  filesystemPermissions: `// Filesystem manifest operations: "read" | "readWrite"
+
+// Read text files anywhere
 { "target": "**/*.txt", "operation": "read" }
 
 // Read and write in a specific directory
-{ "target": "exports/**", "operation": "read_write" }
+{ "target": "/exports/**", "operation": "readWrite" }
 
 // Full access to JSON files in documents
-{ "target": "documents/*.json", "operation": "read_write" }`,
+{ "target": "/documents/*.json", "operation": "readWrite" }`,
 
-  httpPermissions: `// All endpoints on a specific API
+  httpPermissions: `// HTTP permissions are URL-based only.
+// The runtime check (PermissionManager::check_web_permission) only
+// matches the URL / domain - HTTP methods are NOT enforced today.
+
+// Allow all requests to a specific API
 { "target": "https://api.example.com/**" }
 
 // Specific path pattern
 { "target": "https://api.github.com/users/*/repos" }
 
-// Multiple subdomains
-{ "target": "https://*.example.com/api/*" }`,
+// Bare domain target (matches the host)
+{ "target": "api.example.com" }`,
 
   checkPermission: `import { useHaexVaultSdk } from '@haex-space/vault-sdk/vue'
 
 const { client } = useHaexVaultSdk()
 
-// Check database permission
-const canReadUsers = await client.checkDatabaseAsync('users', 'read')
-const canWriteUsers = await client.checkDatabaseAsync('users', 'write')
+// Check database permission ("read" | "write" only at the SDK boundary)
+const canReadUsers  = await client.permissions.checkDatabaseAsync(usersTable, 'read')
+const canWriteUsers = await client.permissions.checkDatabaseAsync(usersTable, 'write')
 
 // Check filesystem permission
-const canReadExports = await client.checkFilesystemAsync('exports/', 'read')
+const canReadExports = await client.permissions.checkFilesystemAsync('/exports/data.json', 'read')
 
-// Check HTTP permission
-const canFetchApi = await client.checkWebAsync('https://api.example.com/data')
+// Check HTTP permission (URL must match a manifest http target)
+const canFetchApi = await client.permissions.checkWebAsync('https://api.example.com/data')
 
-// Use in conditional logic
 if (canWriteUsers) {
-  await client.insert('users', { name: 'John', email: 'john@example.com' })
+  await client.database.insert(usersTable, { name: 'John', email: 'john@example.com' })
 } else {
   console.warn('No write permission for users table')
 }`,
@@ -104,34 +113,24 @@ if (canWriteUsers) {
 
 const { client } = useHaexVaultSdk()
 
-// Request permission with reason
-const response = await client.requestDatabasePermission(
-  'users',
-  'write',
-  'Required to save your profile changes'
-)
+// Request a database permission at runtime (prompts the user)
+const response = await client.requestDatabasePermission({
+  resource: usersTable,
+  operation: 'write',
+  reason: 'Required to save your profile changes',
+})
 
 if (response.status === 'granted') {
-  // Permission granted, proceed with operation
-  await client.insert('users', userData)
+  await client.database.insert(usersTable, userData)
 } else if (response.status === 'denied') {
-  // User denied permission
   showError('Permission denied. Cannot save data.')
-} else if (response.status === 'ask') {
-  // System will show permission dialog
-  // Handle async response
 }`,
 
-  permissionStatus: `// Permission status values
-enum PermissionStatus {
-  GRANTED = 'granted',  // Permission is granted
-  DENIED = 'denied',    // Permission was denied
-  ASK = 'ask'           // Will prompt user
-}
+  permissionStatus: `// Permission status values (manifest + runtime)
+type PermissionStatus = 'granted' | 'denied' | 'ask'
 
 interface PermissionResponse {
   status: PermissionStatus
-  permanent: boolean  // If true, won't ask again
 }`
 }
 
@@ -140,19 +139,19 @@ const permissionTypes = computed(() => [
     icon: Database,
     name: t('docs.permissions.types.database.name'),
     description: t('docs.permissions.types.database.description'),
-    operations: ['read', 'read_write']
+    operations: ['read', 'readWrite', 'create', 'delete', 'alterDrop']
   },
   {
     icon: FolderOpen,
     name: t('docs.permissions.types.filesystem.name'),
     description: t('docs.permissions.types.filesystem.description'),
-    operations: ['read', 'read_write']
+    operations: ['read', 'readWrite']
   },
   {
     icon: Globe,
     name: t('docs.permissions.types.http.name'),
     description: t('docs.permissions.types.http.description'),
-    operations: ['(target only)']
+    operations: ['(URL pattern only)']
   },
   {
     icon: Terminal,

@@ -23,19 +23,19 @@ const code = {
 const { client } = useHaexVaultSdk()
 
 // Store a value
-await client.storage.set('username', 'john_doe')
+await client.storage.setItem('username', 'john_doe')
 
 // Retrieve a value
-const username = await client.storage.get('username')
+const username = await client.storage.getItem('username')
 console.log(username) // 'john_doe'
 
 // Remove a value
-await client.storage.remove('username')`,
+await client.storage.removeItem('username')`,
 
-  get: `// get(key: string): Promise<string | null>
+  get: `// getItem(key: string): Promise<string | null>
 // Retrieves a value by key, returns null if not found
 
-const value = await client.storage.get('theme')
+const value = await client.storage.getItem('theme')
 
 if (value !== null) {
   console.log('Theme:', value)
@@ -43,18 +43,18 @@ if (value !== null) {
   console.log('No theme set, using default')
 }`,
 
-  set: `// set(key: string, value: string): Promise<void>
+  set: `// setItem(key: string, value: string): Promise<void>
 // Stores a key-value pair
 
-await client.storage.set('theme', 'dark')
-await client.storage.set('sidebar_collapsed', 'true')
-await client.storage.set('last_sync', Date.now().toString())`,
+await client.storage.setItem('theme', 'dark')
+await client.storage.setItem('sidebar_collapsed', 'true')
+await client.storage.setItem('last_sync', Date.now().toString())`,
 
-  remove: `// remove(key: string): Promise<void>
+  remove: `// removeItem(key: string): Promise<void>
 // Removes a key-value pair
 
-await client.storage.remove('theme')
-await client.storage.remove('temporary_data')`,
+await client.storage.removeItem('theme')
+await client.storage.removeItem('temporary_data')`,
 
   keys: `// keys(): Promise<string[]>
 // Returns all stored keys
@@ -64,7 +64,7 @@ console.log(allKeys) // ['theme', 'sidebar_collapsed', 'last_sync']
 
 // Iterate over all stored data
 for (const key of allKeys) {
-  const value = await client.storage.get(key)
+  const value = await client.storage.getItem(key)
   console.log(\`\${key}: \${value}\`)
 }`,
 
@@ -80,10 +80,10 @@ const settings = {
   notifications: true
 }
 
-await client.storage.set('settings', JSON.stringify(settings))
+await client.storage.setItem('settings', JSON.stringify(settings))
 
 // Retrieve and parse JSON
-const storedSettings = await client.storage.get('settings')
+const storedSettings = await client.storage.getItem('settings')
 if (storedSettings) {
   const parsed = JSON.parse(storedSettings)
   console.log(parsed.theme) // 'dark'
@@ -111,7 +111,7 @@ export function useSettings() {
   const settings = ref<AppSettings>(defaultSettings)
 
   async function loadSettings() {
-    const stored = await client.storage.get('app_settings')
+    const stored = await client.storage.getItem('app_settings')
     if (stored) {
       settings.value = { ...defaultSettings, ...JSON.parse(stored) }
     }
@@ -119,12 +119,12 @@ export function useSettings() {
 
   async function saveSettings(newSettings: Partial<AppSettings>) {
     settings.value = { ...settings.value, ...newSettings }
-    await client.storage.set('app_settings', JSON.stringify(settings.value))
+    await client.storage.setItem('app_settings', JSON.stringify(settings.value))
   }
 
   async function resetSettings() {
     settings.value = defaultSettings
-    await client.storage.remove('app_settings')
+    await client.storage.removeItem('app_settings')
   }
 
   return { settings, loadSettings, saveSettings, resetSettings }
@@ -140,12 +140,12 @@ interface CacheEntry<T> {
 }
 
 async function getCached<T>(key: string): Promise<T | null> {
-  const stored = await client.storage.get(CACHE_PREFIX + key)
+  const stored = await client.storage.getItem(CACHE_PREFIX + key)
   if (!stored) return null
 
   const entry: CacheEntry<T> = JSON.parse(stored)
   if (Date.now() > entry.expires) {
-    await client.storage.remove(CACHE_PREFIX + key)
+    await client.storage.removeItem(CACHE_PREFIX + key)
     return null
   }
 
@@ -157,7 +157,7 @@ async function setCached<T>(key: string, data: T, ttl = CACHE_TTL) {
     data,
     expires: Date.now() + ttl
   }
-  await client.storage.set(CACHE_PREFIX + key, JSON.stringify(entry))
+  await client.storage.setItem(CACHE_PREFIX + key, JSON.stringify(entry))
 }
 
 // Usage

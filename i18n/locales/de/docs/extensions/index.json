@@ -19,7 +19,7 @@
           },
           "frameworks": {
             "title": "Framework-Unterstützung",
-            "description": "Native Adapter für Vue, React, Svelte und Vanilla JavaScript."
+            "description": "Native Adapter für Vue, React, Svelte, Nuxt und Vanilla JavaScript."
           },
           "distribution": {
             "title": "Einfache Verteilung",
@@ -131,7 +131,7 @@
         },
         "crdt": {
           "title": "Reservierte Spalten",
-          "description": "haex-vault fügt automatisch CRDT-Sync-Spalten (haex_timestamp, haex_column_hlcs, haex_deleted) zu allen Tabellen hinzu. Erstelle keine Spalten, die mit 'haex_' beginnen, da sie überschrieben werden."
+          "description": "haex-vault fügt automatisch die CRDT-Sync-Spalten haex_hlc und haex_column_hlcs zu allen Tabellen hinzu. Erstelle keine Spalten, die mit 'haex_' beginnen - sie sind reserviert. Deletes werden separat über haex_deleted_rows getrackt; es gibt keine Tombstone-Spalte."
         },
         "queries": {
           "title": "Abfragen & Mutationen"
@@ -143,7 +143,7 @@
       },
       "storage": {
         "title": "Key-Value-Storage",
-        "intro": "Für einfache Daten, die keine Datenbankfunktionen benötigen, verwende die Storage API. Sie bietet eine localStorage-ähnliche Schnittstelle, die auf deine Extension begrenzt ist."
+        "intro": "Für einfache Daten, die keine Datenbankfunktionen benötigen, verwende die Storage API. Sie bietet eine localStorage-ähnliche Schnittstelle (getItem / setItem / removeItem / keys / clear), die auf deine Extension begrenzt ist."
       },
       "filesystem": {
         "title": "Dateisystemzugriff",
@@ -165,9 +165,10 @@
           "filesystem": "Dateisystemoperationen",
           "fsRead": "Dateien von angegebenen Pfaden lesen",
           "fsReadWrite": "Dateien lesen und schreiben",
-          "fsDelete": "Dateien und Verzeichnisse löschen",
           "http": "HTTP-Anfragen",
-          "httpDescription": "Verwende Glob-Patterns, um erlaubte URLs anzugeben. Verwende ** für Pfad-Wildcards und * für einzelne Segment-Wildcards."
+          "httpDescription": "URL-basiert: jede erlaubte URL/Domain wird als target deklariert (Glob-Patterns ** / *). Die HTTP-Methode wird derzeit nicht enforced; geprüft wird nur die URL.",
+          "shell": "Shell",
+          "shellExecute": "Vom Benutzer konfigurierten Shell-Befehl ausführen"
         },
         "checking": {
           "title": "Berechtigungen zur Laufzeit prüfen"
@@ -179,7 +180,7 @@
       },
       "buildSign": {
         "title": "Build & Signieren",
-        "intro": "Wenn du bereit bist, deine Extension zu verteilen, baue und signiere sie mit deinem Private Key.",
+        "intro": "Wenn du bereit bist, deine Extension zu verteilen, baue und signiere sie mit deinem Private Key. Die CLI erzeugt eine .xt-Datei.",
         "warning": {
           "title": "Wichtig",
           "description": "Bewahre deinen Private Key sicher auf und erstelle ein Backup. Wenn du ihn verlierst, kannst du deine Extension nicht aktualisieren und musst als neue Extension mit einer anderen Identität veröffentlichen."
@@ -199,7 +200,7 @@
           },
           "step3": {
             "title": "Im Marketplace einreichen",
-            "description": "Lade deine .haextension Datei mit deinen Listing-Details im Marketplace hoch."
+            "description": "Lade deine signierte .xt-Datei mit deinen Listing-Details im Marketplace hoch."
           },
           "step4": {
             "title": "Review-Prozess",

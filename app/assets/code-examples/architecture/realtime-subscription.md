@@ -1,17 +1,19 @@
 ```typescript
-// Supabase Realtime Subscription
-const channel = supabase
-  .channel(`sync_changes:${vaultId}`)
-  .on('postgres_changes', {
-    event: 'INSERT',
-    schema: 'public',
-    table: `sync_changes_${vaultId.replace(/-/g, '_')}`  // Partition
-  }, (payload) => {
-    // Skip if change is from this device
-    if (payload.new.device_id === myDeviceId) return
+// haex-vault maintains a single shared WebSocket (haex-sync-server)
+// authenticated with the device's DID identity. WebSocket events
+// trigger a debounced pull from the server (the pull endpoint is the
+// authoritative path; the WS only signals that there is something new).
 
-    // Trigger debounced pull (500ms)
-    triggerPull()
-  })
-  .subscribe()
+const realtime = useRealtime()
+await realtime.connect(backend.homeServerUrl, identity.privateKey, identity.did)
+
+// One handler per relevant event type. Per-spaceId routing happens here.
+realtime.on('sync', (event) => {
+  if (event.spaceId !== backend.spaceId) return
+  // Debounced (~500ms) to coalesce bursts.
+  triggerPullForBackend(backend.id)
+})
+
+// Android/Doze: the WebSocket is reconnected when the app comes back
+// to the foreground (visibilitychange listener with exponential backoff).
 ```

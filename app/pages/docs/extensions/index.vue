@@ -479,7 +479,7 @@ const paths = {
                   <li><code class="text-primary">readWrite</code> - SELECT + INSERT/UPDATE</li>
                   <li><code class="text-primary">create</code> - CREATE TABLE</li>
                   <li><code class="text-primary">delete</code> - DELETE rows</li>
-                  <li><code class="text-primary">alterDrop</code> - ALTER/DROP operations</li>
+                  <li><code class="text-primary">alterDrop</code> - ALTER / DROP TABLE</li>
                 </ul>
               </div>
               <div>
@@ -487,12 +487,17 @@ const paths = {
                 <ul class="space-y-1 text-muted-foreground ml-4">
                   <li><code class="text-primary">read</code> - {{ t('docs.sections.permissions.operations.fsRead') }}</li>
                   <li><code class="text-primary">readWrite</code> - {{ t('docs.sections.permissions.operations.fsReadWrite') }}</li>
-                  <li><code class="text-primary">delete</code> - {{ t('docs.sections.permissions.operations.fsDelete') }}</li>
                 </ul>
               </div>
               <div>
                 <h4 class="font-medium mb-2">{{ t('docs.sections.permissions.operations.http') }}</h4>
                 <p class="text-muted-foreground ml-4">{{ t('docs.sections.permissions.operations.httpDescription') }}</p>
+              </div>
+              <div>
+                <h4 class="font-medium mb-2">{{ t('docs.sections.permissions.operations.shell') }}</h4>
+                <ul class="space-y-1 text-muted-foreground ml-4">
+                  <li><code class="text-primary">execute</code> - {{ t('docs.sections.permissions.operations.shellExecute') }}</li>
+                </ul>
               </div>
             </div>
           </CardContent>

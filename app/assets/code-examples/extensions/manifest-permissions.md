@@ -8,22 +8,18 @@
       },
       {
         "target": "MCowBQYDK2Vw...__password-manager__categories",
-        "operation": "read_write"
+        "operation": "readWrite"
       }
     ],
     "filesystem": [
       {
         "target": "/exports",
-        "operation": "read_write"
+        "operation": "readWrite"
       }
     ],
     "http": [
-      {
-        "target": "https://api.example.com/**"
-      },
-      {
-        "target": "https://cdn.example.com/*"
-      }
+      { "target": "https://api.example.com/**" },
+      { "target": "https://cdn.example.com/*" }
     ],
     "shell": null
   }

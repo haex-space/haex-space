@@ -1,7 +1,11 @@
-```json
+```jsonc
 // manifest.json
 {
-  "displayMode": "auto",  // "auto" | "iframe" | "webview"
-  // auto: iframe on desktop, webview on mobile
+  "displayMode": "auto"   // "auto" | "window" | "iframe"
+  //
+  // auto:    desktop → "window" (Tauri WebviewWindow),
+  //          mobile  → "iframe"
+  // window:  always open in a native window
+  // iframe:  always render embedded inside haex-vault
 }
 ```

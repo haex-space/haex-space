@@ -17,10 +17,10 @@
         "security": "Security"
       },
       "repos": {
-        "vault": "Main application - Desktop/Mobile client",
-        "syncServer": "Sync backend with Supabase/PostgreSQL",
+        "vault": "Main application - Desktop / Mobile client (Tauri 2 + Vue 3)",
+        "syncServer": "haex-sync-server: encrypted column-level change log over HTTP + WebSocket",
         "marketplace": "Extension marketplace and distribution",
-        "sdk": "SDK for extension developers",
+        "sdk": "@haex-space/vault-sdk - SDK + CLI for extension developers",
         "website": "haex.space website and documentation"
       },
       "techStack": {
@@ -41,7 +41,7 @@
         "overview": {
           "title": "System Overview",
           "intro": "haex-vault is a Tauri-based desktop and mobile application that serves as a secure host for extensions (haextensions). The architecture is designed around three core principles: offline-first operation, end-to-end encryption, and extensibility.",
-          "description": "The application consists of a Vue 3 frontend communicating with a Rust backend through Tauri's IPC layer. All user data is stored in an encrypted SQLite database using SQLCipher, with CRDT-based synchronization to the cloud."
+          "description": "A Vue 3 frontend talks to a Rust backend through Tauri's IPC layer. All user data is stored in an encrypted SQLite database (SQLCipher), with CRDT-based replication to haex-sync-server."
         },
         "techStack": {
           "title": "Technology Stack",
@@ -74,7 +74,7 @@
             },
             "step4": {
               "title": "Sync Orchestration",
-              "description": "Sync orchestrator detects changes and pushes to cloud. Other devices receive realtime updates."
+              "description": "Sync orchestrator detects dirty tables and pushes to haex-sync-server. Other devices receive a WebSocket nudge that triggers a debounced pull."
             }
           }
         },
@@ -83,19 +83,19 @@
           "intro": "Security is built into every layer of the haex-vault architecture.",
           "encryption": {
             "title": "Encrypted Storage",
-            "description": "All user data is stored in SQLCipher-encrypted SQLite databases. The encryption key is derived from the user's vault password using PBKDF2."
+            "description": "All user data is stored in an SQLCipher-encrypted SQLite database. The encryption key is derived from the user's vault password."
           },
           "twoPassword": {
-            "title": "Two-Password System",
-            "description": "haex-vault uses separate passwords for local encryption and server authentication:",
+            "title": "DID-Based Authentication",
+            "description": "haex-vault uses a local cryptographic identity (DID) for server authentication and a separate vault password for local encryption:",
             "vault": "Vault Password",
-            "vaultDesc": "Encrypts the local SQLite database and sync key",
-            "server": "Server Password",
-            "serverDesc": "Authenticates with the sync server (Supabase Auth)"
+            "vaultDesc": "Used to derive the SQLCipher key and the vault encryption key. Never leaves the device.",
+            "server": "DID Identity",
+            "serverDesc": "Each device holds a local key pair. Requests to haex-sync-server are signed with the private key."
           },
           "e2e": {
             "title": "End-to-End Encryption",
-            "description": "All data synced to the cloud is encrypted with the vault key before leaving the device. The sync server never sees plaintext data."
+            "description": "Every column value is encrypted with the vault key (AES-256-GCM) before it leaves the device. The sync server never sees plaintext."
           }
         }
       }

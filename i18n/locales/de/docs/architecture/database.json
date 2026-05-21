@@ -13,64 +13,63 @@
         "triggers": "Trigger"
       },
       "tables": {
-        "vaultSettings": "Key-Value Einstellungsspeicher für den Vault",
         "extensions": "Metadaten installierter Extensions",
         "permissions": "Vom Benutzer erteilte Extension-Berechtigungen",
-        "migrations": "Tracking angewendeter Extension-Migrations",
-        "workspaces": "Desktop-Workspace-Definitionen",
-        "desktopItems": "Auf Workspaces platzierte Items",
-        "devices": "Registrierte Geräte für diesen Vault",
-        "syncBackends": "Sync-Server-Konfigurationen",
-        "notifications": "In-App Benachrichtigungen"
+        "migrations": "Tracking angewendeter Extension-Migrationen",
+        "identities": "Lokale DID-Identitäten zur Signierung von Server-Anfragen",
+        "spaces": "Geteilte Spaces, an denen dieser Vault teilnimmt",
+        "syncBackends": "Konfigurierte haex-sync-server Backends"
       },
       "crdtTables": {
+        "configs": "Pro-Gerät HLC Node-ID und persistierter Clock-Status",
         "dirtyTables": "Tabellen mit ausstehenden lokalen Änderungen zum Sync",
-        "migrations": "Tracking angewendeter Schema-Migrations",
-        "conflicts": "Erkannte Sync-Konflikte (für Debugging)"
+        "migrations": "Tracking angewendeter Schema-Migrationen",
+        "conflicts": "Erkannte Sync-Konflikte (nur lokal, für Debugging)",
+        "deletedRows": "Pro-Zeile Lösch-Log, um Deletes über Sync zu replizieren"
       },
       "syncBackends": {
-        "password": "Verschlüsseltes Server-Passwort",
-        "syncKey": "Base64-codierter Sync-Verschlüsselungsschlüssel",
-        "vaultKeySalt": "PBKDF2 Salt für Vault-Key-Ableitung",
-        "lastPush": "HLC-Timestamp des letzten erfolgreichen Push",
-        "lastPull": "Server-Timestamp des letzten erfolgreichen Pull"
+        "homeServerUrl": "Basis-URL des haex-sync-server Backends",
+        "spaceId": "Geteilte Space-ID auf dem Server",
+        "identityId": "DID-Identität für die Authentifizierung",
+        "lastPushHlc": "HLC des letzten erfolgreichen Push",
+        "lastPullServerAt": "Server-Timestamp des letzten erfolgreichen Pull"
       },
       "dirtyTables": {
         "comment": "Verfolgt welche Tabellen ungesyncte Änderungen haben",
         "example": "Beispiel: Nach Aktualisierung eines Passworts"
       },
       "vaultKeys": {
-        "encryptedKey": "AES-GCM verschlüsselt mit Vault-Passwort",
-        "encryptedName": "AES-GCM verschlüsselt mit Server-Passwort",
-        "keySalt": "PBKDF2 Salt für Vault-Passwort",
-        "nameSalt": "PBKDF2 Salt für Server-Passwort"
+        "encryptedKey": "AES-256-GCM Ciphertext, nur auf dem Client entschlüsselbar",
+        "encryptedName": "AES-256-GCM Ciphertext des Vault-Namens",
+        "keySalt": "Salt für die Vault-Key-Ableitung",
+        "nameSalt": "Salt für die Vault-Name-Ableitung"
       },
       "syncChanges": {
         "rowPks": "JSON-Objekt mit Primärschlüsselwerten",
         "newValue": "Verschlüsselter Spaltenwert (AES-256-GCM)",
-        "partition": "Jeder Vault bekommt seine eigene Partition:",
-        "autoCreated": "Partitionen werden automatisch per Datenbank-Trigger erstellt"
+        "partition": "Indiziert pro Space:",
+        "autoCreated": "Wird vom Pull-Endpoint als Forward-Log genutzt"
       },
       "sections": {
         "overview": {
           "title": "Schema-Übersicht",
-          "intro": "haex-vault verwendet eine Dual-Datenbank-Architektur: eine lokale verschlüsselte SQLite-Datenbank auf jedem Gerät und eine PostgreSQL-Datenbank auf dem Sync-Server.",
+          "intro": "haex-vault nutzt eine duale Datenbank-Architektur: eine lokale, verschlüsselte SQLite-Datenbank auf jedem Gerät und der haex-sync-server mit eigener DB zur geräteübergreifenden Replikation.",
           "local": {
             "title": "Lokale Datenbank",
-            "description": "SQLite mit SQLCipher-Verschlüsselung, speichert alle Benutzerdaten und Extension-Tabellen mit CRDT-Spalten."
+            "description": "SQLite mit SQLCipher-Verschlüsselung, speichert alle Benutzer- und Extension-Daten mit CRDT-Spalten."
           },
           "server": {
             "title": "Sync-Server",
-            "description": "PostgreSQL (Supabase) speichert verschlüsselte Spalten-Level-Änderungen und Vault-Key-Metadaten."
+            "description": "haex-sync-server: HTTP- und WebSocket-Dienst, der verschlüsselte Spalten-Änderungen speichert. Authentifizierung über DID; der Server sieht nie Klartext."
           }
         },
         "crdtColumns": {
           "title": "CRDT-Spalten",
-          "intro": "Jede Tabelle, die am Sync teilnimmt, hat drei spezielle CRDT-Spalten, die automatisch hinzugefügt werden.",
-          "comment": "Allen synchronisierten Tabellen hinzugefügt",
-          "timestamp": "Max HLC aller Spalten (für effiziente Abfragen)",
-          "columnHlcs": "JSON mit HLC-Timestamps pro Spalte",
-          "tombstone": "Soft-Delete Flag (0=aktiv, 1=gelöscht)",
+          "intro": "Jede synchronisierte Tabelle erhält automatisch zwei CRDT-Spalten. Deletes werden separat über die Tabelle haex_deleted_rows getrackt - es gibt keine Tombstone-Spalte in deinen Tabellen.",
+          "comment": "Automatisch zu allen synchronisierten Tabellen hinzugefügt",
+          "hlc": "Row-Level Hybrid Logical Clock (Maximum aller Spalten-HLCs)",
+          "columnHlcs": "JSON-Objekt mit HLC pro Spalte für Spalten-Level-Merging",
+          "deletesNote": "Deletes fügen KEINE Tombstone-Spalte hinzu. Ein BEFORE DELETE Trigger schreibt Löschungen in haex_deleted_rows.",
           "example": {
             "title": "Beispiel-Abfrage",
             "comment": "CRDT-Spalten inspizieren"
@@ -78,7 +77,7 @@
         },
         "coreTables": {
           "title": "Kern-Tabellen",
-          "intro": "Diese Tabellen sind Teil des haex-vault Kerns und existieren in jedem Vault.",
+          "intro": "Diese Tabellen sind Teil des haex-vault Kerns und existieren in jedem Vault. Alle nehmen am CRDT-Sync teil.",
           "table": {
             "name": "Tabellenname",
             "description": "Beschreibung"
@@ -86,37 +85,37 @@
         },
         "crdtInfra": {
           "title": "CRDT-Infrastruktur",
-          "intro": "Diese Tabellen unterstützen das Sync-System, werden aber selbst NICHT synchronisiert (nur lokal).",
+          "intro": "Diese Tabellen unterstützen die Sync-Engine, werden aber selbst NICHT synchronisiert (nur lokal).",
           "synced": "Synchronisiert",
           "localOnly": "Nur lokal"
         },
         "extensionTables": {
           "title": "Extension-Tabellen",
-          "intro": "Extensions können eigene Tabellen erstellen. Diese werden automatisch mit Namespace versehen, um Konflikte zu vermeiden.",
+          "intro": "Extensions können eigene Tabellen erstellen. Diese werden automatisch namespaced, um Konflikte zu vermeiden.",
           "naming": "Namensschema:",
           "example": "Beispiele (haex-pass Extension):",
           "auto": {
             "title": "Automatisches CRDT-Setup",
-            "description": "Wenn eine Extension eine Tabelle per Migration erstellt, werden CRDT-Spalten und Trigger automatisch hinzugefügt. Extension-Tabellen synchronisieren wie Kern-Tabellen."
+            "description": "Wenn eine Extension via Migration eine Tabelle erstellt, werden CRDT-Spalten (haex_hlc, haex_column_hlcs) und die Dirty/Delete-Trigger automatisch hinzugefügt. Extension-Tabellen synchronisieren wie Kern-Tabellen."
           }
         },
         "syncServer": {
           "title": "Sync-Server Schema",
-          "intro": "Der Sync-Server (haex-sync-server) verwendet PostgreSQL mit Supabase für Authentifizierung und Realtime.",
-          "partitioned": "Partitioniert nach vault_id",
+          "intro": "Der Sync-Server (haex-sync-server) führt ein verschlüsseltes, append-only Change-Log pro Space und authentifiziert Clients über DID-signierte Requests.",
+          "partitioned": "Indiziert pro Space",
           "rls": {
-            "title": "Row Level Security",
-            "description": "Jede Partition hat RLS-Policies, die sicherstellen, dass Benutzer nur auf die Daten ihres eigenen Vaults zugreifen können. Policies werden automatisch erstellt, wenn Partitionen erstellt werden."
+            "title": "Space-basierte Autorisierung",
+            "description": "Jeder Read/Write wird gegen die Space-Mitgliedschaft der aufrufenden DID autorisiert. Der Server kann die Inhalte nicht entschlüsseln - nur autorisierte Mitglieder können das."
           }
         },
         "triggers": {
           "title": "SQLite-Trigger",
-          "intro": "CRDT-Tabellen haben INSERT- und UPDATE-Trigger, die die Tabelle als dirty markieren, wenn sich Daten ändern.",
+          "intro": "CRDT-Tabellen bekommen drei Trigger automatisch: INSERT und UPDATE markieren die Tabelle als dirty für den nächsten Push; BEFORE DELETE loggt zusätzlich die Primärschlüssel der gelöschten Zeile in haex_deleted_rows, damit das Delete repliziert werden kann.",
           "naming": "Namenskonvention:",
           "example": "Beispiel-Trigger:",
           "auto": {
             "title": "Automatisch generiert",
-            "description": "Trigger werden automatisch vom Rust-Backend erstellt, wenn Tabellen für CRDT-Sync eingerichtet werden. Du musst sie nicht manuell erstellen."
+            "description": "Trigger werden vom Rust-Backend erstellt, wenn eine Tabelle für CRDT-Sync eingerichtet wird. Du musst sie nicht manuell erstellen."
           }
         }
       }

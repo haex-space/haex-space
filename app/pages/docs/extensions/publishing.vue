@@ -32,10 +32,10 @@ haextension/private.key`,
   buildAndSign: `# Build your extension (e.g., with Vite)
 npm run build
 
-# Sign the built extension
+# Sign + package the build output
 npx haex sign ./dist -k ./haextension/private.key
 
-# This creates: my-extension-1.0.0.xt`,
+# Output:  my-extension-1.0.0.xt`,
 
   packageJson: `{
   "scripts": {
@@ -180,6 +180,7 @@ const publishingSteps = computed(() => [
           <li class="flex items-center gap-2">
             <FileArchive class="w-4 h-4 text-primary" />
             <span>my-extension-1.0.0.xt</span>
+            <span class="text-muted-foreground text-xs">(zip archive)</span>
           </li>
           <li class="pl-6 text-muted-foreground">├── index.html</li>
           <li class="pl-6 text-muted-foreground">├── assets/</li>

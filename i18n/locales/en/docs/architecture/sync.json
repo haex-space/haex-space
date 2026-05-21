@@ -12,7 +12,7 @@
         "push": "Push Operation",
         "pull": "Pull Operation",
         "realtime": "Realtime Updates",
-        "softDelete": "Soft Delete",
+        "softDelete": "Deletes",
         "events": "Sync Events",
         "eventFiltering": "Event Filtering"
       },
@@ -27,11 +27,11 @@
             },
             "realtime": {
               "title": "Realtime Sync",
-              "description": "Supabase Realtime pushes updates instantly to other devices."
+              "description": "A shared WebSocket to haex-sync-server triggers a debounced pull whenever another device pushes."
             },
             "e2e": {
               "title": "E2E Encrypted",
-              "description": "All synced data is encrypted before leaving your device."
+              "description": "Every column value is encrypted with the vault key before it leaves the device."
             }
           }
         },
@@ -40,33 +40,32 @@
           "intro": "CRDTs are data structures that can be replicated across multiple computers, modified independently, and merged without conflicts.",
           "lww": {
             "title": "Last-Write-Wins (LWW)",
-            "description": "haex-vault uses LWW semantics with Hybrid Logical Clocks. The change with the highest timestamp always wins, ensuring deterministic conflict resolution across all devices."
+            "description": "haex-vault uses LWW semantics with Hybrid Logical Clocks. The change with the highest HLC always wins, ensuring deterministic conflict resolution across all devices."
           },
           "columns": {
             "title": "CRDT Columns",
-            "description": "Every synced table has three special columns that enable CRDT functionality:",
-            "comment": "All synced tables have these columns",
+            "description": "Every synced table has two special columns that enable CRDT functionality:",
+            "comment": "All synced tables get these columns",
             "auto": "added automatically",
-            "timestamp": "Max HLC across all columns (for efficient queries)",
+            "hlc": "Row-level HLC (max across all column HLCs, for efficient queries)",
             "columnHlcs": "JSON object with HLC per column",
-            "tombstone": "0 = active, 1 = soft-deleted"
+            "deletesNote": "Deletes are tracked in a separate haex_deleted_rows table - there is no tombstone column."
           }
         },
         "hlc": {
           "title": "Hybrid Logical Clocks",
-          "intro": "HLCs combine physical time with logical counters to create globally unique, monotonically increasing timestamps without requiring synchronized clocks.",
-          "format": "HLC Format: ISO 8601 timestamp + Device ID suffix",
+          "intro": "HLCs combine physical time with a stable node ID to create globally unique, monotonically increasing timestamps without requiring synchronized clocks.",
+          "format": "HLC Format: {ntp_time_hex}/{node_uuid_hex}",
           "benefits": "Key benefits of HLCs:",
           "benefit1": "Lexicographically sortable - can use simple string comparison",
-          "benefit2": "Globally unique - device ID suffix prevents collisions",
+          "benefit2": "Globally unique - the 16-byte node ID prevents collisions",
           "benefit3": "Causally ordered - respects happens-before relationships"
         },
         "columnLevel": {
           "title": "Column-Level Sync",
-          "intro": "Unlike row-level sync, haex-vault tracks changes at the column level. This means concurrent edits to different columns of the same row are automatically merged without data loss.",
+          "intro": "Unlike row-level sync, haex-vault tracks changes at the column level. Concurrent edits to different columns of the same row merge automatically without data loss.",
           "example": {
-            "title": "Conflict Resolution Example",
-            "code": "Device A: UPDATE passwords SET title = 'Gmail' WHERE id = 'abc'\n         (timestamp: 2024-01-03T10:00:00-A)\n\nDevice B: UPDATE passwords SET password = 'newpass' WHERE id = 'abc'\n         (timestamp: 2024-01-03T10:00:15-B)\n\nResult after sync:\n- title = 'Gmail'     (from Device A)\n- password = 'newpass' (from Device B)\n\nBoth changes are preserved!"
+            "title": "Conflict Resolution Example"
           },
           "important": {
             "title": "No Data Loss",
@@ -74,7 +73,7 @@
           },
           "pkWarning": {
             "title": "Primary Keys Are NOT Tracked",
-            "description": "CRDT only tracks non-primary-key columns. If your table has a composite primary key (e.g., PRIMARY KEY (item_id, group_id)) and you update one of the PK columns, that change will NOT sync. Use a single-column PK and keep changeable columns as regular (non-PK) columns."
+            "description": "CRDT only tracks non-primary-key columns. If your table has a composite primary key (e.g., PRIMARY KEY (item_id, group_id)) and you update one of the PK columns, that change will NOT sync. Use a single-column PK and keep changeable fields as regular columns."
           },
           "hlcJson": {
             "title": "Column HLC Storage"
@@ -82,38 +81,35 @@
         },
         "syncFlow": {
           "title": "Sync Flow",
-          "intro": "The sync process involves three main operations: push, pull, and realtime subscriptions.",
+          "intro": "The sync process has three pieces: push, pull, and a shared WebSocket that signals other devices.",
           "push": {
             "title": "Push Operation",
-            "description": "When you make changes locally, the sync orchestrator detects dirty tables, scans for changes since the last push, encrypts each value, and sends them to the server in batches."
+            "description": "When you make changes locally, the sync orchestrator scans dirty tables, groups column-level changes by HLC, encrypts each value, and sends chunks (<= 2000 changes) to the server."
           },
           "pull": {
             "title": "Pull Operation",
-            "description": "Pull fetches changes from the server since the last pull timestamp. Each change is decrypted and compared against local data using HLC timestamps. Only newer changes are applied."
+            "description": "Pull fetches server changes since the last HLC cursor. Each change is decrypted and applied with column-level HLC comparison; only newer values win."
           }
         },
         "realtime": {
           "title": "Realtime Updates",
-          "intro": "haex-vault subscribes to Supabase Realtime channels to receive instant notifications when other devices push changes. This triggers a debounced pull operation.",
+          "intro": "haex-vault opens a single shared WebSocket to haex-sync-server, authenticated with the device's DID. Incoming events are used purely as triggers - the authoritative data path is always the pull endpoint.",
           "fallback": {
             "title": "Fallback Polling",
-            "description": "If realtime subscriptions fail, the system falls back to periodic polling (every 5 minutes) to ensure data stays synchronized."
+            "description": "If the WebSocket connection drops (mobile Doze mode, network changes, ...), the orchestrator falls back to periodic pulls and reconnects with exponential backoff."
           }
         },
         "softDelete": {
-          "title": "Soft Delete with Tombstones",
-          "intro": "haex-vault uses soft deletion instead of actual DELETE statements. This ensures deletes can be properly synchronized across devices.",
-          "instead": "Instead of:",
-          "use": "Use:",
-          "query": "Query active records:",
-          "why": "Soft deletion allows the delete operation to be treated like any other column change, syncing properly through the CRDT system. The row remains in the database with haex_tombstone = 1."
+          "title": "Deletes",
+          "intro": "haex-vault deletes rows for real - but a BEFORE DELETE trigger logs the deleted row's table and primary keys into haex_deleted_rows so the deletion can be replicated.",
+          "why": "This means your queries don't need a `WHERE haex_tombstone = 0` filter. Rows that exist are alive; rows that were deleted are gone locally and propagate via haex_deleted_rows to other devices."
         },
         "events": {
           "title": "Sync Events",
           "intro": "After a successful pull, events are emitted automatically by the sync orchestrator to notify the application that data has changed. Extensions don't need to emit these events - they only need to listen and react to them.",
           "automatic": {
             "title": "Automatic Event Emission",
-            "description": "The sync orchestrator automatically emits events after every successful pull. Extensions don't need to emit these events themselves - they are handled by haex-vault internally."
+            "description": "The sync orchestrator emits events after every successful pull. Extensions don't need to emit these events themselves - haex-vault handles it."
           },
           "twoEvents": {
             "title": "Two Event Types",
@@ -125,7 +121,7 @@
             "intro": "For security and privacy, sync events are filtered based on each extension's database permissions. Extensions only receive notifications about tables they have access to.",
             "description": "When sync completes, haex-vault checks each extension's DB permissions and only includes table names that match:",
             "wildcard": "Wildcard permission (*) - sees all tables",
-            "prefix": "Prefix match (e.g., publickey__extname__*) - sees tables with that prefix",
+            "prefix": "Prefix match (e.g., publicKey__extName__*) - sees tables with that prefix",
             "exact": "Exact match - sees only that specific table",
             "privacy": "This prevents extensions from observing activity in other extensions' tables, ensuring data privacy between extensions."
           },

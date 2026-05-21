@@ -2,12 +2,7 @@
   "auth": {
     "login": {
       "title": "Welcome back",
-      "subtitle": "Sign in to your account",
-      "tabs": {
-        "sync": "Vault Sync",
-        "marketplace": "Marketplace"
-      },
-      "syncDescription": "Sign in to sync your vault data across devices.",
+      "subtitle": "Sign in to your marketplace account",
       "marketplaceDescription": "Sign in to publish and manage your extensions.",
       "email": "Email",
       "emailPlaceholder": "mail{'@'}example.com",

@@ -8,7 +8,7 @@
       "success": {
         "title": "E-Mail verifiziert!",
         "subtitle": "Dein Konto wurde erfolgreich verifiziert",
-        "redirecting": "Du wirst zum Dashboard weitergeleitet..."
+        "redirecting": "Du wirst zum Developer-Dashboard weitergeleitet..."
       },
       "error": {
         "title": "Verifizierung fehlgeschlagen",

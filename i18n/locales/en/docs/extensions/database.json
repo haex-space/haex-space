@@ -28,7 +28,7 @@
         },
         "crdt": {
           "title": "CRDT Sync",
-          "description": "Conflict-free sync across devices using CRDTs"
+          "description": "Conflict-free sync across devices using column-level HLCs"
         }
       },
       "sections": {
@@ -64,10 +64,10 @@
           "column": "Column",
           "type": "Type",
           "purpose": "Purpose",
-          "timestampDesc": "Logical timestamp for ordering operations",
-          "hlcsDesc": "Hybrid logical clock state for each column",
-          "deletedDesc": "Soft delete flag (0 = active, 1 = deleted)",
-          "warning": "Do not create columns starting with 'haex_' in your schema. These are reserved and managed automatically by haex-vault."
+          "hlcDesc": "Row-level Hybrid Logical Clock (max across all column HLCs)",
+          "hlcsDesc": "JSON map of HLC per column for column-level last-write-wins",
+          "deletesNote": "There is no tombstone column on your tables. Deletes are real DELETEs; a BEFORE DELETE trigger logs them into haex_deleted_rows so they can still be replicated by sync.",
+          "warning": "Do not create columns starting with 'haex_' in your schema. These are reserved and managed by the CRDT layer."
         },
         "noSyncTables": {
           "title": "No-Sync Tables",
@@ -79,7 +79,7 @@
           "userPrefs": "User preferences synced across devices",
           "cacheData": "Local cache, regenerated per device",
           "sessionData": "Auth tokens, device-specific",
-          "tip": "Tables with _no_sync suffix don't get CRDT columns and are completely local to each device. Data in these tables will be lost if the app is uninstalled."
+          "tip": "Tables with the _no_sync suffix don't get CRDT columns and are completely local to each device. Data in these tables will be lost if the app is uninstalled."
         },
         "drizzleOrm": {
           "title": "Drizzle ORM",
