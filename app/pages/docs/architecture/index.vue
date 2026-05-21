@@ -26,31 +26,31 @@ const techStack = computed(() => [
   {
     icon: Monitor,
     title: t('docs.architecture.techStack.frontend.title'),
-    items: ['Vue 3 + TypeScript', 'Nuxt UI Components', 'Pinia State Management', 'Drizzle ORM']
+    items: ['Vue 3 + TypeScript', 'Pinia State Management', 'Drizzle ORM', 'shadcn-vue / Tailwind']
   },
   {
     icon: Server,
     title: t('docs.architecture.techStack.backend.title'),
-    items: ['Tauri (Rust)', 'SQLite + SQLCipher', 'CRDT Sync Engine', 'Extension Runtime']
+    items: ['Tauri 2 (Rust)', 'SQLite + SQLCipher', 'CRDT Engine (UHLC)', 'Extension Runtime']
   },
   {
     icon: RefreshCw,
     title: t('docs.architecture.techStack.sync.title'),
-    items: ['Supabase (PostgreSQL)', 'Realtime Subscriptions', 'Column-Level HLC', 'E2E Encryption']
+    items: ['haex-sync-server (HTTP + WebSocket)', 'DID-based auth', 'Column-Level HLC', 'E2E Encryption (AES-256-GCM)']
   },
   {
     icon: Puzzle,
     title: t('docs.architecture.techStack.extensions.title'),
-    items: ['iframe/WebView Sandbox', 'haex-vault-sdk', 'Permission System', 'Hot Reload (Dev)']
+    items: ['Iframe / Tauri WebviewWindow', '@haex-space/vault-sdk', 'Permission System', 'Hot Reload (Dev)']
   }
 ])
 
 const repositories = [
-  { name: 'haex-vault', description: t('docs.architecture.repos.vault'), stack: 'Tauri + Vue' },
-  { name: 'haex-sync-server', description: t('docs.architecture.repos.syncServer'), stack: 'Hono + Supabase' },
-  { name: 'haex-marketplace', description: t('docs.architecture.repos.marketplace'), stack: 'Hono + Supabase' },
+  { name: 'haex-vault', description: t('docs.architecture.repos.vault'), stack: 'Tauri 2 + Vue 3' },
+  { name: 'haex-sync-server', description: t('docs.architecture.repos.syncServer'), stack: 'Custom HTTP + WS' },
+  { name: 'haex-marketplace', description: t('docs.architecture.repos.marketplace'), stack: 'Hono' },
   { name: 'haex-vault-sdk', description: t('docs.architecture.repos.sdk'), stack: 'TypeScript' },
-  { name: 'haex-space', description: t('docs.architecture.repos.website'), stack: 'Nuxt' },
+  { name: 'haex-space', description: t('docs.architecture.repos.website'), stack: 'Nuxt 3' },
 ]
 </script>
 
@@ -103,7 +103,7 @@ const repositories = [
              ▼                                     ▼
 ┌─────────────────────────┐              ┌─────────────────────────┐
 │    haex-sync-server     │              │    Local SQLite DB      │
-│  (Supabase/PostgreSQL)  │              │   (Encrypted Vault)     │
+│  (HTTP + WebSocket)     │              │   (SQLCipher Vault)     │
 └─────────────────────────┘              └─────────────────────────┘</code></pre>
         </CardContent>
       </Card>

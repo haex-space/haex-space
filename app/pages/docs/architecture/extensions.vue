@@ -121,42 +121,42 @@ const paths = {
                   <th class="text-left py-2 px-4">
                     <div class="flex items-center gap-2">
                       <Monitor class="w-4 h-4" />
-                      iframe
+                      <code>window</code>
                     </div>
                   </th>
                   <th class="text-left py-2 pl-4">
                     <div class="flex items-center gap-2">
                       <Smartphone class="w-4 h-4" />
-                      WebView
+                      <code>iframe</code>
                     </div>
                   </th>
                 </tr>
               </thead>
               <tbody class="text-muted-foreground">
                 <tr class="border-b">
+                  <td class="py-2 pr-4 font-medium">{{ t('docs.extArch.sections.displayModes.table.runtime') }}</td>
+                  <td class="py-2 px-4">Tauri WebviewWindow</td>
+                  <td class="py-2 pl-4">HTML iframe</td>
+                </tr>
+                <tr class="border-b">
                   <td class="py-2 pr-4 font-medium">{{ t('docs.extArch.sections.displayModes.table.platform') }}</td>
-                  <td class="py-2 px-4">Desktop</td>
-                  <td class="py-2 pl-4">Mobile (Android/iOS)</td>
+                  <td class="py-2 px-4">Desktop (auto-picked)</td>
+                  <td class="py-2 pl-4">Mobile (auto-picked)</td>
                 </tr>
                 <tr class="border-b">
                   <td class="py-2 pr-4 font-medium">{{ t('docs.extArch.sections.displayModes.table.isolation') }}</td>
-                  <td class="py-2 px-4">Browser Sandbox</td>
-                  <td class="py-2 pl-4">Process Isolation</td>
+                  <td class="py-2 px-4">Native window + Webview</td>
+                  <td class="py-2 pl-4">Browser sandbox (parent origin checked)</td>
                 </tr>
                 <tr class="border-b">
                   <td class="py-2 pr-4 font-medium">{{ t('docs.extArch.sections.displayModes.table.communication') }}</td>
-                  <td class="py-2 px-4">postMessage API</td>
-                  <td class="py-2 pl-4">Tauri Events</td>
-                </tr>
-                <tr class="border-b">
-                  <td class="py-2 pr-4 font-medium">{{ t('docs.extArch.sections.displayModes.table.debugging') }}</td>
-                  <td class="py-2 px-4">DevTools</td>
-                  <td class="py-2 pl-4">Native Debugger</td>
+                  <td class="py-2 px-4">Tauri invoke / events</td>
+                  <td class="py-2 pl-4">postMessage</td>
                 </tr>
                 <tr>
-                  <td class="py-2 pr-4 font-medium">{{ t('docs.extArch.sections.displayModes.table.performance') }}</td>
-                  <td class="py-2 px-4">Lightweight</td>
-                  <td class="py-2 pl-4">Heavier</td>
+                  <td class="py-2 pr-4 font-medium">{{ t('docs.extArch.sections.displayModes.table.debugging') }}</td>
+                  <td class="py-2 px-4">Webview DevTools</td>
+                  <td class="py-2 pl-4">Host DevTools</td>
                 </tr>
               </tbody>
             </table>
@@ -238,7 +238,7 @@ const paths = {
               <li><code class="text-primary">readWrite</code> - SELECT + INSERT/UPDATE</li>
               <li><code class="text-primary">create</code> - CREATE TABLE</li>
               <li><code class="text-primary">delete</code> - DELETE rows</li>
-              <li><code class="text-primary">alterDrop</code> - ALTER/DROP</li>
+              <li><code class="text-primary">alterDrop</code> - ALTER / DROP TABLE</li>
             </ul>
           </CardContent>
         </Card>
@@ -250,7 +250,26 @@ const paths = {
             <ul class="text-sm text-muted-foreground space-y-1">
               <li><code class="text-primary">read</code> - Read files</li>
               <li><code class="text-primary">readWrite</code> - Read + Write files</li>
-              <li><code class="text-primary">delete</code> - Delete files</li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader class="pb-2">
+            <CardTitle class="text-base">Web (HTTP)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul class="text-sm text-muted-foreground space-y-1">
+              <li>URL-pattern based; HTTP method is not enforced.</li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader class="pb-2">
+            <CardTitle class="text-base">Shell</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul class="text-sm text-muted-foreground space-y-1">
+              <li><code class="text-primary">execute</code> - Run a configured shell command</li>
             </ul>
           </CardContent>
         </Card>

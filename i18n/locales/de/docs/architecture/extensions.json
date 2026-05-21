@@ -23,7 +23,7 @@
             },
             "sdk": {
               "title": "Einheitliches SDK",
-              "description": "Das haex-vault-sdk bietet eine konsistente API unabhängig vom Anzeigemodus."
+              "description": "Das @haex-space/vault-sdk bietet eine konsistente API unabhängig vom Anzeigemodus."
             },
             "database": {
               "title": "Eigene Datenbank-Tabellen",
@@ -37,14 +37,14 @@
         },
         "displayModes": {
           "title": "Anzeigemodi",
-          "intro": "Extensions können je nach Plattform in zwei Modi laufen. Das SDK abstrahiert die Unterschiede.",
+          "intro": "Extensions rendern entweder als Tauri WebviewWindow (`window`) oder eingebetteten HTML-iframe (`iframe`). Der Modus `auto` wählt pro Plattform - Window auf Desktop, iframe auf Mobile.",
           "table": {
             "aspect": "Aspekt",
+            "runtime": "Runtime",
             "platform": "Plattform",
             "isolation": "Isolation",
             "communication": "Kommunikation",
-            "debugging": "Debugging",
-            "performance": "Performance"
+            "debugging": "Debugging"
           },
           "manifest": {
             "title": "Im Manifest konfigurieren"
@@ -70,12 +70,12 @@
         },
         "communication": {
           "title": "Extension-Kommunikation",
-          "intro": "Extensions kommunizieren mit dem Host durch verschiedene Mechanismen je nach Anzeigemodus.",
+          "intro": "Extensions kommunizieren mit dem Host über unterschiedliche Transports je nach Anzeigemodus, aber das SDK bietet in beiden Fällen die gleiche API.",
           "iframe": {
-            "title": "iframe-Kommunikation (Desktop)"
+            "title": "iframe-Kommunikation (postMessage)"
           },
           "webview": {
-            "title": "WebView-Kommunikation (Mobile)"
+            "title": "Window-Kommunikation (Tauri WebviewWindow)"
           }
         },
         "devMode": {
@@ -92,8 +92,8 @@
             }
           },
           "important": {
-            "title": "Keine CRDT-Trigger",
-            "description": "Dev-Extension-Tabellen bekommen keine CRDT-Trigger, daher sind Änderungen nur lokal. Produktions-Extensions erhalten volle Sync-Unterstützung."
+            "title": "Kein CRDT-Sync",
+            "description": "Dev-Extension-Tabellen sind nur lokal und werden nicht zum haex-sync-server gepusht. Sobald du die Extension signierst + installierst, ist die volle Sync-Unterstützung aktiv."
           }
         },
         "syncEvents": {

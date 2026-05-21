@@ -1,18 +1,20 @@
 ```sql
+-- Server-side change log. One row per (column, row, change).
+-- The server only stores encrypted ciphertext; HLC ordering decides
+-- replacement.
 CREATE TABLE sync_changes (
-  vault_id TEXT NOT NULL,
-  table_name TEXT NOT NULL,
-  row_pks JSONB NOT NULL,            -- Primary key(s) as JSON
-  column_name TEXT NOT NULL,
-  new_value BYTEA,                   -- Encrypted column value
-  hlc_timestamp TEXT NOT NULL,
-  device_id TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT now(),
-  updated_at TIMESTAMP DEFAULT now(),
-  PRIMARY KEY (vault_id, hlc_timestamp, table_name, row_pks, column_name)
-) PARTITION BY LIST (vault_id);
+  space_id      TEXT NOT NULL,
+  table_name    TEXT NOT NULL,
+  row_pks       JSONB NOT NULL,        -- Primary key(s) as JSON
+  column_name   TEXT NOT NULL,
+  encrypted_value BYTEA,                -- AES-256-GCM ciphertext
+  nonce         BYTEA NOT NULL,
+  haex_hlc      TEXT NOT NULL,         -- HLC of this column change
+  device_id     TEXT NOT NULL,
+  created_at    TIMESTAMP DEFAULT now(),
+  PRIMARY KEY (space_id, haex_hlc, table_name, row_pks, column_name)
+);
 
--- Partitions created automatically per vault:
--- sync_changes_abc123_def456_...
--- Auto-created when vault first syncs
+-- Indexed for "give me everything since cursor X" pull queries.
+CREATE INDEX ON sync_changes (space_id, haex_hlc);
 ```

@@ -28,7 +28,7 @@
         },
         "crdt": {
           "title": "CRDT-Sync",
-          "description": "Konfliktfreie Synchronisation über Geräte mit CRDTs"
+          "description": "Konfliktfreie Synchronisation über Geräte mit Spalten-Level HLCs"
         }
       },
       "sections": {
@@ -64,10 +64,10 @@
           "column": "Spalte",
           "type": "Typ",
           "purpose": "Zweck",
-          "timestampDesc": "Logischer Zeitstempel für die Operationsreihenfolge",
-          "hlcsDesc": "Hybrid Logical Clock Status für jede Spalte",
-          "deletedDesc": "Soft-Delete-Flag (0 = aktiv, 1 = gelöscht)",
-          "warning": "Erstelle keine Spalten, die mit 'haex_' in deinem Schema beginnen. Diese sind reserviert und werden automatisch von haex-vault verwaltet."
+          "hlcDesc": "Row-Level Hybrid Logical Clock (Maximum aller Spalten-HLCs)",
+          "hlcsDesc": "JSON-Map mit HLC pro Spalte für Last-Write-Wins auf Spaltenebene",
+          "deletesNote": "Es gibt keine Tombstone-Spalte. Deletes sind echte DELETEs; ein BEFORE DELETE Trigger schreibt sie in haex_deleted_rows, damit sie trotzdem über Sync repliziert werden.",
+          "warning": "Erstelle keine Spalten, die mit 'haex_' beginnen. Diese sind reserviert und werden vom CRDT-Layer verwaltet."
         },
         "noSyncTables": {
           "title": "Nicht-synchronisierte Tabellen",

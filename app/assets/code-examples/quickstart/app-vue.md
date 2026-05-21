@@ -12,12 +12,12 @@ const platform = computed(() => context.value?.platform) // 'linux', 'windows', 
 
 // Example: Store data
 async function saveNote() {
-  await client.storage.set('my-note', 'Hello from my extension!')
+  await client.storage.setItem('my-note', 'Hello from my extension!')
 }
 
 // Example: Read data
 async function loadNote() {
-  const note = await client.storage.get('my-note')
+  const note = await client.storage.getItem('my-note')
   console.log(note)
 }
 </script>

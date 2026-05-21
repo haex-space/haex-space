@@ -49,32 +49,32 @@ const syncFlowDiagram = `┌─────────────────�
 ┌─────────────────────────────────────────────────────────────┐
 │   SQLite Trigger fires                                       │
 │   → Entry added to haex_crdt_dirty_tables                   │
-│   → Rust emits 'crdt:dirty-tables-changed' event            │
+│   → DELETEs logged into haex_deleted_rows                   │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
-│   Sync Orchestrator (debounced 300ms)                        │
+│   Sync Orchestrator (debounced)                              │
 │   → Scans dirty tables for changes since last push          │
-│   → Generates column-level changes                          │
-│   → Encrypts each value with vault key                      │
+│   → Generates column-level changes grouped by HLC           │
+│   → Encrypts each value with the vault key                  │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
 │   POST /sync/push → haex-sync-server                         │
-│   → UPSERT into sync_changes (partitioned by vault_id)      │
-│   → HLC comparison: only store if new HLC > existing        │
-│   → Trigger Supabase Realtime notification                  │
+│   → Authenticates via DID-signed request                    │
+│   → Appends rows to sync_changes (space_id, haex_hlc, …)    │
+│   → Broadcasts a 'sync' event on the shared WebSocket       │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
-│   Other devices receive Realtime event                       │
-│   → Trigger debounced pull                                  │
-│   → GET /sync/pull?afterUpdatedAt=lastPullTimestamp         │
-│   → Decrypt values, apply with HLC comparison               │
-│   → Emit 'haextension:sync:tables-updated' event            │
+│   Other devices receive WebSocket event                      │
+│   → Trigger debounced pull (~500ms)                         │
+│   → GET /sync/pull?spaceId=…&afterHlc=…                     │
+│   → Decrypt values, apply with column-level HLC comparison  │
+│   → Emit 'haextension:sync:tables-updated' to extensions    │
 └─────────────────────────────────────────────────────────────┘`
 </script>
 

@@ -13,64 +13,63 @@
         "triggers": "Triggers"
       },
       "tables": {
-        "vaultSettings": "Key-value settings storage for the vault",
         "extensions": "Installed extensions metadata",
-        "permissions": "Extension permissions granted by user",
+        "permissions": "Extension permissions granted by the user",
         "migrations": "Tracking of applied extension migrations",
-        "workspaces": "Desktop workspace definitions",
-        "desktopItems": "Items placed on workspaces",
-        "devices": "Registered devices for this vault",
-        "syncBackends": "Sync server configurations",
-        "notifications": "In-app notifications"
+        "identities": "Local DID identities used to sign requests",
+        "spaces": "Shared spaces this vault participates in",
+        "syncBackends": "Configured haex-sync-server backends"
       },
       "crdtTables": {
+        "configs": "Per-device HLC node ID and persisted clock state",
         "dirtyTables": "Tables with pending local changes to sync",
         "migrations": "Applied schema migrations tracking",
-        "conflicts": "Detected sync conflicts (for debugging)"
+        "conflicts": "Detected sync conflicts (debugging, local-only)",
+        "deletedRows": "Per-row delete log used to replicate deletions"
       },
       "syncBackends": {
-        "password": "Encrypted server password",
-        "syncKey": "Base64 encoded sync encryption key",
-        "vaultKeySalt": "PBKDF2 salt for vault key derivation",
-        "lastPush": "HLC timestamp of last successful push",
-        "lastPull": "Server timestamp of last successful pull"
+        "homeServerUrl": "Base URL of the haex-sync-server backend",
+        "spaceId": "Shared space identifier on the server",
+        "identityId": "DID identity used for authentication",
+        "lastPushHlc": "HLC of the last successful push",
+        "lastPullServerAt": "Server-side timestamp of the last successful pull"
       },
       "dirtyTables": {
         "comment": "Tracks which tables have unsynced changes",
-        "example": "Example: After updating a password"
+        "example": "Example: after updating a password"
       },
       "vaultKeys": {
-        "encryptedKey": "AES-GCM encrypted with vault password",
-        "encryptedName": "AES-GCM encrypted with server password",
-        "keySalt": "PBKDF2 salt for vault password",
-        "nameSalt": "PBKDF2 salt for server password"
+        "encryptedKey": "AES-256-GCM ciphertext, only decryptable on the client",
+        "encryptedName": "AES-256-GCM ciphertext of the vault name",
+        "keySalt": "Salt for vault key derivation",
+        "nameSalt": "Salt for vault name derivation"
       },
       "syncChanges": {
         "rowPks": "JSON object with primary key values",
         "newValue": "Encrypted column value (AES-256-GCM)",
-        "partition": "Each vault gets its own partition:",
-        "autoCreated": "Partitions are auto-created via database trigger"
+        "partition": "Indexed per space:",
+        "autoCreated": "Used by the pull endpoint as a forward log"
       },
       "sections": {
         "overview": {
           "title": "Schema Overview",
-          "intro": "haex-vault uses a dual-database architecture: a local encrypted SQLite database on each device, and a PostgreSQL database on the sync server.",
+          "intro": "haex-vault uses a dual-database architecture: a local encrypted SQLite database on each device, and the haex-sync-server with its own database for cross-device replication.",
           "local": {
             "title": "Local Database",
             "description": "SQLite with SQLCipher encryption, storing all user data and extension tables with CRDT columns."
           },
           "server": {
             "title": "Sync Server",
-            "description": "PostgreSQL (Supabase) storing encrypted column-level changes and vault key metadata."
+            "description": "haex-sync-server: HTTP + WebSocket service that stores encrypted column-level changes. Authentication is DID-based; the server never sees plaintext data."
           }
         },
         "crdtColumns": {
           "title": "CRDT Columns",
-          "intro": "Every table that participates in sync has three special CRDT columns added automatically.",
-          "comment": "Added to all synced tables",
-          "timestamp": "Max HLC of all columns (for efficient queries)",
-          "columnHlcs": "JSON with per-column HLC timestamps",
-          "tombstone": "Soft-delete flag (0=active, 1=deleted)",
+          "intro": "Every table that participates in sync has two special CRDT columns added automatically. Deletes are tracked separately via the haex_deleted_rows table - no tombstone column is added to your tables.",
+          "comment": "Added to all synced tables automatically",
+          "hlc": "Row-level Hybrid Logical Clock (max over all column HLCs)",
+          "columnHlcs": "JSON object with HLC per column for column-level merging",
+          "deletesNote": "Deletes do NOT add a tombstone column. A BEFORE DELETE trigger logs deletions to haex_deleted_rows.",
           "example": {
             "title": "Example Query",
             "comment": "Inspecting CRDT columns"
@@ -78,7 +77,7 @@
         },
         "coreTables": {
           "title": "Core Tables",
-          "intro": "These tables are part of haex-vault core and exist in every vault.",
+          "intro": "These tables are part of haex-vault core and exist in every vault. They all participate in CRDT sync.",
           "table": {
             "name": "Table Name",
             "description": "Description"
@@ -86,7 +85,7 @@
         },
         "crdtInfra": {
           "title": "CRDT Infrastructure",
-          "intro": "These tables support the sync system but are NOT synced themselves (local-only).",
+          "intro": "These tables support the sync engine but are NOT synced themselves (local-only).",
           "synced": "Synced",
           "localOnly": "Local Only"
         },
@@ -97,26 +96,26 @@
           "example": "Examples (haex-pass extension):",
           "auto": {
             "title": "Automatic CRDT Setup",
-            "description": "When an extension creates a table via migrations, CRDT columns and triggers are automatically added. Extension tables sync just like core tables."
+            "description": "When an extension creates a table via migrations, CRDT columns (haex_hlc, haex_column_hlcs) and the dirty/delete triggers are added automatically. Extension tables sync just like core tables."
           }
         },
         "syncServer": {
           "title": "Sync Server Schema",
-          "intro": "The sync server (haex-sync-server) uses PostgreSQL with Supabase for authentication and realtime.",
-          "partitioned": "Partitioned by vault_id",
+          "intro": "The sync server (haex-sync-server) keeps an encrypted, append-only change log per space and authenticates clients via DID-signed requests.",
+          "partitioned": "Indexed per space",
           "rls": {
-            "title": "Row Level Security",
-            "description": "Each partition has RLS policies ensuring users can only access their own vault's data. Policies are automatically created when partitions are created."
+            "title": "Per-Space Authorization",
+            "description": "Every read/write is authorized against the calling DID's membership in the space. The server cannot decrypt the contents - only authorized members can."
           }
         },
         "triggers": {
           "title": "SQLite Triggers",
-          "intro": "CRDT tables have INSERT and UPDATE triggers that mark the table as dirty when data changes.",
+          "intro": "CRDT tables get three triggers automatically: INSERT and UPDATE mark the table as dirty for the next push; BEFORE DELETE additionally logs the deleted row's PKs into haex_deleted_rows so the deletion can be replicated.",
           "naming": "Naming Convention:",
           "example": "Example Triggers:",
           "auto": {
             "title": "Auto-Generated",
-            "description": "Triggers are automatically created by the Rust backend when tables are set up for CRDT sync. You don't need to create them manually."
+            "description": "Triggers are created by the Rust backend when a table is set up for CRDT sync. You don't need to create them manually."
           }
         }
       }

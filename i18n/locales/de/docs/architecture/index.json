@@ -17,10 +17,10 @@
         "security": "Sicherheit"
       },
       "repos": {
-        "vault": "Hauptanwendung - Desktop/Mobile Client",
-        "syncServer": "Sync-Backend mit Supabase/PostgreSQL",
+        "vault": "Hauptanwendung - Desktop / Mobile Client (Tauri 2 + Vue 3)",
+        "syncServer": "haex-sync-server: verschlüsseltes Spalten-Change-Log über HTTP + WebSocket",
         "marketplace": "Extension-Marketplace und Distribution",
-        "sdk": "SDK für Extension-Entwickler",
+        "sdk": "@haex-space/vault-sdk - SDK + CLI für Extension-Entwickler",
         "website": "haex.space Website und Dokumentation"
       },
       "techStack": {
@@ -41,7 +41,7 @@
         "overview": {
           "title": "Systemübersicht",
           "intro": "haex-vault ist eine Tauri-basierte Desktop- und Mobile-Anwendung, die als sicherer Host für Extensions (haextensions) dient. Die Architektur basiert auf drei Kernprinzipien: Offline-First-Betrieb, Ende-zu-Ende-Verschlüsselung und Erweiterbarkeit.",
-          "description": "Die Anwendung besteht aus einem Vue 3 Frontend, das über Tauris IPC-Layer mit einem Rust-Backend kommuniziert. Alle Benutzerdaten werden in einer verschlüsselten SQLite-Datenbank mit SQLCipher gespeichert, mit CRDT-basierter Synchronisierung in die Cloud."
+          "description": "Ein Vue 3 Frontend kommuniziert über Tauris IPC-Layer mit einem Rust-Backend. Alle Benutzerdaten werden in einer verschlüsselten SQLite-Datenbank (SQLCipher) gespeichert, mit CRDT-basierter Replikation zum haex-sync-server."
         },
         "techStack": {
           "title": "Technologie-Stack",
@@ -74,7 +74,7 @@
             },
             "step4": {
               "title": "Sync-Orchestrierung",
-              "description": "Sync-Orchestrator erkennt Änderungen und pusht zur Cloud. Andere Geräte erhalten Realtime-Updates."
+              "description": "Sync-Orchestrator erkennt dirty Tables und pusht zum haex-sync-server. Andere Geräte erhalten einen WebSocket-Stupser, der einen debounced Pull auslöst."
             }
           }
         },
@@ -83,19 +83,19 @@
           "intro": "Sicherheit ist in jede Schicht der haex-vault Architektur eingebaut.",
           "encryption": {
             "title": "Verschlüsselte Speicherung",
-            "description": "Alle Benutzerdaten werden in SQLCipher-verschlüsselten SQLite-Datenbanken gespeichert. Der Verschlüsselungsschlüssel wird aus dem Vault-Passwort des Benutzers mittels PBKDF2 abgeleitet."
+            "description": "Alle Benutzerdaten werden in einer SQLCipher-verschlüsselten SQLite-Datenbank gespeichert. Der Verschlüsselungsschlüssel wird aus dem Vault-Passwort abgeleitet."
           },
           "twoPassword": {
-            "title": "Zwei-Passwort-System",
-            "description": "haex-vault verwendet separate Passwörter für lokale Verschlüsselung und Server-Authentifizierung:",
+            "title": "DID-basierte Authentifizierung",
+            "description": "haex-vault nutzt eine lokale kryptographische Identität (DID) zur Server-Authentifizierung und ein separates Vault-Passwort für die lokale Verschlüsselung:",
             "vault": "Vault-Passwort",
-            "vaultDesc": "Verschlüsselt die lokale SQLite-Datenbank und den Sync-Key",
-            "server": "Server-Passwort",
-            "serverDesc": "Authentifiziert beim Sync-Server (Supabase Auth)"
+            "vaultDesc": "Wird zur Ableitung des SQLCipher-Keys und des Vault-Verschlüsselungs-Keys verwendet. Verlässt nie das Gerät.",
+            "server": "DID-Identität",
+            "serverDesc": "Jedes Gerät hält ein lokales Schlüsselpaar. Anfragen an den haex-sync-server werden mit dem privaten Schlüssel signiert."
           },
           "e2e": {
             "title": "Ende-zu-Ende-Verschlüsselung",
-            "description": "Alle Daten, die in die Cloud synchronisiert werden, werden mit dem Vault-Key verschlüsselt, bevor sie das Gerät verlassen. Der Sync-Server sieht niemals Klartextdaten."
+            "description": "Jeder Spaltenwert wird mit dem Vault-Key (AES-256-GCM) verschlüsselt, bevor er das Gerät verlässt. Der Sync-Server sieht nie Klartext."
           }
         }
       }
