@@ -100,7 +100,7 @@
           }
         },
         "softDelete": {
-          "title": "Deletes & Tombstones",
+          "title": "Deletes",
           "intro": "haex-vault löscht Zeilen wirklich - aber ein BEFORE DELETE Trigger loggt Tabellenname und Primärschlüssel der gelöschten Zeile in haex_deleted_rows, damit die Löschung repliziert werden kann.",
           "why": "Das bedeutet, deine Queries brauchen keinen `WHERE haex_tombstone = 0`-Filter. Zeilen, die existieren, sind aktiv; gelöschte Zeilen sind lokal weg und werden über haex_deleted_rows an andere Geräte propagiert."
         },

@@ -18,9 +18,18 @@ if (canRead) {
 // Check web permission (URL must match a manifest http target)
 const canFetch = await client.permissions.checkWebAsync('https://api.external.com/v1/data')
 
+if (canFetch) {
+  const response = await fetch('https://api.external.com/v1/data')
+  // ... process response
+}
+
 // Check filesystem permission
 const canWrite = await client.permissions.checkFilesystemAsync(
   '/exports/backup.json',
   'write',
 )
+
+if (canWrite) {
+  await client.fs.writeFile('/exports/backup.json', data)
+}
 ```

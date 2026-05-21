@@ -150,7 +150,7 @@ const optionalFields = computed(() => [
   },
   {
     name: 'i18n',
-    type: 'Record<locale, { name?, description? }> | null',
+    type: 'Record<string, { name?: string; description?: string }> | null',
     default: '-',
     description: t('docs.manifest.fields.i18n')
   },

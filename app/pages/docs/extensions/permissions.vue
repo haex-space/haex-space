@@ -98,7 +98,7 @@ const canReadUsers  = await client.permissions.checkDatabaseAsync(usersTable, 'r
 const canWriteUsers = await client.permissions.checkDatabaseAsync(usersTable, 'write')
 
 // Check filesystem permission
-const canReadExports = await client.permissions.checkFilesystemAsync('/exports/', 'read')
+const canReadExports = await client.permissions.checkFilesystemAsync('/exports/data.json', 'read')
 
 // Check HTTP permission (URL must match a manifest http target)
 const canFetchApi = await client.permissions.checkWebAsync('https://api.example.com/data')

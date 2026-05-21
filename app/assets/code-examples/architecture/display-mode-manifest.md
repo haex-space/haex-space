@@ -1,4 +1,4 @@
-```json
+```jsonc
 // manifest.json
 {
   "displayMode": "auto"   // "auto" | "window" | "iframe"

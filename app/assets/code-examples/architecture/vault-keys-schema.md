@@ -4,7 +4,7 @@
 -- sees the user's vault password).
 CREATE TABLE vault_keys (
   id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  did                   TEXT NOT NULL,         -- Identity DID (public part)
+  did                   TEXT NOT NULL,         -- Decentralized Identifier (DID)
   vault_id              TEXT NOT NULL,
   encrypted_vault_key   BYTEA NOT NULL,        -- AES-256-GCM ciphertext
   encrypted_vault_name  BYTEA NOT NULL,        -- AES-256-GCM ciphertext

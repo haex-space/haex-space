@@ -11,8 +11,8 @@ window.parent.postMessage({
   args: ['SELECT * FROM haex_passwords', []],
 }, '*')
 
-// And haex-vault answers with a response:
-window.postMessage({
+// And haex-vault answers with a response (event = MessageEvent from the iframe):
+event.source.postMessage({
   type: 'haextension:response',
   id: 'request-123',
   success: true,

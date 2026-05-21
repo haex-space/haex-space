@@ -100,7 +100,7 @@
           }
         },
         "softDelete": {
-          "title": "Deletes & Tombstones",
+          "title": "Deletes",
           "intro": "haex-vault deletes rows for real - but a BEFORE DELETE trigger logs the deleted row's table and primary keys into haex_deleted_rows so the deletion can be replicated.",
           "why": "This means your queries don't need a `WHERE haex_tombstone = 0` filter. Rows that exist are alive; rows that were deleted are gone locally and propagate via haex_deleted_rows to other devices."
         },

@@ -259,7 +259,7 @@ const paths = {
           </CardHeader>
           <CardContent>
             <ul class="text-sm text-muted-foreground space-y-1">
-              <li>URL-pattern based; HTTP method is not enforced.</li>
+              <li><code class="text-primary">(URL pattern)</code> - HTTP method parsed but not enforced</li>
             </ul>
           </CardContent>
         </Card>

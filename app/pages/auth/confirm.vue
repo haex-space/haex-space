@@ -33,10 +33,10 @@ onMounted(async () => {
   const refreshToken = hashParams.get('refresh_token')
   const type = hashParams.get('type')
 
-  if (accessToken && type === 'signup') {
+  if (accessToken && refreshToken && type === 'signup') {
     const { error } = await supabase.auth.setSession({
       access_token: accessToken,
-      refresh_token: refreshToken || '',
+      refresh_token: refreshToken,
     })
 
     if (error) {

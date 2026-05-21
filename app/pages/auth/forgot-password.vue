@@ -19,8 +19,8 @@ const loading = ref(false);
 const error = ref("");
 const success = ref(false);
 
-onMounted(() => {
-  marketplaceStore.init();
+onMounted(async () => {
+  await marketplaceStore.init();
 });
 
 async function handleSubmit() {
