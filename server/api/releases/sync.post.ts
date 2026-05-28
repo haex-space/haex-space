@@ -50,12 +50,21 @@ export default defineEventHandler(async (event) => {
       per_page: 20,
     });
 
-    // Find latest stable and latest nightly
+    // Find latest stable and latest nightly. Skip releases with no assets —
+    // release-please tags often appear before the build workflow uploads
+    // artifacts, and a release with empty assets has nothing to sync.
     const latestStable = releases.find(
-      (r) => !r.draft && !r.prerelease && !r.tag_name.startsWith("nightly-")
+      (r) =>
+        !r.draft &&
+        !r.prerelease &&
+        !r.tag_name.startsWith("nightly-") &&
+        r.assets.length > 0
     );
     const latestNightly = releases.find(
-      (r) => !r.draft && r.tag_name.startsWith("nightly-")
+      (r) =>
+        !r.draft &&
+        r.tag_name.startsWith("nightly-") &&
+        r.assets.length > 0
     );
 
     const syncedReleases: string[] = [];
