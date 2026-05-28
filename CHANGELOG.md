@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/haex-space/haex-space/compare/v1.1.0...v1.1.1) (2026-05-28)
+
+
+### Bug Fixes
+
+* **releases:** skip releases with no assets ([#10](https://github.com/haex-space/haex-space/issues/10)) ([891f66a](https://github.com/haex-space/haex-space/commit/891f66a51f32bbdc34062686e43cac2e00b6c8d3))
+
 ## [1.1.0](https://github.com/haex-space/haex-space/compare/v1.0.29...v1.1.0) (2026-05-21)
 
 
