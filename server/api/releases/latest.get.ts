@@ -49,20 +49,36 @@ export default defineEventHandler(async () => {
   const octokit = new Octokit();
 
   try {
-    const { data } = await octokit.repos.getLatestRelease({
+    // List recent releases and pick the newest stable one that actually has assets.
+    // GitHub's "latest" can point at a release-please tag whose build workflow
+    // hasn't uploaded artifacts yet (assets: []), which breaks every download link.
+    const { data: releases } = await octokit.repos.listReleases({
       owner: REPO_OWNER,
       repo: REPO_NAME,
+      per_page: 20,
     });
 
+    const candidate = releases.find(
+      (r) =>
+        !r.draft &&
+        !r.prerelease &&
+        !r.tag_name.startsWith("nightly-") &&
+        r.assets.length > 0
+    );
+
+    if (!candidate) {
+      throw new Error("No stable release with assets found");
+    }
+
     const release: ReleaseData = {
-      tag_name: data.tag_name,
-      assets: data.assets.map((a) => ({
+      tag_name: candidate.tag_name,
+      assets: candidate.assets.map((a) => ({
         name: a.name,
         browser_download_url: a.browser_download_url,
         size: a.size,
       })),
-      prerelease: data.prerelease,
-      published_at: data.published_at || new Date().toISOString(),
+      prerelease: candidate.prerelease,
+      published_at: candidate.published_at || new Date().toISOString(),
     };
 
     // Update cache

@@ -56,7 +56,7 @@ export default defineEventHandler(async () => {
     });
 
     const releases: ReleaseData[] = data
-      .filter((r) => !r.draft)
+      .filter((r) => !r.draft && r.assets.length > 0)
       .map((r) => ({
         tag_name: r.tag_name,
         assets: r.assets.map((a) => ({
