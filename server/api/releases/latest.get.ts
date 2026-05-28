@@ -55,7 +55,7 @@ export default defineEventHandler(async () => {
     const { data: releases } = await octokit.repos.listReleases({
       owner: REPO_OWNER,
       repo: REPO_NAME,
-      per_page: 20,
+      per_page: 100,
     });
 
     const candidate = releases.find(
@@ -67,7 +67,7 @@ export default defineEventHandler(async () => {
     );
 
     if (!candidate) {
-      throw new Error("No stable release with assets found");
+      throw new Error("No stable release with assets found in latest 100");
     }
 
     const release: ReleaseData = {
