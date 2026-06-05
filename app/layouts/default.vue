@@ -73,7 +73,7 @@ async function handleMarketplaceLogout() {
               {{ t('common.marketplace') }}
             </NuxtLinkLocale>
             <NuxtLinkLocale
-              to="/docs/extensions"
+              to="/docs"
               class="text-muted-foreground hover:text-foreground transition-colors"
               active-class="!text-foreground font-medium"
             >
