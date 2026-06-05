@@ -40,42 +40,12 @@ const paths = {
   syncEventListener: '/architecture/sync-event-listener',
 }
 
-const syncFlowDiagram = `┌─────────────────────────────────────────────────────────────┐
-│                    USER MAKES CHANGE                         │
-│              (Insert/Update/Delete Row)                      │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   SQLite Trigger fires                                       │
-│   → Entry added to haex_crdt_dirty_tables                   │
-│   → DELETEs logged into haex_deleted_rows                   │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   Sync Orchestrator (debounced)                              │
-│   → Scans dirty tables for changes since last push          │
-│   → Generates column-level changes grouped by HLC           │
-│   → Encrypts each value with the vault key                  │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   POST /sync/push → haex-sync-server                         │
-│   → Authenticates via DID-signed request                    │
-│   → Appends rows to sync_changes (space_id, haex_hlc, …)    │
-│   → Broadcasts a 'sync' event on the shared WebSocket       │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   Other devices receive WebSocket event                      │
-│   → Trigger debounced pull (~500ms)                         │
-│   → GET /sync/pull?spaceId=…&afterHlc=…                     │
-│   → Decrypt values, apply with column-level HLC comparison  │
-│   → Emit 'haextension:sync:tables-updated' to extensions    │
-└─────────────────────────────────────────────────────────────┘`
+const syncFlowDiagram = `flowchart LR
+    A["<b>USER MAKES CHANGE</b><br><div style='text-align:left'>(Insert/Update/Delete Row)</div>"]
+    --> B["<b>SQLite Trigger fires</b><br><div style='text-align:left'>→ Entry added to haex_crdt_dirty_tables<br>→ DELETEs logged into haex_deleted_rows</div>"]
+    --> C["<b>Sync Orchestrator (debounced)</b><br><div style='text-align:left'>→ Scans dirty tables for changes since last push<br>→ Generates column-level changes grouped by HLC<br>→ Encrypts each value with the vault key</div>"]
+    --> D["<b>POST /sync/push → haex-sync-server</b><br><div style='text-align:left'>→ Authenticates via DID-signed request<br>→ Appends rows to sync_changes (space_id, haex_hlc, ...)<br>→ Broadcasts sync event on the shared WebSocket</div>"]
+    --> E["<b>Other devices receive WebSocket event</b><br><div style='text-align:left'>→ Trigger debounced pull (~500ms)<br>→ GET /sync/pull?spaceId=...&amp;afterHlc=...<br>→ Decrypt values, apply column-level HLC comparison<br>→ Emit haextension:sync:tables-updated</div>"]`
 </script>
 
 <template>
@@ -203,7 +173,7 @@ const syncFlowDiagram = `┌─────────────────�
 
       <Card class="mb-8">
         <CardContent class="pt-6">
-          <pre class="text-xs md:text-sm leading-relaxed overflow-x-auto"><code>{{ syncFlowDiagram }}</code></pre>
+          <MermaidDiagram :diagram="syncFlowDiagram" />
         </CardContent>
       </Card>
 

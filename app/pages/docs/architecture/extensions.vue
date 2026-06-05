@@ -32,6 +32,13 @@ const paths = {
   webviewCommunication: '/architecture/webview-communication',
   extSyncEventListener: '/architecture/ext-sync-event-listener',
 }
+
+const lifecycleDiagram = `flowchart LR
+    A["<b>Extension Installation</b>"]
+    --> B["<b>1. preview_extension(fileBytes)</b><br><div style='text-align:left'>- Extract ZIP to temp dir<br>- Validate manifest.json<br>- Verify public_key & signature<br>- Return ExtensionPreview for review</div>"]
+    --> C["<b>2. User reviews &amp;<br>grants permissions</b>"]
+    --> D["<b>3. install_extension_with_permissions()</b><br><div style='text-align:left'>- INSERT into haex_extensions (CRDT)<br>- INSERT into haex_extension_permissions<br>- Extract ZIP to app_data_dir/extensions/<br>- Load into ExtensionManager (memory)<br>- Run database migrations</div>"]
+    --> E["<b>4. Extension ready</b><br><div style='text-align:left'>- Tables synced via CRDT<br>- User can open extension</div>"]`
 </script>
 
 <template>
@@ -176,40 +183,7 @@ const paths = {
 
       <Card class="mb-6">
         <CardContent class="pt-6">
-          <pre class="text-xs md:text-sm leading-relaxed overflow-x-auto"><code>┌─────────────────────────────────────────────────────────────┐
-│                    Extension Installation                    │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   1. preview_extension(fileBytes)                            │
-│      - Extract ZIP to temp dir                              │
-│      - Validate manifest.json                               │
-│      - Verify public_key & signature                        │
-│      - Return ExtensionPreview for user review              │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   2. User reviews & grants permissions                       │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   3. install_extension_with_permissions()                    │
-│      - INSERT into haex_extensions (CRDT)                   │
-│      - INSERT into haex_extension_permissions               │
-│      - Extract ZIP to app_data_dir/extensions/              │
-│      - Load into ExtensionManager (memory)                  │
-│      - Run database migrations (CREATE TABLE with CRDT)     │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│   4. Extension ready                                         │
-│      - Tables synced via CRDT                               │
-│      - User can open extension                              │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+          <MermaidDiagram :diagram="lifecycleDiagram" />
         </CardContent>
       </Card>
 
