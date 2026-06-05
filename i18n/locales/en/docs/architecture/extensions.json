@@ -23,7 +23,7 @@
             },
             "sdk": {
               "title": "Unified SDK",
-              "description": "The @haex-space/vault-sdk provides a consistent API regardless of the display mode."
+              "description": "The {'@'}haex-space/vault-sdk provides a consistent API regardless of the display mode."
             },
             "database": {
               "title": "Own Database Tables",
