@@ -20,7 +20,7 @@
         "vault": "Main application - Desktop / Mobile client (Tauri 2 + Vue 3)",
         "syncServer": "haex-sync-server: encrypted column-level change log over HTTP + WebSocket",
         "marketplace": "Extension marketplace and distribution",
-        "sdk": "@haex-space/vault-sdk - SDK + CLI for extension developers",
+        "sdk": "{'@'}haex-space/vault-sdk - SDK + CLI for extension developers",
         "website": "haex.space website and documentation"
       },
       "techStack": {

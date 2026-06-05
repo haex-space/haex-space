@@ -20,7 +20,7 @@
         "vault": "Hauptanwendung - Desktop / Mobile Client (Tauri 2 + Vue 3)",
         "syncServer": "haex-sync-server: verschlüsseltes Spalten-Change-Log über HTTP + WebSocket",
         "marketplace": "Extension-Marketplace und Distribution",
-        "sdk": "@haex-space/vault-sdk - SDK + CLI für Extension-Entwickler",
+        "sdk": "{'@'}haex-space/vault-sdk - SDK + CLI für Extension-Entwickler",
         "website": "haex.space Website und Dokumentation"
       },
       "techStack": {
