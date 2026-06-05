@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/haex-space/haex-space/compare/v1.2.0...v1.2.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* **nav:** correct Documentation link to /docs instead of /docs/extensions ([#19](https://github.com/haex-space/haex-space/issues/19)) ([6769e56](https://github.com/haex-space/haex-space/commit/6769e56c916006d6664286d545bb8e89994191ec))
+
 ## [1.2.0](https://github.com/haex-space/haex-space/compare/v1.1.4...v1.2.0) (2026-06-05)
 
 
