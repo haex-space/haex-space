@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/haex-space/haex-space/compare/v1.1.2...v1.1.3) (2026-06-05)
+
+
+### Bug Fixes
+
+* **i18n:** trigger release for escaped @ fix ([e453e0e](https://github.com/haex-space/haex-space/commit/e453e0e2bb7acb1d185b0449f3929ce854ef60a4))
+
 ## [1.1.2](https://github.com/haex-space/haex-space/compare/v1.1.1...v1.1.2) (2026-06-05)
 
 
