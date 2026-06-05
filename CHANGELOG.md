@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/haex-space/haex-space/compare/v1.1.1...v1.1.2) (2026-06-05)
+
+
+### Bug Fixes
+
+* **docs:** add jsonc to mdc langs to fix 500 on SSR ([#12](https://github.com/haex-space/haex-space/issues/12)) ([4afb867](https://github.com/haex-space/haex-space/commit/4afb86782917b41c29442e0f0190989ce2877621))
+
 ## [1.1.1](https://github.com/haex-space/haex-space/compare/v1.1.0...v1.1.1) (2026-05-28)
 
 
