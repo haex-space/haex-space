@@ -69,6 +69,7 @@ export default defineNuxtConfig({
         "jsx",
         "bash",
         "json",
+        "jsonc",
         "svelte",
         "html",
         "css",
