@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/haex-space/haex-space/compare/v1.1.4...v1.2.0) (2026-06-05)
+
+
+### Features
+
+* **docs:** replace ASCII diagrams with interactive Mermaid diagrams ([c568d9f](https://github.com/haex-space/haex-space/commit/c568d9fac84daaba55541763167310bbaf25ae54))
+
 ## [1.1.4](https://github.com/haex-space/haex-space/compare/v1.1.3...v1.1.4) (2026-06-05)
 
 
