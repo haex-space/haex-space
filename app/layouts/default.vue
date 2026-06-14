@@ -196,6 +196,9 @@ async function handleMarketplaceLogout() {
             <NuxtLinkLocale to="/terms" class="hover:text-foreground transition-colors">
               {{ t('common.terms') }}
             </NuxtLinkLocale>
+            <NuxtLinkLocale to="/impressum" class="hover:text-foreground transition-colors">
+              {{ t('common.imprint') }}
+            </NuxtLinkLocale>
             <a href="https://github.com/haex-space" target="_blank" class="hover:text-foreground transition-colors">
               GitHub
             </a>

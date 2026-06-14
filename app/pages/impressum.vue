@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import privacyDe from '~/assets/legal/privacy.de.md?raw'
-import privacyEn from '~/assets/legal/privacy.en.md?raw'
-
-const { locale, t } = useI18n()
-
-const content = computed(() => (locale.value === 'de' ? privacyDe : privacyEn))
+import impressum from '~/assets/legal/impressum.md?raw'
 
 useSeoMeta({
-  title: () => `${t('common.privacy')} – haex.space`,
+  title: 'Impressum – haex.space',
 })
 </script>
 
 <template>
   <article class="container mx-auto max-w-3xl px-4 py-12 legal-prose">
-    <MDC :value="content" />
+    <MDC :value="impressum" />
   </article>
 </template>
 
