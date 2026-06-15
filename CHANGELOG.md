@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/haex-space/haex-space/compare/v1.2.1...v1.3.0) (2026-06-15)
+
+
+### Features
+
+* **legal:** add privacy policy and Impressum pages ([#21](https://github.com/haex-space/haex-space/issues/21)) ([a6000a9](https://github.com/haex-space/haex-space/commit/a6000a96a4e37f60300d27b8cc89720870eafd78))
+
 ## [1.2.1](https://github.com/haex-space/haex-space/compare/v1.2.0...v1.2.1) (2026-06-05)
 
 
