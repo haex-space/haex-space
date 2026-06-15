@@ -1,6 +1,6 @@
 # Privacy Policy – Haex Vault
 
-Effective: 2026-06-14
+Effective: 2026-06-15
 
 ## 1. Controller
 

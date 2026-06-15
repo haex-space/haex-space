@@ -1,6 +1,6 @@
 # Datenschutzerklärung – Haex Vault
 
-Stand: 14.06.2026
+Stand: 15.06.2026
 
 ## 1. Verantwortliche Stelle
 
@@ -91,4 +91,4 @@ privacy@haex.space
 
 Diese Erklärung kann angepasst werden, wenn sich Funktionen oder rechtliche
 Anforderungen ändern. Die jeweils aktuelle Version findet sich unter
-https://haex.space/privacy.
+https://haex.space/de/privacy.
