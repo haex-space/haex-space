@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import privacyDe from '~/assets/legal/privacy.de.md?raw'
-import privacyEn from '~/assets/legal/privacy.en.md?raw'
+import impressum from '~/assets/legal/impressum.md?raw'
 
-const { locale, t } = useI18n()
-
-const content = computed(() => (locale.value === 'de' ? privacyDe : privacyEn))
+const { t, locale } = useI18n()
 
 useSeoMeta({
-  title: () => `${t('common.privacy')} – haex.space`,
+  title: () => `${t('common.imprint')} – haex.space`,
 })
 </script>
 
 <template>
-  <article class="container mx-auto max-w-3xl px-4 py-12 legal-prose">
-    <MDC :value="content" />
+  <article class="container mx-auto max-w-3xl px-4 py-12 legal-prose" lang="de">
+    <p
+      v-if="locale !== 'de'"
+      class="mb-8 rounded border border-border bg-muted/30 p-4 text-sm text-muted-foreground"
+      lang="en"
+    >
+      The following imprint is required by German law (§ 5 DDG / § 18 MStV) and
+      therefore provided in German.
+    </p>
+    <MDC :value="impressum" />
   </article>
 </template>
 
