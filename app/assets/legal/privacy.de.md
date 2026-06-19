@@ -1,6 +1,6 @@
 # Datenschutzerklärung – Haex Vault
 
-Stand: 15.06.2026
+Stand: 19.06.2026
 
 ## 1. Verantwortliche Stelle
 
@@ -39,13 +39,28 @@ folgende Daten an den von dir gewählten Server übertragen:
 - Synchronisations-Metadaten: Vault-ID, Tabellennamen, Primärschlüssel,
   CRDT-Spalten (HLC-Zeitstempel), Geräte-DIDs
 
+**Zusätzlich** erheben wir folgende Daten, wenn du auf unserem Server
+`sync.haex.space` ein Sync-Konto erstellst:
+
+- E-Mail-Adresse — dient als eindeutiger Kontoidentifikator und zur
+  Kontaktaufnahme in dienstrelevanten Angelegenheiten (z. B. Bestätigung
+  einer Löschanfrage, Rechnungsstellung sobald kostenpflichtige Tarife
+  verfügbar sind)
+
+Betreiber selbst gehosteter oder Drittanbieter-Sync-Server entscheiden
+unabhängig, welche Daten sie für die Konto-Registrierung verlangen; deren
+eigene Datenschutzerklärungen gelten, nicht diese.
+
 Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung), sofern du
 unseren Server nutzt; alternativ Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
 Interesse an Funktionsfähigkeit der Synchronisation).
 
-Speicherdauer: Synchronisations-Daten werden gespeichert, solange du den Sync
-aktiviert lässt. Du kannst die Daten jederzeit löschen, indem du den Vault auf
-dem Server zurücksetzt oder uns kontaktierst.
+Speicherdauer und Löschung sind separat unter
+[Kontolöschung](https://haex.space/de/account-deletion) beschrieben.
+Kurz: Free-Accounts (ohne Zahlungshistorie) können innerhalb von 30 Tagen
+vollständig gelöscht werden; bei bezahlten Accounts werden rechnungsrelevante
+Daten für die gesetzlich vorgeschriebene Frist aufbewahrt (bis zu 10 Jahre
+nach § 147 AO), danach werden alle Daten dauerhaft gelöscht.
 
 ## 5. Optionales Teilen mit anderen Personen (MLS / RFC 9420)
 
