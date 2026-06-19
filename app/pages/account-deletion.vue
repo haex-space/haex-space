@@ -12,51 +12,22 @@ useSeoMeta({
 </script>
 
 <template>
-  <article class="container mx-auto max-w-3xl px-4 py-12 legal-prose">
+  <article
+    class="container mx-auto max-w-3xl px-4 py-12 leading-relaxed
+      [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-6
+      [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-8 [&_h2]:mb-3
+      [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-2
+      [&_p]:mb-4
+      [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4
+      [&_li]:mb-1
+      [&_a]:text-primary [&_a]:underline
+      [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm
+      [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:mb-4
+      [&_pre_code]:bg-transparent [&_pre_code]:p-0
+      [&_table]:w-full [&_table]:my-6 [&_table]:border-collapse
+      [&_th]:p-2 [&_th]:text-left [&_th]:font-semibold [&_th]:border-b [&_th]:border-border
+      [&_td]:p-2 [&_td]:border-b [&_td]:border-border [&_td]:align-top"
+  >
     <MDC :value="content" />
   </article>
 </template>
-
-<style scoped>
-.legal-prose :deep(h1) {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-}
-.legal-prose :deep(h2) {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-.legal-prose :deep(p) {
-  margin-bottom: 1rem;
-  line-height: 1.7;
-}
-.legal-prose :deep(ul) {
-  list-style: disc;
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-.legal-prose :deep(li) {
-  margin-bottom: 0.25rem;
-  line-height: 1.7;
-}
-.legal-prose :deep(a) {
-  color: var(--primary);
-  text-decoration: underline;
-}
-.legal-prose :deep(code) {
-  background: var(--muted);
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-size: 0.875em;
-}
-.legal-prose :deep(pre) {
-  background: var(--muted);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  margin-bottom: 1rem;
-}
-</style>
