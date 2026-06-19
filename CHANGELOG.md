@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/haex-space/haex-space/compare/v1.3.0...v1.4.0) (2026-06-19)
+
+
+### Features
+
+* **legal:** add account deletion page ([#24](https://github.com/haex-space/haex-space/issues/24)) ([2729e89](https://github.com/haex-space/haex-space/commit/2729e89ece3acc61b1127e2fd06706a859710c12))
+
 ## [1.3.0](https://github.com/haex-space/haex-space/compare/v1.2.1...v1.3.0) (2026-06-15)
 
 
