@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/haex-space/haex-space/compare/v1.5.1...v1.5.2) (2026-06-29)
+
+
+### Bug Fixes
+
+* **install:** use [haex-vault] as pacman section name ([#34](https://github.com/haex-space/haex-space/issues/34)) ([e823fea](https://github.com/haex-space/haex-space/commit/e823fea4c3a3119597d026919b725fd2e72fd648))
+
 ## [1.5.1](https://github.com/haex-space/haex-space/compare/v1.5.0...v1.5.1) (2026-06-29)
 
 
