@@ -89,12 +89,7 @@ sudo pacman-key --lsign-key 92B16ADF139DF0D5BA0B2C8A7940193A39D0D4EA
 rm /tmp/haex.gpg
 
 # 2. Add the repository to /etc/pacman.conf (skip if [haex-vault] section already present)
-grep -qFx '[haex-vault]' /etc/pacman.conf || sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
-
-[haex-vault]
-SigLevel = Required DatabaseRequired
-Server = https://arch.haex.space/$arch
-EOF
+grep -qFx '[haex-vault]' /etc/pacman.conf || printf '%s\\n' '' '[haex-vault]' 'SigLevel = Required DatabaseRequired' 'Server = https://arch.haex.space/$arch' | sudo tee -a /etc/pacman.conf > /dev/null
 
 # 3. Install
 sudo pacman -Syu haex-vault`,
