@@ -38,6 +38,25 @@ sudo zypper addrepo --gpgcheck --refresh \\
   https://rpm.haex.space/ haex-vault
 sudo zypper install haex-vault`
 
+const pacmanCommands = `# 1. Trust the repo signing key
+#    Fingerprint: 92B1 6ADF 139D F0D5 BA0B  2C8A 7940 193A 39D0 D4EA
+curl -fsSL https://arch.haex.space/pubkey.gpg -o /tmp/haex.gpg
+gpg --show-keys /tmp/haex.gpg   # cross-check the fingerprint
+sudo pacman-key --add /tmp/haex.gpg
+sudo pacman-key --lsign-key 92B16ADF139DF0D5BA0B2C8A7940193A39D0D4EA
+rm /tmp/haex.gpg
+
+# 2. Add the repository to /etc/pacman.conf
+sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
+
+[haex]
+SigLevel = Required DatabaseRequired
+Server = https://arch.haex.space/$arch
+EOF
+
+# 3. Install
+sudo pacman -Syu haex-vault`
+
 const brewCommands = `brew tap haex-space/vault
 brew install --cask haex-vault`
 </script>
@@ -52,7 +71,7 @@ brew install --cask haex-vault`
     </div>
 
     <Tabs default-value="brew" class="max-w-3xl mx-auto">
-      <TabsList class="grid w-full grid-cols-2 gap-2 sm:grid-cols-4">
+      <TabsList class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
         <TabsTrigger value="brew">
           <Apple class="w-4 h-4 mr-2" />
           Homebrew
@@ -68,6 +87,10 @@ brew install --cask haex-vault`
         <TabsTrigger value="zypper">
           <Terminal class="w-4 h-4 mr-2" />
           Zypper
+        </TabsTrigger>
+        <TabsTrigger value="pacman">
+          <Terminal class="w-4 h-4 mr-2" />
+          Pacman
         </TabsTrigger>
       </TabsList>
 
@@ -130,6 +153,22 @@ brew install --cask haex-vault`
             <p class="text-sm text-muted-foreground mt-4">
               {{ t('download.installMethods.zypper.updateNote') }}
               <code class="text-xs bg-muted px-1.5 py-0.5 rounded">sudo zypper update haex-vault</code>
+            </p>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="pacman">
+        <Card>
+          <CardHeader>
+            <CardTitle>{{ t('download.installMethods.pacman.title') }}</CardTitle>
+            <CardDescription>{{ t('download.installMethods.pacman.description') }}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DocsCodeBlock language="bash" :code="pacmanCommands" />
+            <p class="text-sm text-muted-foreground mt-4">
+              {{ t('download.installMethods.pacman.updateNote') }}
+              <code class="text-xs bg-muted px-1.5 py-0.5 rounded">sudo pacman -Syu</code>
             </p>
           </CardContent>
         </Card>

@@ -38,6 +38,11 @@
         "title": "openSUSE — Zypper",
         "description": "Add the rpm.haex.space repository to zypper.",
         "updateNote": "Updates arrive automatically with:"
+      },
+      "pacman": {
+        "title": "Arch / Manjaro / EndeavourOS — Pacman",
+        "description": "Add the arch.haex.space repository. Supports x86_64 and aarch64 (Arch Linux ARM).",
+        "updateNote": "Updates arrive automatically with:"
       }
     },
     "whyVault": "Why haex-vault?",
