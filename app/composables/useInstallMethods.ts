@@ -12,6 +12,13 @@ export interface LinuxInstallMethod {
   updateCmd: string
 }
 
+function defineMethod(
+  key: LinuxInstallMethodKey,
+  rest: Omit<LinuxInstallMethod, 'key' | 'i18nBase'>,
+): LinuxInstallMethod {
+  return { key, i18nBase: `installMethods.linux.${key}`, ...rest }
+}
+
 /**
  * Single source of truth for the Linux package-manager install snippets.
  *
@@ -23,10 +30,8 @@ export interface LinuxInstallMethod {
  * Edit snippets here once; both pages pick up the change.
  */
 export function useInstallMethods(): { linux: LinuxInstallMethod[] } {
-  const apt: LinuxInstallMethod = {
-    key: 'apt',
+  const apt = defineMethod('apt', {
     tabLabel: 'APT',
-    i18nBase: 'installMethods.linux.apt',
     updateCmd: 'sudo apt update && sudo apt upgrade',
     snippet: `# 1. Trust the repo signing key
 sudo install -d -m 0755 /etc/apt/keyrings
@@ -40,12 +45,10 @@ echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/haex-vault.asc] https://
 # 3. Install
 sudo apt update
 sudo apt install haex-vault`,
-  }
+  })
 
-  const dnf: LinuxInstallMethod = {
-    key: 'dnf',
+  const dnf = defineMethod('dnf', {
     tabLabel: 'DNF/YUM',
-    i18nBase: 'installMethods.linux.dnf',
     updateCmd: 'sudo dnf upgrade haex-vault',
     snippet: `# 1. Trust the repo signing key
 sudo rpm --import https://rpm.haex.space/pubkey.gpg
@@ -63,23 +66,19 @@ EOF
 
 # 3. Install
 sudo dnf install haex-vault`,
-  }
+  })
 
-  const zypper: LinuxInstallMethod = {
-    key: 'zypper',
+  const zypper = defineMethod('zypper', {
     tabLabel: 'Zypper',
-    i18nBase: 'installMethods.linux.zypper',
     updateCmd: 'sudo zypper update haex-vault',
     snippet: `sudo rpm --import https://rpm.haex.space/pubkey.gpg
 sudo zypper addrepo --gpgcheck --refresh \\
   https://rpm.haex.space/ haex-vault
 sudo zypper install haex-vault`,
-  }
+  })
 
-  const pacman: LinuxInstallMethod = {
-    key: 'pacman',
+  const pacman = defineMethod('pacman', {
     tabLabel: 'Pacman',
-    i18nBase: 'installMethods.linux.pacman',
     updateCmd: 'sudo pacman -Syu',
     snippet: `# 1. Trust the repo signing key
 #    Fingerprint: 92B1 6ADF 139D F0D5 BA0B  2C8A 7940 193A 39D0 D4EA
@@ -89,17 +88,19 @@ sudo pacman-key --add /tmp/haex.gpg
 sudo pacman-key --lsign-key 92B16ADF139DF0D5BA0B2C8A7940193A39D0D4EA
 rm /tmp/haex.gpg
 
-# 2. Add the repository to /etc/pacman.conf
-sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
+# 2. Add the repository to /etc/pacman.conf (skip if [haex] already present)
+if ! grep -q '^\\[haex\\]' /etc/pacman.conf; then
+  sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
 
 [haex]
 SigLevel = Required DatabaseRequired
 Server = https://arch.haex.space/$arch
 EOF
+fi
 
 # 3. Install
 sudo pacman -Syu haex-vault`,
-  }
+  })
 
   return {
     linux: [apt, dnf, zypper, pacman],
