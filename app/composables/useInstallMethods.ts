@@ -89,7 +89,7 @@ sudo pacman-key --lsign-key 92B16ADF139DF0D5BA0B2C8A7940193A39D0D4EA
 rm /tmp/haex.gpg
 
 # 2. Add the repository to /etc/pacman.conf (skip if [haex] section already present)
-grep -qF '[haex]' /etc/pacman.conf || sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
+grep -qFx '[haex]' /etc/pacman.conf || sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
 
 [haex]
 SigLevel = Required DatabaseRequired
