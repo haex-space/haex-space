@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/haex-space/haex-space/compare/v1.5.2...v1.5.3) (2026-06-29)
+
+
+### Bug Fixes
+
+* **install:** replace pacman heredoc with printf for fish compatibility ([#36](https://github.com/haex-space/haex-space/issues/36)) ([8101ae6](https://github.com/haex-space/haex-space/commit/8101ae64b0d7cbef1c4ceb7f3be36563e1221921))
+
 ## [1.5.2](https://github.com/haex-space/haex-space/compare/v1.5.1...v1.5.2) (2026-06-29)
 
 
