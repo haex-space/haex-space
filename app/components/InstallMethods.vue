@@ -3,59 +3,7 @@ import { Apple, Terminal } from 'lucide-vue-next'
 
 const { t } = useI18n()
 
-const aptCommands = `# 1. Trust the repo signing key
-sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://apt.haex.space/pubkey.gpg \\
-  | sudo tee /etc/apt/keyrings/haex-vault.asc > /dev/null
-
-# 2. Add the repository
-echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/haex-vault.asc] https://apt.haex.space stable main" \\
-  | sudo tee /etc/apt/sources.list.d/haex-vault.list > /dev/null
-
-# 3. Install
-sudo apt update
-sudo apt install haex-vault`
-
-const dnfCommands = `# 1. Trust the repo signing key
-sudo rpm --import https://rpm.haex.space/pubkey.gpg
-
-# 2. Add the repository
-sudo tee /etc/yum.repos.d/haex-vault.repo > /dev/null <<'EOF'
-[haex-vault]
-name=Haex Vault
-baseurl=https://rpm.haex.space/
-enabled=1
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://rpm.haex.space/pubkey.gpg
-EOF
-
-# 3. Install
-sudo dnf install haex-vault`
-
-const zypperCommands = `sudo rpm --import https://rpm.haex.space/pubkey.gpg
-sudo zypper addrepo --gpgcheck --refresh \\
-  https://rpm.haex.space/ haex-vault
-sudo zypper install haex-vault`
-
-const pacmanCommands = `# 1. Trust the repo signing key
-#    Fingerprint: 92B1 6ADF 139D F0D5 BA0B  2C8A 7940 193A 39D0 D4EA
-curl -fsSL https://arch.haex.space/pubkey.gpg -o /tmp/haex.gpg
-gpg --show-keys /tmp/haex.gpg   # cross-check the fingerprint
-sudo pacman-key --add /tmp/haex.gpg
-sudo pacman-key --lsign-key 92B16ADF139DF0D5BA0B2C8A7940193A39D0D4EA
-rm /tmp/haex.gpg
-
-# 2. Add the repository to /etc/pacman.conf
-sudo tee -a /etc/pacman.conf > /dev/null <<'EOF'
-
-[haex]
-SigLevel = Required DatabaseRequired
-Server = https://arch.haex.space/$arch
-EOF
-
-# 3. Install
-sudo pacman -Syu haex-vault`
+const { linux: linuxMethods } = useInstallMethods()
 
 const brewCommands = `brew tap haex-space/vault
 brew install --cask haex-vault`
@@ -76,21 +24,13 @@ brew install --cask haex-vault`
           <Apple class="w-4 h-4 mr-2" />
           Homebrew
         </TabsTrigger>
-        <TabsTrigger value="apt">
+        <TabsTrigger
+          v-for="method in linuxMethods"
+          :key="method.key"
+          :value="method.key"
+        >
           <Terminal class="w-4 h-4 mr-2" />
-          APT
-        </TabsTrigger>
-        <TabsTrigger value="dnf">
-          <Terminal class="w-4 h-4 mr-2" />
-          DNF/YUM
-        </TabsTrigger>
-        <TabsTrigger value="zypper">
-          <Terminal class="w-4 h-4 mr-2" />
-          Zypper
-        </TabsTrigger>
-        <TabsTrigger value="pacman">
-          <Terminal class="w-4 h-4 mr-2" />
-          Pacman
+          {{ method.tabLabel }}
         </TabsTrigger>
       </TabsList>
 
@@ -110,65 +50,21 @@ brew install --cask haex-vault`
         </Card>
       </TabsContent>
 
-      <TabsContent value="apt">
+      <TabsContent
+        v-for="method in linuxMethods"
+        :key="method.key"
+        :value="method.key"
+      >
         <Card>
           <CardHeader>
-            <CardTitle>{{ t('download.installMethods.apt.title') }}</CardTitle>
-            <CardDescription>{{ t('download.installMethods.apt.description') }}</CardDescription>
+            <CardTitle>{{ t(`${method.i18nBase}.title`) }}</CardTitle>
+            <CardDescription>{{ t(`${method.i18nBase}.description`) }}</CardDescription>
           </CardHeader>
           <CardContent>
-            <DocsCodeBlock language="bash" :code="aptCommands" />
+            <DocsCodeBlock language="bash" :code="method.snippet" />
             <p class="text-sm text-muted-foreground mt-4">
-              {{ t('download.installMethods.apt.updateNote') }}
-              <code class="text-xs bg-muted px-1.5 py-0.5 rounded">sudo apt update && sudo apt upgrade</code>
-            </p>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      <TabsContent value="dnf">
-        <Card>
-          <CardHeader>
-            <CardTitle>{{ t('download.installMethods.dnf.title') }}</CardTitle>
-            <CardDescription>{{ t('download.installMethods.dnf.description') }}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <DocsCodeBlock language="bash" :code="dnfCommands" />
-            <p class="text-sm text-muted-foreground mt-4">
-              {{ t('download.installMethods.dnf.updateNote') }}
-              <code class="text-xs bg-muted px-1.5 py-0.5 rounded">sudo dnf upgrade haex-vault</code>
-            </p>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      <TabsContent value="zypper">
-        <Card>
-          <CardHeader>
-            <CardTitle>{{ t('download.installMethods.zypper.title') }}</CardTitle>
-            <CardDescription>{{ t('download.installMethods.zypper.description') }}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <DocsCodeBlock language="bash" :code="zypperCommands" />
-            <p class="text-sm text-muted-foreground mt-4">
-              {{ t('download.installMethods.zypper.updateNote') }}
-              <code class="text-xs bg-muted px-1.5 py-0.5 rounded">sudo zypper update haex-vault</code>
-            </p>
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      <TabsContent value="pacman">
-        <Card>
-          <CardHeader>
-            <CardTitle>{{ t('download.installMethods.pacman.title') }}</CardTitle>
-            <CardDescription>{{ t('download.installMethods.pacman.description') }}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <DocsCodeBlock language="bash" :code="pacmanCommands" />
-            <p class="text-sm text-muted-foreground mt-4">
-              {{ t('download.installMethods.pacman.updateNote') }}
-              <code class="text-xs bg-muted px-1.5 py-0.5 rounded">sudo pacman -Syu</code>
+              {{ t(`${method.i18nBase}.updateNote`) }}
+              <code class="text-xs bg-muted px-1.5 py-0.5 rounded">{{ method.updateCmd }}</code>
             </p>
           </CardContent>
         </Card>
