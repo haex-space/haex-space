@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/haex-space/haex-space/compare/v1.4.0...v1.5.0) (2026-06-29)
+
+
+### Features
+
+* **install:** add Arch Linux pacman repo card ([#27](https://github.com/haex-space/haex-space/issues/27)) ([bfc8ee0](https://github.com/haex-space/haex-space/commit/bfc8ee0a1a564d059cf48042358e514b70921167))
+
 ## [1.4.0](https://github.com/haex-space/haex-space/compare/v1.3.0...v1.4.0) (2026-06-19)
 
 
