@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/haex-space/haex-space/compare/v1.5.0...v1.5.1) (2026-06-29)
+
+
+### Bug Fixes
+
+* **install:** keep pacman snippet inside shiki tokenizer ([#32](https://github.com/haex-space/haex-space/issues/32)) ([95ddc10](https://github.com/haex-space/haex-space/commit/95ddc105d648fb5d3d38f53013de3f9f0d50396e))
+
 ## [1.5.0](https://github.com/haex-space/haex-space/compare/v1.4.0...v1.5.0) (2026-06-29)
 
 
