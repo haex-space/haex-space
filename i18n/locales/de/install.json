@@ -51,6 +51,11 @@
         "description": "rpm.haex.space Repository in Zypper einbinden.",
         "updateNote": "Updates kommen automatisch mit:"
       },
+      "pacman": {
+        "title": "Arch / Manjaro / EndeavourOS — Pacman",
+        "description": "arch.haex.space Repository einbinden. Unterstützt x86_64 und aarch64 (Arch Linux ARM).",
+        "updateNote": "Updates kommen automatisch mit:"
+      },
       "appimage": {
         "title": "AppImage (ohne Installation)",
         "description": "Eigenständiges Binary. Herunterladen, ausführbar machen, starten. Updates manuell (neu herunterladen).",
